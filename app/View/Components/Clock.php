@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components\cth;
+namespace App\View\Components;
 
 use Illuminate\View\Component;
 
@@ -23,6 +23,6 @@ class Clock extends Component
      */
     public function render()
     {
-        return view('components.cth.clock');
+        return view('components.clock');
     }
 }
