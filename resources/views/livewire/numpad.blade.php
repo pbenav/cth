@@ -22,7 +22,7 @@
         </div>
         <div class="mt-4 w-full text-center">
             <button wire:click="resetDialer" class="btn-aux">{{ __('Reset') }}</button>
-            <button wire:click="delete" class="btn-aux">{{ __('Delete') }}</button>
+            <button wire:click="delete" class="btn-aux sm:mt-4">{{ __('Delete') }}</button>
         </div>
     </div>
 </div>
