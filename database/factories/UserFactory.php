@@ -25,10 +25,10 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'usercode' => $this->faker->randomElement(['12345678', '87654321']),
+            'user_code' => $this->faker->randomElement(['12345678', '87654321']),
             'name' => $this->faker->name(),
-            'familyname1' => $this->faker->surname(),
-            'familyname2' => $this->faker->surname(),
+            'family_name1' => $this->faker->surname(),
+            'family_name2' => $this->faker->surname(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password

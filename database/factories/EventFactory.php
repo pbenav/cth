@@ -25,12 +25,12 @@ class EventFactory extends Factory
             $endtime = null;
         }
         return [
-            'userId' => 1,
-            'userCode' => $this->faker->randomElement(['12345678', '87654321']),
-            'startTime' => $startime,
-            'endTime' => $endtime, 
+            'user_id' => 1,
+            'user_code' => $this->faker->randomElement(['12345678', '87654321']),
+            'start_time' => $startime,
+            'end_time' => $endtime, 
             'description' => $this->faker->sentence(),
-            'isOpen' => $isopen,
+            'is_open' => $isopen,
         ];
     }
 }
