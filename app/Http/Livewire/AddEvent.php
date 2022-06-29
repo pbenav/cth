@@ -20,7 +20,7 @@ class AddEvent extends Component
     protected $rules = [
         'start_date' => 'required',
         'start_time' => 'required',
-        'description' => 'required|string|max:150'
+        'description' => 'required'
     ];
 
     public function updated($propertyName){
@@ -29,7 +29,6 @@ class AddEvent extends Component
 
     public function mount()
     {
-        date_default_timezone_set(env('APP_TIMEZONE'));
         $this->start_date = date('Y-m-d');
         $this->start_time = date('H:i:s');
         $this->description = '';
@@ -40,8 +39,8 @@ class AddEvent extends Component
         $this->validate();
 
         Event::create([
-            'start_time' => $this->start_date . ' ' . $this->start_time,
-            'end_time' => null,
+            'start' => $this->start_date . ' ' . $this->start_time,
+            'end' => null,
             'user_id' => Auth::user()->id,
             'user_code' => Auth::user()->user_code,
             'description' => $this->description,
