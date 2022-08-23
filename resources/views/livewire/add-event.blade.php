@@ -1,6 +1,5 @@
-<div>
-   
-    <x-jet-dialog-modal wire:model="open">
+<div>   
+    <x-jet-dialog-modal wire:model="showAddEventModal">
 
         <x-slot name="title">
             {{ __('Add new event') }}
@@ -36,7 +35,7 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$set('open', false)">
+            <x-jet-secondary-button wire:click="$set('showAddEventModal', false)">
                 {{ __('Cancel') }}
             </x-jet-secondary-button>
 

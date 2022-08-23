@@ -16,7 +16,7 @@ class GetTimeRegisters extends Component
     public $search;
     public $event;
     public $events;
-    public $open_edit = false;
+    public $showModalGetTimeRegisters = false;
     public $sort = 'start';
     public $direction = 'desc';
 
@@ -58,7 +58,7 @@ class GetTimeRegisters extends Component
     }
 
     public function add(){
-        $this->open_edit = true;
+        $this->showModalGetTimeRegisters = true;
     }    
 
     public function edit(Event $ev)
@@ -66,10 +66,10 @@ class GetTimeRegisters extends Component
         if ($ev->is_open == 1) {
             $ev->end = date('Y/m/d H:i:s');
             $this->event = $ev;
-            $this->open_edit = true;
+            $this->showModalGetTimeRegisters = true;
         } else {
             $this->emit('alert', 'Register is confirmed. Can\'t be changed.'); 
-            $this->reset(["open_edit"]);
+            $this->reset(["showModalGetTimeRegisters"]);
         }
     }
 
@@ -77,7 +77,7 @@ class GetTimeRegisters extends Component
     {
         $this->validate();
         $this->event->save();
-        $this->reset(["open_edit"]);
+        $this->reset(["showModalGetTimeRegisters"]);
         $this->emit('alert', 'Event updated!');
     }
 
@@ -89,7 +89,7 @@ class GetTimeRegisters extends Component
             $this->event->is_open = 0;
             $this->event->save();
         };
-        $this->reset(["open_edit"]);
+        $this->reset(["showModalGetTimeRegisters"]);
 
     }
 
@@ -98,7 +98,7 @@ class GetTimeRegisters extends Component
         # Before deletion there is an event for Sweet alert2 to confirm.
         $this->event = $ev;
         $this->event->delete();
-        $this->reset(["open_edit"]);
+        $this->reset(["showModalGetTimeRegisters"]);
     }
 
     public function getAll()

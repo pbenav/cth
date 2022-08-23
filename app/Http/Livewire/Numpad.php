@@ -30,6 +30,7 @@ class Numpad extends Component
     {
         if (strlen($this->user_code) > 0) {
             $this->user_code = substr($this->user_code, 0, -1);
+
         }
     }
 

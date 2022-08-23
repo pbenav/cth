@@ -7,15 +7,15 @@
     </x-slot>
 
     <!-- Event list. Main table -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">      
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
         <div class="flex px-6 py-4 items-center">
             @livewire('add-event')
             <x-jet-danger-button class="flex-1 w-3/4" wire:click="$emitTo('add-event', 'add', open=true)">
                 {{ __('Add event') }}
             </x-jet-danger-button>
-            <x-jet-input class="flex-1 ml-4 w-1/4" placeholder="Search" type="text" wire:model="search" />
-        
+            <x-jet-input class="flex-1 ml-4 w-1/4" placeholder="{{ __('Search') }}" type="text" wire:model="search" />
+
         </div>
 
         @if ($events->count())
@@ -90,7 +90,8 @@
                                     <a class="btn btn-blue" wire:click="edit({{ $ev }})">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a class="btn btn-green" wire:click="$emit('confirmConfirmation', {{ $ev }})">
+                                    <a class="btn btn-green"
+                                        wire:click="$emit('confirmConfirmation', {{ $ev }})">
                                         <i class="fas fa-check"></i>
                                     </a>
                                     <a class="btn btn-red" wire:click="$emit('confirmDeletion', {{ $ev }})">
@@ -110,14 +111,14 @@
 
     <div>
         <!-- Event detail. Modal table -->
-        <x-jet-dialog-modal wire:model="open_edit">
-    
+        <x-jet-dialog-modal wire:model="showModalGetTimeRegisters">
+
             <x-slot name='title'>
                 {{ __('Edit event') }}: <span wire:model.defer='event.id'></span>
             </x-slot>
-    
+
             <x-slot name='content'>
-    
+
                 <div class="mb-4">
                     {{-- datepicker --}}
                     <x-datepicker label="Start date" wire:model="event.start">
@@ -128,7 +129,7 @@
                     <x-jet-input-error for='event.end' />
                 </div>
                 {{-- end-datepicker --}}
-    
+
                 <div>
                     <x-jet-label value="{{ __('Description') }}" />
                     <select class="custom-textarea w-full" wire:model.defer="event.description" name="event.description"
@@ -143,19 +144,19 @@
                     <x-jet-input-error for='event.description' />
                 </div>
             </x-slot>
-    
+
             <x-slot name='footer'>
-                <x-jet-secondary-button wire:click="$set('open_edit', false)">
+                <x-jet-secondary-button wire:click="$set('showModalGetTimeRegisters', false)">
                     {{ __('Cancel') }}
                 </x-jet-secondary-button>
-    
+
                 <x-jet-danger-button wire:click="update" wire:loading.attr="disabled" class="disabled:bg-blue-500 ml-2"
                     wire_target="update">
                     {{ __('Update event') }}
                 </x-jet-danger-button>
             </x-slot>
-    
+
         </x-jet-dialog-modal>
-    </div>       
+    </div>
 
 </div>

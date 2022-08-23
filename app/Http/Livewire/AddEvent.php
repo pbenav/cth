@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AddEvent extends Component
 {
-    public $open = false;
+    public $showAddEventModal = false;
 
     public $now;
     public $start_date;
@@ -37,7 +37,7 @@ class AddEvent extends Component
     }   
 
     public function add(){
-        $this->open = true;
+        $this->showAddEventModal = true;
     }
 
     public function save()
@@ -54,7 +54,7 @@ class AddEvent extends Component
         ]);
 
         $this->reset([
-            'open',
+            'showAddEventModal',
 
         ]);
 
