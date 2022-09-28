@@ -3,45 +3,32 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
+use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Event;
-use Brick\Math\BigInteger;
-use DateTime;
 
 use function PHPUnit\Framework\isNull;
 
 class GetTimeRegisters extends Component
 {
 
-    public $search;
-    public $event;
-    public $events;
+    use WithPagination;
+
+    protected $events;
     public $showModalGetTimeRegisters = false;
+    public $search;
     public $sort = 'start';
     public $direction = 'desc';
+    public $qtytoshow = '10';
+    public $readyonload = false;
 
-    protected $listeners = ['render', 'remove', 'edit'];
-
-    protected $rules = [
-        'event.start' => 'required',
-        'event.end' => 'required',
-        'event.description' => 'required',
-    ];
+    protected $listeners = ['render', 'confirm', 'remove'];
 
     protected $queryString = [
-        'sort', 'direction'
+        'sort' => ['except' => 'start'],
+        'direction' => ['except' => 'desc'],
+        'qtytoshow' => ['except' => '10']
     ];
-
-    public function mount()
-    {
-        $this->event = new Event();        
-    }
-
-    public function startToday()
-    {
-        $this->event->start = date('Y/m/d H:i:s');
-        $this->event->end = date('Y/m/d H:i:s');
-    }    
 
     public function order($sort)
     {
@@ -57,40 +44,11 @@ class GetTimeRegisters extends Component
         };
     }
 
-    public function add(){
-        $this->showModalGetTimeRegisters = true;
-    }    
-
-    public function edit(Event $ev)
-    {
-        if ($ev->is_open == 1) {
-            $ev->end = date('Y/m/d H:i:s');
-            $this->event = $ev;
-            $this->showModalGetTimeRegisters = true;
-        } else {
-            $this->emit('alert', 'Register is confirmed. Can\'t be changed.'); 
-            $this->reset(["showModalGetTimeRegisters"]);
-        }
-    }
-
-    public function update()
-    {
-        $this->validate();
-        $this->event->save();
-        $this->reset(["showModalGetTimeRegisters"]);
-        $this->emit('alert', 'Event updated!');
-    }
-
     public function confirm(Event $ev)
     {
         # Before modification there is an event for Sweet alert2 to confirm.
-        $this->event = $ev ;
-        if ($this->event->is_open == 1){
-            $this->event->is_open = 0;
-            $this->event->save();
-        };
-        $this->reset(["showModalGetTimeRegisters"]);
-
+        $this->event = $ev;        
+        $this->event->confirm();
     }
 
     public function remove(Event $ev)
@@ -98,20 +56,38 @@ class GetTimeRegisters extends Component
         # Before deletion there is an event for Sweet alert2 to confirm.
         $this->event = $ev;
         $this->event->delete();
-        $this->reset(["showModalGetTimeRegisters"]);
     }
 
-    public function getAll()
+    public function getEvents()
     {
-        return Event::where('description', 'like', '%' . $this->search . '%')
-            ->where('user_id', '=', Auth::user()->id)
-            ->orderBy($this->sort, $this->direction)
-            ->get();
+        if ($this->readyonload) {
+            $this->events = Event::where('description', 'like', '%' . $this->search . '%')
+                ->where('user_id', '=', Auth::user()->id)
+                ->orderBy($this->sort, $this->direction)
+                ->paginate($this->qtytoshow);
+        } else {
+            $this->events = [];
+        }
     }
 
     public function render()
     {
-        $this->events = $this->getAll();
-        return view('livewire.get-time-registers');
+        $this->getEvents();
+        return view('livewire.get-time-registers')->with('events', $this->events);
     }
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingQtytoshow()
+    {
+        $this->resetPage();
+    }
+
+    public function loadEvents(){
+        $this->readyonload = true;
+    }
+    
 }

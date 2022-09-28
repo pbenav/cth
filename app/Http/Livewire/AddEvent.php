@@ -1,8 +1,5 @@
 <?php
-
 namespace App\Http\Livewire;
-
-
 use App\Models\Event;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
@@ -10,14 +7,16 @@ use Illuminate\Support\Facades\Auth;
 class AddEvent extends Component
 {
     public $showAddEventModal = false;
+    public $goDashboardModal = false;
 
     public $now;
     public $start_date;
     public $start_time;
     public $user_id;
     public $description;
+    public $origin;
 
-    protected $listeners = ['render', 'add'];
+    protected $listeners = ['add'];
 
     protected $rules = [
         'start_date' => 'required',
@@ -25,7 +24,8 @@ class AddEvent extends Component
         'description' => 'required'
     ];
 
-    public function updated($propertyName){
+    public function updated($propertyName)
+    {
         $this->validateOnly($propertyName);
     }
 
@@ -33,10 +33,12 @@ class AddEvent extends Component
     {
         $this->start_date = date('Y-m-d');
         $this->start_time = date('H:i:s');
-        $this->description = '';
-    }   
+        $this->description = 'Workday';
+    }
 
-    public function add(){
+    public function add($origin)
+    {
+        $this->origin = $origin;
         $this->showAddEventModal = true;
     }
 
@@ -55,15 +57,17 @@ class AddEvent extends Component
 
         $this->reset([
             'showAddEventModal',
-
         ]);
 
-        $this->emitTo('get-time-registers','render');
-        $this->emit('alert', 'Event added!');
+        if ($this->origin == 'numpad') {
+            return redirect()->route('dashboard')->with('info', 'E_SUCCESS');
+        } else {
+            $this->emitTo('get-time-registers', 'render');
+        }
     }
 
     public function render()
     {
         return view('livewire.add-event');
-    }   
+    }
 }
