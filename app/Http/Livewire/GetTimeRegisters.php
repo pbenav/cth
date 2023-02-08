@@ -63,8 +63,7 @@ class GetTimeRegisters extends Component
         $this->isTeamAdmin = $this->user->isTeamAdmin();
         $this->isInspector = $this->user->isInspector();
         $this->confirmed = false;
-        $this->filtered = false;
-       
+        $this->filtered = false;       
     }
 
     public function order($sort)

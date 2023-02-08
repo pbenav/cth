@@ -25,7 +25,6 @@
         <x-setfilters :isteamadmin="$isTeamAdmin" :isinspector="$isInspector"></x-setfilters>
 
         <div class="flex flex-row flex-wrap gap-2">
-
             <div>
                 <x-jet-danger-button class="h-8" wire:click="setFilter">
                     {{ __('Set filter') }}
@@ -33,26 +32,32 @@
             </div>
 
             <div>
-                <x-jet-button class="h-8 whitespace-nowrap {{ $filtered ? 'bg-green-500' : 'disabled' }}" wire:click="unsetFilter" >
+                <x-jet-button class="h-8 whitespace-nowrap {{ $filtered ? 'bg-green-500' : 'disabled' }}"
+                    wire:click="unsetFilter">
                     {{ __('Unset filter') }}
                 </x-jet-button>
             </div>
-            
-            <div class="w-2/3">
-                <x-jet-input class="w-full h-8" placeholder="{{ __('Search') }}" type="text" wire:model="search" />
-            </div>
-            
-            <div>
-                <div class="pt-1">
-                    <x-jet-label class="pt-1 whitespace-nowrap float-right" value="{{ __('Not confirmed') }}" />
-                    <x-jet-checkbox class="h-6 w-6 mr-2 text-gray-600 checked:text-green-600" wire:model="confirmed"
-                    wire:click="$set('filtered', false)" />
+
+            <div class="flex flex-nowrap">
+                <div class="w-auto">
+                    <x-jet-input class="w-full h-8" placeholder="{{ __('Search') }}" type="text"
+                        wire:model="search" />
+                </div>
+
+                <div class="w-auto flex flex-row-reverse flex-nowrap ml-4 pt-1">
+                    <div>
+                        <x-jet-label class="pt-1 whitespace-nowrap" value="{{ __('Not confirmed') }}" />                    
+                    </div>
+                    <div>
+                        <x-jet-checkbox class="h-6 w-6 mr-2 text-gray-600 checked:text-green-600" wire:model="confirmed"
+                            wire:click="$set('filtered', false)" />
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Select no. of register to show -->
-        <div class="flex flex-wrap mt-2 mb-2">
+        <div class="flex flex-wrap mt-2 mb-2 justify-around">
             <div class="h-8 mb-2 mr-2 flex flex-row flex-nowrap">
                 <div class="p-1">Mostrar</div>
                 <div>
@@ -69,7 +74,7 @@
             <!-- Show Add event button component -->
             @livewire('add-event')
             @if (!$isInspector || $isTeamAdmin)
-                <div class="w-full">
+                <div class="w-2/3 items-center">
                     <x-jet-danger-button class="w-full whitespace-nowrap h-8"
                         wire:click="$emitTo('add-event', 'add', '1')">
                         {{ __('Add event') }}

@@ -290,5 +290,7 @@
     "Download": "Descargar",
     "Incomplete Event": "Evento incompleto",
     "From date": "Fecha desde",
-    "To date": "Fecha hasta"
+    "To date": "Fecha hasta",
+    "From date must be from before than to date.": "La fecha desde debe ser anterior a hasta.",
+    "To date must be at the latest today": "La fecha hasta debe ser como máximo la de hoy."
 }

@@ -37,18 +37,18 @@
                     <div>
                         <x-jet-label value="{{ __('Month') }}" />
                         <select class="form-control pt-1 h-8 whitespace-nowrap" wire:model="selectedMonth">
-                            <option value="1">{{ __('January') }}</option>
-                            <option value="2">{{ __('February') }}</option>
-                            <option value="3">{{ __('March') }}</option>
-                            <option value="4">{{ __('April') }}</option>
-                            <option value="5">{{ __('May') }}</option>
-                            <option value="6">{{ __('June') }}</option>
-                            <option value="7">{{ __('July') }}</option>
-                            <option value="8">{{ __('August') }}</option>
-                            <option value="9">{{ __('September') }}</option>
-                            <option value="10">{{ __('October') }}</option>
-                            <option value="11">{{ __('November') }}</option>
-                            <option value="12">{{ __('December') }}</option>
+                            <option {{ ($selectedMonth == 1) ? "selected value=$selectedMonth" : ''  }} value="1">{{ __('January') }}</option>
+                            <option {{ ($selectedMonth == 2) ? "selected value=$selectedMonth" : ''  }} value="2">{{ __('February') }}</option>
+                            <option {{ ($selectedMonth == 3) ? "selected value=$selectedMonth" : ''  }} value="3">{{ __('March') }}</option>
+                            <option {{ ($selectedMonth == 4) ? "selected value=$selectedMonth" : ''  }} value="4">{{ __('April') }}</option>
+                            <option {{ ($selectedMonth == 5) ? "selected value=$selectedMonth" : ''  }} value="5">{{ __('May') }}</option>
+                            <option {{ ($selectedMonth == 6) ? "selected value=$selectedMonth" : ''  }} value="6">{{ __('June') }}</option>
+                            <option {{ ($selectedMonth == 7) ? "selected value=$selectedMonth" : ''  }} value="7">{{ __('July') }}</option>
+                            <option {{ ($selectedMonth == 8) ? "selected value=$selectedMonth" : ''  }} value="8">{{ __('August') }}</option>
+                            <option {{ ($selectedMonth == 9) ? "selected value=$selectedMonth" : ''  }} value="9">{{ __('September') }}</option>
+                            <option {{ ($selectedMonth == 10) ? "selected value=$selectedMonth" : ''  }} value="10">{{ __('October') }}</option>
+                            <option {{ ($selectedMonth == 11) ? "selected value=$selectedMonth" : ''  }} value="11">{{ __('November') }}</option>
+                            <option {{ ($selectedMonth == 12) ? "selected value=$selectedMonth" : ''  }} value="12">{{ __('December') }}</option>
                         </select>
                         <x-jet-input-error for='month' />
                     </div>
