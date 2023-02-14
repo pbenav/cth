@@ -203,7 +203,7 @@
                                         <div class="flex flex-row content-center float-right p-0 m-0 mx-min">
                                             <a class="btn {{ $ev['is_open'] ? 'btn-blue' : 'btn-gray' }}"
                                                 wire:click="$emitTo('edit-event', 'edit', {{ $ev }})">
-                                                <i class="fas fa-edit"></i>
+                                                <i class="fas fa-edit">{{ $ev->id }}</i>
                                             </a>
                                             <a class="btn {{ $ev['is_open'] ? 'btn-green' : 'btn-gray' }}"
                                                 wire:click="$emit('confirmConfirmation', {{ $ev }})">
