@@ -25,10 +25,10 @@ class EditEvent extends Component
         $this->event = new Event();
     }
     
-    public function edit($ev)
-    {       
+    public function edit(Event $ev)
+    {   
         error_log('Modificando evento ' . $ev);
-        $this->event = Event::find($ev);        
+        $this->event = Event::find($ev->id);   
         // Modification is permitted only if event is open or if user is team admin
         // In this case, there must write a change event into log
         if ($this->event->is_open == 1 || Auth::user()->isTeamAdmin()) {
@@ -37,7 +37,6 @@ class EditEvent extends Component
                 $this->event->end = date('Y-m-d H:i:s');
             }
             $this->showModalGetTimeRegisters = true;
-            $this->emit('render');
         } else {
             $this->emit('alertFail', __("Event is confirmed."));
             $this->reset(["showModalGetTimeRegisters"]);

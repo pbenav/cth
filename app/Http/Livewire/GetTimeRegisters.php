@@ -86,14 +86,11 @@ class GetTimeRegisters extends Component
     {
         #Before modification there is an event for Sweet alert2 to confirm.
         $this->event = Event::find($ev)->first();
-        if ($this->isTeamAdmin && $this->event->is_open == 0 ) {
-            $this->event->unconfirm();
-        } else if ($this->event->is_open == 1) {            
-            $this->event->confirm();
+        if ($this->isTeamAdmin) {                    
+            $this->event->toggleConfirm();
+        } else if ($this->event->is_open) {
+            $this->event->Confirm();
         }
-        
-        dd($this->event->is_open);
-        $this->emitSelf('render');
     }
 
     public function remove($ev)
@@ -105,7 +102,6 @@ class GetTimeRegisters extends Component
         } else if ($this->event->is_open) {
             $this->event->delete();
         }
-        $this->emitSelf('render');
     }
 
     public function unsetFilter()
@@ -148,7 +144,6 @@ class GetTimeRegisters extends Component
 
     public function render()
     {
-        error_log('Llamada a render');
         $this->getEvents();
         return view('livewire.get-time-registers', )
             ->with('events', $this->events)
