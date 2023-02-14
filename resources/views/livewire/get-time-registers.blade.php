@@ -188,7 +188,7 @@
                                         class="mr-2 inline-block font-bold md:hidden">{{ __('Start') }}</span>{{ Carbon\Carbon::parse($ev->start)->format('d/m/y H:i:s') }}
                                 </td>
                                 <td class="block p-1 text-left md:border md:border-grey-500 md:table-cell"><span
-                                        class="mr-2 inline-block font-bold md:hidden">{{ __('End') }}</span>{{ Carbon\Carbon::parse($ev->end)->format('d/m/y H:i:s') }}
+                                        class="mr-2 inline-block font-bold md:hidden">{{ __('End') }}</span>{{ is_null($ev->end) ? "" : Carbon\Carbon::parse($ev->end)->format('d/m/y H:i:s') }}
                                 </td>
                                 <td class="block p-1 text-left md:border md:border-grey-500 md:table-cell"><span
                                         class="mr-2 inline-block font-bold md:hidden">{{ __('Description') }}</span>{{ __($ev->description) }}
