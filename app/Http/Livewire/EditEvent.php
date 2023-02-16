@@ -61,4 +61,8 @@ class EditEvent extends Component
     {
         return view('livewire.edit-event');
     }
+
+    public function updated($propertyName){
+        $this->validateOnly($propertyName);
+    }
 }

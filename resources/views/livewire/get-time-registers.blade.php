@@ -4,6 +4,15 @@
         <h2 class="text-xl font-semibold leading-tight text-gray-800">
             {{ __('Events') }}
         </h2>
+        @if (!$isInspector && !$isTeamAdmin)
+            <div class="bg-green-200 w-full mx-auto border-2 p-2 mt-2">
+                <p class="text-red-500 text-lg">¡IMPORTANTE!</p>
+                <p class="flex-auto">
+                    <strong>Recuerda</strong> que debes confirmar los eventos, haciendo clic en el botón verde,
+                    una vez que estés seguro de que las fechas y las horas son correctas.
+                </p>
+            </div>
+        @endif
 
     </x-slot>
 
@@ -19,26 +28,29 @@
     @endif
 
     <!-- Event list. Main table -->
-    <div class="mx-auto" wire:init="loadEvents">
+    <div class="w-full max-w-6xl mx-auto" wire:init="loadEvents">
 
         <!-- Modal component to filter time registers" -->
         <x-setfilters :isteamadmin="$isTeamAdmin" :isinspector="$isInspector"></x-setfilters>
 
-        <div class="mt-2 mb-2">            
+        <div class="flex flex-row flex-wrap">
             <!-- Modal for add-event -->
             @livewire('add-event')
             <!-- Show Add event button component -->
             @if (!$isInspector || $isTeamAdmin)
-                <div class="w-48 mx-auto sm:mx-0">
-                    <x-jet-button class="w-full h-16 whitespace-nowrap bg-green-500 hover:bg-green-600 disabled:bg-gray-500 justify-center"
+                <div class="w-48 mx-auto sm:mx-0 pl-0">
+                    <x-jet-button
+                        class="w-full h-16 whitespace-nowrap bg-green-500 hover:bg-green-600 disabled:bg-gray-500 justify-center"
                         wire:click="$emitTo('add-event', 'add', '1')">
                         {{ __('Add event') }}
                     </x-jet-button>
                 </div>
             @endif
+
         </div>
 
-        <div class="flex flex-wrap gap-2">
+
+        <div class="flex flex-wrap gap-2 mt-2">
             <div class="w-48 mx-auto sm:mx-0">
                 <x-jet-button class="w-48 h-8 justify-center" wire:click="setFilter">
                     {{ __('Set filter') }}
@@ -46,7 +58,8 @@
             </div>
 
             <div class="w-48 mx-auto sm:mx-0">
-                <x-jet-button class="w-48 h-8 justify-center whitespace-nowrap {{ $filtered ? 'bg-green-500' : 'disabled' }}"
+                <x-jet-button
+                    class="w-48 h-8 justify-center whitespace-nowrap {{ $filtered ? 'bg-green-500' : 'disabled' }}"
                     wire:click="unsetFilter">
                     {{ __('Unset filter') }}
                 </x-jet-button>
@@ -60,7 +73,7 @@
 
                 <div class="w-auto flex flex-row-reverse flex-nowrap ml-4 pt-1">
                     <div>
-                        <x-jet-label class="pt-1 whitespace-nowrap" value="{{ __('Not confirmed') }}" />                    
+                        <x-jet-label class="pt-1 whitespace-nowrap" value="{{ __('Not confirmed') }}" />
                     </div>
                     <div>
                         <x-jet-checkbox class="h-6 w-6 mr-2 text-gray-600 checked:text-green-600" wire:model="confirmed"
@@ -81,8 +94,8 @@
                 </div>
                 <div class="p-1">{{ __('records') }}</div>
             </div>
-        </div>        
-        
+        </div>
+
         <!-- Livewire component to show time regisres -->
         <div>
             <!-- Instead of using method count() because of deferred loading of events-->
@@ -188,7 +201,7 @@
                                         class="mr-2 inline-block font-bold md:hidden">{{ __('Start') }}</span>{{ Carbon\Carbon::parse($ev->start)->format('d/m/y H:i:s') }}
                                 </td>
                                 <td class="block p-1 text-left md:border md:border-grey-500 md:table-cell"><span
-                                        class="mr-2 inline-block font-bold md:hidden">{{ __('End') }}</span>{{ is_null($ev->end) ? "" : Carbon\Carbon::parse($ev->end)->format('d/m/y H:i:s') }}
+                                        class="mr-2 inline-block font-bold md:hidden">{{ __('End') }}</span>{{ is_null($ev->end) ? '' : Carbon\Carbon::parse($ev->end)->format('d/m/y H:i:s') }}
                                 </td>
                                 <td class="block p-1 text-left md:border md:border-grey-500 md:table-cell"><span
                                         class="mr-2 inline-block font-bold md:hidden">{{ __('Description') }}</span>{{ __($ev->description) }}
@@ -250,6 +263,7 @@
                         title: "{{ __('OK, perfect!') }}",
                         text: message,
                         timer: 1500,
+                        timerProgressBar: true,
                         footer: ''
                     })
                 })
@@ -262,6 +276,7 @@
                         title: "{{ __('Ups!. Something happened. Chek your data!') }}",
                         text: message,
                         timer: 1500,
+                        timerProgressBar: true,
                         footer: ''
                     })
                 })

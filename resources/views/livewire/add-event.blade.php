@@ -6,9 +6,11 @@
         </x-slot>
 
         <x-slot name="content">
-            <div class="mb-4">
-                <p>A partir del 1 de marzo de 2023 el registro de inicio y fin de los eventos, sólo podrá efectuarse 15 minutos antes o después de la hora real. <br>
-                <strong>¡Téngalo en cuenta!</strong></p>
+            <div class="mb-4 bg-green-200">
+                <p class="p-2">La <strong>función del registro</strong> horario es la de poder demostrar la hora de entrada y salida del puesto de trabajo.
+                   No tiene mucho sentido fichar un día antes o un día después.
+                   <br />Por favor, acostúmbrate a hacerlo a la hora correcta. <br>
+                <strong>¡Muchas gracias!</strong></p>
             </div>
 
             <div class="mb-4">

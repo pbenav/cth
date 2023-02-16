@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Team;
 use App\Models\User;
 use App\Models\Event;
 use Livewire\Component;
@@ -22,8 +23,8 @@ class GetTimeRegisters extends Component
     public $direction = 'desc';
     public $qtytoshow = '10';
     public $readyonload = false;
-    public $user;
-    public $team;
+    public User $user;
+    public Team $team;
     public $teamUsers;
     public $isTeamAdmin;
     public $isInspector;
