@@ -1,8 +1,7 @@
 <?php
 
 return [
-    'message' => 'Para el buen funcionamiento de esta web es imprescindible el uso de cookies. 
-                  Solo se usan las cookies inprescindibles para permitir que el funcionamiento sea el adecuado.
-                  La aceptación de este mensaje supone tu consentimiento.',
+    'message' => 'En esta web usamos cookies esenciales para el funcionamiento que no requieren tu consentimiento.
+    Aún así queremos informarte de que estas cookies no recopilan ningún tipo de información personal.',
     'agree' => 'Aceptar',
 ];
