@@ -61,6 +61,8 @@
 
     <!-- Tag to include scripts pushed from components with push -->
     @stack('scripts')
+
+    <x-swal />
 </body>
 
 </html>
