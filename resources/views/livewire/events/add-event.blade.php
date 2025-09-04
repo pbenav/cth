@@ -23,13 +23,13 @@
             </div>
 
             <div class="mb-4">
-                <x-jet-label value="{{ __('Description') }}" class="required" />
-                <select class="sl-select" required wire:model="description" name="description">
-                    <option value="{{ __('Workday') }}" selected="selected">{{ __('Workday') }}</option>
-                    <option value="{{ __('Pause') }}">{{ __('Pause') }}</option>
-                    <option value="{{ __('Others') }}">{{ __('Others') }}</option>
+                <x-jet-label value="{{ __('Event Type') }}" class="required" />
+                <select class="sl-select" required wire:model="event_type_id" name="event_type_id">
+                    @foreach($eventTypes as $eventType)
+                        <option value="{{ $eventType->id }}">{{ $eventType->name }}</option>
+                    @endforeach
                 </select>
-                <x-jet-input-error for='description' />
+                <x-jet-input-error for='event_type_id' />
             </div>
 
             <div class="mx-auto mb-4">

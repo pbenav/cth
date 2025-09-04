@@ -54,6 +54,8 @@ class AddEvent extends Component
      * @var string
      */
     public $description;
+    public $event_type_id;
+    public $eventTypes;
 
     /**
      * Additional observations about the event.
@@ -104,6 +106,8 @@ class AddEvent extends Component
         $this->start_time = date('H:i:s');
         $this->description = __('Workday');
         $this->observations = '';
+        $this->eventTypes = Auth::user()->currentTeam->eventTypes;
+        $this->event_type_id = $this->eventTypes->first()->id;
         $this->getWorkScheduleHint();
     }
 
@@ -143,6 +147,7 @@ class AddEvent extends Component
             'user_code' => Auth::user()->user_code,
             'description' => $this->description,
             'observations' => $this->observations,
+            'event_type_id' => $this->event_type_id,
             'is_open' => true
         ]);
 
