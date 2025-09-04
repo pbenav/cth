@@ -3,21 +3,16 @@
 namespace App\Http\Livewire;
 
 use App\Models\Event;
-use App\Traits\HasWorkScheduleHint;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 
 class AddEvent extends Component
 {
-    use HasWorkScheduleHint;
-
     /**
      * Control visibility of the Add Event modal.
      * @var bool
      */
     public $showAddEventModal = false;
-
-    public $workScheduleHint = '';
 
     /**
      * Control visibility of the dashboard modal.
@@ -104,7 +99,6 @@ class AddEvent extends Component
         $this->start_time = date('H:i:s');
         $this->description = __('Workday');
         $this->observations = '';
-        $this->getWorkScheduleHint();
     }
 
     /**
