@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\UserMetaController;
+use App\Http\Livewire\Calendar;
 use App\Http\Livewire\GetTimeRegisters;
 use App\Http\Livewire\ReportsComponent;
 use App\Http\Livewire\StatsComponent;
@@ -40,6 +41,7 @@ Route::middleware([
     Route::get('/events', GetTimeRegisters::class)->name('events');
     Route::get('/userstats', StatsComponent::class)->name('stats');
     Route::get('/reports', ReportsComponent::class)->name('reports');
+    Route::get('/calendar', Calendar::class)->name('calendar');
 
     Route::prefix('users/{user}')->group(function () {
         // Ruta para mostrar todos los metadatos del usuario

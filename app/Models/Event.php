@@ -18,12 +18,18 @@ class Event extends Model
 
     protected $fillable = [
         'user_id',
+        'event_type_id',
         'start',
         'end',
         'is_open',
         'description',
         'observations'
     ];
+
+    public function eventType()
+    {
+        return $this->belongsTo(EventType::class);
+    }
 
     public function user()
     {

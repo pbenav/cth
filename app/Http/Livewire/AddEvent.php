@@ -118,8 +118,11 @@ class AddEvent extends Component
      * @param string $origin
      * @return void
      */
-    public function add($origin)
+    public function add($origin, $date = null)
     {
+        if ($date) {
+            $this->start_date = substr($date, 0, 10);
+        }
         $this->origin = $origin;
         $this->showAddEventModal = true;
     }
