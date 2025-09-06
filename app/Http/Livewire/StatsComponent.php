@@ -13,11 +13,9 @@ class StatsComponent extends Component
     public $totalHours;
     public $selectedMonth;
     public $selectedYear;
-    public $eventTypeId;
-    public $eventTypes;
+    public $description;
     public $firstRun = true;
     public $showDataLabels = true;
-    public $hasData = true;
     public User $actualUser;
     public $browsedUser;
     public $isTeamAdmin;
@@ -42,8 +40,6 @@ class StatsComponent extends Component
         if ($this->isTeamAdmin || $this->isInspector) {
             $this->workers = $this->actualUser->currentTeam->allUsers();
         }
-        $this->eventTypes = $this->actualUser->currentTeam->eventTypes ?? collect();
-        $this->eventTypeId = null;
     }
 
     protected $rules = [
@@ -70,117 +66,44 @@ class StatsComponent extends Component
      */
     public function getData()
     {
+        // Get microtime for benchmarking
         $start = microtime(true);
-        $this->hasData = true; // Assume there is data until proven otherwise
 
-        // 1. Fetch raw events for the month, filtered by user
-        $query = Event::query()
-            ->with('eventType') // Eager load for color and name
-            ->where('user_id', $this->browsedUser)
-            ->where(function ($q) {
-                $q->whereMonth('start', $this->selectedMonth)
-                  ->orWhereMonth('end', $this->selectedMonth);
-            })
-            ->whereYear('start', $this->selectedYear);
+        // Fetch events data for the selected user, month, year, and description
+        $events = Event::EventsPerUserMonth($this->browsedUser, $this->selectedMonth, $this->selectedYear, $this->description);
+        $this->totalHours = round($events->sum('hours'), 2);
 
-        // Conditionally filter by event type
-        $query->when($this->eventTypeId, function ($q) {
-            return $q->where('event_type_id', $this->eventTypeId);
-        });
+        // Initialize the chart model
+        $cCModel = LivewireCharts::columnChartModel() // Default initial value for the chart
+            ->setTitle(__("Registered hours"))
+            ->setAnimated($this->firstRun)
+            ->setLegendVisibility(false)
+            ->setColumnWidth(90)
+            ->withGrid()
+            ->withDataLabels();
 
-        $events = $query->get();
+        // Group events by day and add columns to the chart model
+        $cols = collect($events->groupBy('day')
+            ->reduce(
+                function ($cols, $data) {
+                    $day = $data->first()->day . '/' . $data->first()->month;
+                    $hours = number_format($data->sum('hours'), 2);
+                    array_push($cols, array('day' => $day, 'hour' => $hours, 'color' => '#006600'));
+                    return $cols;
+                },
+                [''] // To avoid null in the first element of the reduce collection
+            ));
+        $cols->shift(1); // Remove the first element of the collection
 
-        // 2. Process events in PHP to handle splitting across days
-        $dailyTypeHours = [];
-        $totalHours = 0;
-
-        foreach ($events as $event) {
-            if (!$event->end || !$event->eventType) {
-                continue;
-            }
-
-            $start_date = new \DateTime($event->start);
-            $end_date = new \DateTime($event->end);
-            $current_date = clone $start_date;
-
-            while ($current_date->format('Y-m-d') <= $end_date->format('Y-m-d')) {
-                if ($current_date->format('m') != $this->selectedMonth) {
-                    $current_date->modify('+1 day');
-                    continue;
-                }
-
-                $day_start = (clone $current_date)->setTime(0, 0, 0);
-                $day_end = (clone $current_date)->setTime(23, 59, 59);
-
-                $effective_start = max($start_date, $day_start);
-                $effective_end = min($end_date, $day_end);
-
-                if ($effective_start < $effective_end) {
-                    $diff_in_seconds = $effective_end->getTimestamp() - $effective_start->getTimestamp();
-                    $hours_for_day = $diff_in_seconds / 3600;
-                    $totalHours += $hours_for_day;
-
-                    $dayKey = $current_date->format('d/m');
-                    $typeKey = $event->eventType->name;
-                    $color = $event->eventType->color;
-
-                    if (!isset($dailyTypeHours[$dayKey])) {
-                        $dailyTypeHours[$dayKey] = [];
-                    }
-                    if (!isset($dailyTypeHours[$dayKey][$typeKey])) {
-                        $dailyTypeHours[$dayKey][$typeKey] = ['hours' => 0, 'color' => $color];
-                    }
-                    $dailyTypeHours[$dayKey][$typeKey]['hours'] += $hours_for_day;
-                }
-                $current_date->modify('+1 day');
-            }
+        // Add columns to the chart model
+        foreach ($cols as $c) {
+            $cCModel->addColumn($c['day'], $c['hour'], $c['color']);
         }
 
-        $this->totalHours = round($totalHours, 2);
-
-        // 3. Handle "No Data" case
-        if (empty($dailyTypeHours)) {
-            $this->hasData = false;
-            // Return a dummy chart model to avoid errors in the view
-            $columnChart = LivewireCharts::columnChartModel();
-            $elapsedTime = number_format((microtime(true) - $start) * 1000, 2);
-            return [$columnChart, $elapsedTime];
-        }
-
-        ksort($dailyTypeHours); // Sort by day
-
-        // 4. Build the appropriate chart based on filters
-        if ($this->eventTypeId) {
-            // SINGLE-SERIES CHART for a filtered event type
-            $columnChart = LivewireCharts::columnChartModel()
-                ->setTitle(__("Registered hours"))
-                ->setAnimated($this->firstRun)
-                ->withDataLabels();
-
-            foreach ($dailyTypeHours as $day => $types) {
-                $typeData = array_values($types)[0];
-                $hours = $typeData['hours'];
-                $color = $typeData['color'];
-                $columnChart->addColumn($day, round($hours, 2), $color);
-            }
-        } else {
-            // MULTI-SERIES CHART for all event types
-            $columnChart = LivewireCharts::multiColumnChartModel()
-                ->setTitle(__("Registered hours"))
-                ->setAnimated($this->firstRun)
-                ->withDataLabels();
-
-            foreach ($dailyTypeHours as $day => $types) {
-                foreach ($types as $typeName => $data) {
-                    $columnChart->addSeriesColumn($typeName, $day, round($data['hours'], 2), $data['color']);
-                }
-            }
-        }
-
-        $this->firstRun = false;
+        // Calculate elapsed time for benchmarking
         $elapsedTime = number_format((microtime(true) - $start) * 1000, 2);
 
-        return [$columnChart, $elapsedTime];
+        return [$cCModel, $elapsedTime];
     }
 
     /**

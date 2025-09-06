@@ -1,4 +1,3 @@
-@props(['isteamadmin', 'isinspector', 'eventTypes'])
 <div>
     <x-jet-dialog-modal wire:model="showFiltersModal">
 
@@ -39,16 +38,14 @@
             </div>
 
             <div class="mb-4">
-                <x-jet-label value="{{ __('Event Type') }}" />
-                <select class="sl-select" wire:model.defer='filter.event_type_id'>
-                    <option value="">{{ __('All') }}</option>
-                    @if(isset($eventTypes))
-                        @foreach($eventTypes as $eventType)
-                            <option value="{{ $eventType->id }}">{{ $eventType->name }}</option>
-                        @endforeach
-                    @endif
+                <x-jet-label value="{{ __('Description') }}" />
+                <select class="sl-select" wire:model.defer='filter.description'>
+                    <option value="{{ __('All') }}">{{ __('All') }}</option>
+                    <option value="{{ __('Workday') }}">{{ __('Workday') }}</option>
+                    <option value="{{ __('Pause') }}">{{ __('Pause') }} </option>
+                    <option value="{{ __('Others') }}">{{ __('Others') }}</option>
                 </select>
-                <x-jet-input-error for='filter.event_type_id' />
+                <x-jet-input-error for='filter.description' />
             </div>
             
         </x-slot>

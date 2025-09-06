@@ -19,7 +19,6 @@ class InviteTeamMemberTest extends TestCase
         Mail::fake();
 
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
-        $user->switchTeam($user->personalTeam());
 
         $component = Livewire::test(TeamMemberManager::class, ['team' => $user->currentTeam])
                         ->set('addTeamMemberForm', [
@@ -37,7 +36,6 @@ class InviteTeamMemberTest extends TestCase
         Mail::fake();
 
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
-        $user->switchTeam($user->personalTeam());
 
         // Add the team member...
         $component = Livewire::test(TeamMemberManager::class, ['team' => $user->currentTeam])

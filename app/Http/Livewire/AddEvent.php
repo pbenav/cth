@@ -36,7 +36,6 @@ class AddEvent extends Component
      * @var string
      */
     public $start_date;
-    public $end_date;
 
     /**
      * Time for the event start.
@@ -57,7 +56,6 @@ class AddEvent extends Component
     public $description;
     public $event_type_id;
     public $eventTypes;
-    public $selectedEventType;
 
     /**
      * Additional observations about the event.
@@ -98,11 +96,6 @@ class AddEvent extends Component
         $this->validateOnly($propertyName);
     }
 
-    public function updatedEventTypeId($value)
-    {
-        $this->selectedEventType = EventType::find($value);
-    }
-
     /**
      * Initialize component properties.
      * @return void
@@ -110,18 +103,14 @@ class AddEvent extends Component
     public function mount()
     {
         $this->start_date = date('Y-m-d');
-        $this->end_date = date('Y-m-d');
         $this->start_time = date('H:i:s');
         $this->description = __('Workday');
         $this->observations = '';
-        $this->eventTypes = collect();
-        $this->event_type_id = null;
-        $this->selectedEventType = null;
-
-        // Hint is loaded for the initially authenticated user (if any)
         if (Auth::check()) {
-            $this->setWorkScheduleHint();
+            $this->eventTypes = Auth::user()->currentTeam->eventTypes;
+            $this->event_type_id = $this->eventTypes->first()->id;
         }
+        $this->getWorkScheduleHint();
     }
 
     /**
@@ -131,23 +120,6 @@ class AddEvent extends Component
      */
     public function add($origin)
     {
-        // Reset and fetch fresh data each time the modal is opened
-        $this->reset(['description', 'observations', 'event_type_id', 'selectedEventType']);
-        $this->start_date = date('Y-m-d');
-        $this->end_date = date('Y-m-d');
-        $this->start_time = date('H:i:s');
-        $this->description = __('Workday');
-
-        if (Auth::check() && Auth::user()->currentTeam) {
-            $this->eventTypes = Auth::user()->currentTeam->eventTypes;
-            if ($this->eventTypes->count() > 0) {
-                $this->event_type_id = $this->eventTypes->first()->id;
-            }
-        } else {
-            $this->eventTypes = collect();
-        }
-
-        $this->setWorkScheduleHint();
         $this->origin = $origin;
         $this->showAddEventModal = true;
     }
@@ -170,26 +142,15 @@ class AddEvent extends Component
     {
         $this->validate();
 
-        $start = $this->start_date;
-        $end = null;
-
-        if ($this->selectedEventType && $this->selectedEventType->is_all_day) {
-            $start .= ' 00:00:00';
-            $end = $this->end_date . ' 23:59:59';
-        } else {
-            $start .= ' ' . $this->start_time;
-            // For non-all-day events, 'end' remains null on creation.
-        }
-
         Event::create([
-            'start' => $start,
-            'end' => $end,
+            'start' => $this->start_date . ' ' . $this->start_time,
+            'end' => null,
             'user_id' => Auth::user()->id,
-            'description' => $this->selectedEventType ? $this->selectedEventType->name : $this->description,
+            'user_code' => Auth::user()->user_code,
+            'description' => $this->description,
             'observations' => $this->observations,
             'event_type_id' => $this->event_type_id,
-            'is_open' => true,
-            'is_authorized' => $this->selectedEventType && $this->selectedEventType->is_all_day ? false : false, // Default to not authorized for all-day events
+            'is_open' => true
         ]);
 
         $this->reset([

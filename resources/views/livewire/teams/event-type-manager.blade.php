@@ -10,11 +10,9 @@
 
         <x-slot name="content">
             <div class="flex items-center justify-end">
-                @if ($isTeamAdmin)
-                    <x-jet-button wire:click="manageEventType">
-                        {{ __('Añadir tipo de evento') }}
-                    </x-jet-button>
-                @endif
+                <x-jet-button wire:click="manageEventType">
+                    {{ __('Añadir tipo de evento') }}
+                </x-jet-button>
             </div>
 
             <div class="mt-6">
@@ -42,10 +40,8 @@
                                     <div class="w-6 h-6 rounded-full" style="background-color: {{ $eventType->color }}"></div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    @if ($isTeamAdmin)
-                                        <button wire:click="manageEventType({{ $eventType->id }})" class="text-indigo-600 hover:text-indigo-900">{{ __('Editar') }}</button>
-                                        <button wire:click="confirmEventTypeDeletion({{ $eventType->id }})" class="ml-2 text-red-600 hover:text-red-900">{{ __('Eliminar') }}</button>
-                                    @endif
+                                    <button wire:click="manageEventType({{ $eventType->id }})" class="text-indigo-600 hover:text-indigo-900">{{ __('Editar') }}</button>
+                                    <button wire:click="confirmEventTypeDeletion({{ $eventType->id }})" class="ml-2 text-red-600 hover:text-red-900">{{ __('Eliminar') }}</button>
                                 </td>
                             </tr>
                         @endforeach
@@ -98,10 +94,6 @@
                     <x-jet-label for="observations" value="{{ __('Observaciones') }}" />
                     <textarea id="observations" class="mt-1 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" wire:model.defer="eventType.observations"></textarea>
                     <x-jet-input-error for="eventType.observations" class="mt-2" />
-                </div>
-                <div class="flex items-center">
-                    <x-jet-checkbox id="is_all_day" wire:model.defer="eventType.is_all_day" />
-                    <x-jet-label for="is_all_day" class="ml-2" value="{{ __('Evento de día completo') }}" />
                 </div>
             </div>
         </x-slot>

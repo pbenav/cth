@@ -9,7 +9,6 @@ use Livewire\Component;
 class EventTypeManager extends Component
 {
     public $team;
-    public $isTeamAdmin;
     public $eventTypes;
     public $confirmingEventTypeDeletion = false;
     public $eventTypeToDelete;
@@ -26,7 +25,6 @@ class EventTypeManager extends Component
     {
         $this->team = $team;
         $this->eventTypes = $team->eventTypes;
-        $this->isTeamAdmin = auth()->user()->isTeamAdmin();
     }
 
     public function render()
