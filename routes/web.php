@@ -4,6 +4,7 @@ use App\Http\Controllers\UserMetaController;
 use App\Http\Livewire\GetTimeRegisters;
 use App\Http\Livewire\ReportsComponent;
 use App\Http\Livewire\StatsComponent;
+use App\Http\Livewire\UpdateOldEvents;
 use Illuminate\Support\Facades\Route;
 
 
@@ -40,6 +41,7 @@ Route::middleware([
     Route::get('/events', GetTimeRegisters::class)->name('events');
     Route::get('/userstats', StatsComponent::class)->name('stats');
     Route::get('/reports', ReportsComponent::class)->name('reports');
+    Route::get('/team/update-old-events', UpdateOldEvents::class)->name('team.update-old-events');
 
     Route::prefix('users/{user}')->group(function () {
         // Ruta para mostrar todos los metadatos del usuario
