@@ -88,14 +88,14 @@
             </div>
 
             <div class="">
-                <x-jet-label value="{{ __('Description') }}" />
-                <select class="pt-1 h-8 whitespace-nowrap form-control" wire:model="description">
-                    <option value="%">{{ __('All') }}</option>
-                    <option value="{{ __('Workday') }}">{{ __('Workday') }}</option>
-                    <option value="{{ __('Pause') }}">{{ __('Pause') }}</option>
-                    <option value="{{ __('Others') }}">{{ __('Others') }}</option>
+                <x-jet-label value="{{ __('Event Type') }}" />
+                <select class="pt-1 h-8 whitespace-nowrap form-control" wire:model="eventTypeId">
+                    <option value="">{{ __('All') }}</option>
+                    @foreach ($eventTypes as $eventType)
+                        <option value="{{ $eventType->id }}">{{ $eventType->name }}</option>
+                    @endforeach
                 </select>
-                <x-jet-input-error for='description' />
+                <x-jet-input-error for='eventTypeId' />
             </div>
 
             <div class="whitespace-nowrap">
@@ -109,7 +109,13 @@
 
         <div class="">
             <div class="p-4 w-auto h-96 bg-white rounded border shadow">
-                <livewire:livewire-column-chart key="{{ $columnChartModel->reactiveKey() }}" :column-chart-model='$columnChartModel' />
+                @if($hasData)
+                    <livewire:livewire-column-chart key="{{ $columnChartModel->reactiveKey() }}" :column-chart-model='$columnChartModel' />
+                @else
+                    <div class="flex justify-center items-center h-full">
+                        <p class="text-lg text-gray-500">{{ __('No events found for the selected filter.') }}</p>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

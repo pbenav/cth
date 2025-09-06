@@ -41,18 +41,17 @@ class Numpad extends Component
 
         Auth::loginUsingId($user->id);
 
+        if (is_null($user->current_team_id)) {
+            $user->switchTeam($user->personalTeam());
+        }
+
         $events = $this->getOpenEventsForUser($user->id);
 
-        if ($user) {
-
-            // If there are no open events, or the user has specific roles, redirect or emit an event
-            if ($events->count() || $user->isTeamAdmin() || $user->isInspector()) {
-                return redirect()->route('events');
-            } else {
-                $this->emitTo('add-event', 'add', 'numpad');
-            }
+        // If there are no open events, or the user has specific roles, redirect or emit an event
+        if ($events->count() || $user->isTeamAdmin() || $user->isInspector()) {
+            return redirect()->route('events');
         } else {
-            return redirect()->route('front')->with('info', 'E_ERRORCODE');
+            $this->emitTo('add-event', 'add', 'numpad');
         }
 
         $this->reset('user_code');

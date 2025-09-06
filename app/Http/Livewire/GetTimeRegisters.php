@@ -26,6 +26,7 @@ class GetTimeRegisters extends Component
     public User $user;
     public Team $team;
     public $teamUsers;
+    public $eventTypes;
     public $isTeamAdmin;
     public $isInspector;
     public $confirmed;
@@ -45,7 +46,7 @@ class GetTimeRegisters extends Component
         'filter.name' => 'nullable|string',
         'filter.family_name1' => 'nullable|string',
         'filter.is_open' => 'boolean',
-        'filter.description' => 'nullable|string',
+        'filter.event_type_id' => 'nullable|integer',
     ];
 
     /**
@@ -59,18 +60,19 @@ class GetTimeRegisters extends Component
             "name" => "",
             "family_name1" => "",
             "is_open" => false,
-            "description" => __('All'),
+            "event_type_id" => null,
         ]);
-        $this->user = User::find(Auth::user()->id);
-        $this->events = User::find($this->user->id)->events()->Paginate($this->qtytoshow);
+        $this->user = Auth::user();
+        $this->events = $this->user->events()->Paginate($this->qtytoshow);
         $this->team = $this->user->currentTeam;
+        $this->eventTypes = $this->team ? $this->team->eventTypes : collect();
         $this->isTeamAdmin = $this->user->isTeamAdmin();
         $this->isInspector = $this->user->isInspector();
         $this->confirmed = false;
         $this->filtered = false;
 
         $this->teamUsers = array();
-        if ($this->isTeamAdmin || $this->isInspector) {
+        if ($this->team && ($this->isTeamAdmin || $this->isInspector)) {
             foreach ($this->team->allUsers() as $us) {
                 array_push($this->teamUsers, $us->id);
             }
@@ -86,7 +88,7 @@ class GetTimeRegisters extends Component
      */
     public function order($sort)
     {
-        if ($this->sort = $sort) {
+        if ($this->sort == $sort) {
             if ($this->direction == 'asc') {
                 $this->direction = 'desc';
             } else {
@@ -181,57 +183,45 @@ class GetTimeRegisters extends Component
      */
     public function getEvents()
     {
-        if ($this->readyonload) {
-            if ($this->filtered) {
-                $this->events = Event::select(
-                    'events.id',
-                    'events.user_id',
-                    'users.name',
-                    'users.family_name1',
-                    'events.start',
-                    'events.end',
-                    'events.description',
-                    'events.is_open'
-                )
-                    ->join('users', 'user_id', '=', 'users.id')
-                    ->whereIn('events.user_id', $this->teamUsers)
-                    ->when(!is_null($this->filter->start), fn($query) => $query->whereDate('events.start', '>=', $this->filter->start))
-                    ->when(!is_null($this->filter->end), fn($query) => $query->whereDate('events.end', '<=', $this->filter->end))
-                    ->when(!empty($this->filter->name), fn($query) => $query->where('users.name', $this->filter->name))
-                    ->when(!empty($this->filter->family_name1), fn($query) => $query->where('users.family_name1', $this->filter->family_name1))
-                    ->when($this->filter->is_open == 1, fn($query) => $query->where('events.is_open', '1'))
-                    ->when($this->filter->description != __('All'), fn($query) => $query->where('events.description', $this->filter->description))
-                    ->orderBy($this->sort, $this->direction)
-                    ->paginate($this->qtytoshow);
-            } else {
-                $this->events = Event::select(
-                    'events.id',
-                    'events.user_id',
-                    'users.name',
-                    'users.family_name1',
-                    'events.start',
-                    'events.end',
-                    'events.description',
-                    'events.is_open'
-                )
-                    ->join('users', 'user_id', '=', 'users.id')
-                    ->whereIn('events.user_id', $this->teamUsers)
-                    ->where(function ($query) {
-                        $query->where('users.name', 'like', '%' . $this->search . '%')
-                            ->orWhere('events.user_id', $this->search)
-                            ->orWhere('users.family_name1', 'like', '%' . $this->search . '%')
-                            ->orWhere('users.family_name2', 'like', '%' . $this->search . '%')
-                            ->orWhere('events.description', 'like', '%' . $this->search . '%');
-                    })
-                    ->where(function ($query) {
-                        if ($this->confirmed) {
-                            $query->where('events.is_open', '=', '1');
-                        }
-                    })
-                    ->orderBy($this->sort, $this->direction)
-                    ->Paginate($this->qtytoshow);
-            }
+        if (!$this->readyonload) {
+            return;
         }
+
+        $query = Event::query()->with('eventType')
+            ->select(
+                'events.id', 'events.user_id', 'users.name', 'users.family_name1',
+                'events.start', 'events.end', 'events.description', 'events.is_open', 'events.event_type_id'
+            )
+            ->join('users', 'events.user_id', '=', 'users.id')
+            ->whereIn('events.user_id', $this->teamUsers);
+
+        // General search box
+        $query->when($this->search, function ($q, $search) {
+            $q->where(function ($subq) use ($search) {
+                $subq->where('users.name', 'like', '%' . $search . '%')
+                    ->orWhere('events.user_id', $search)
+                    ->orWhere('users.family_name1', 'like', '%' . $search . '%')
+                    ->orWhere('users.family_name2', 'like', '%' . $search . '%')
+                    ->orWhere('events.description', 'like', '%' . $search . '%');
+            });
+        });
+
+        // Advanced filters modal
+        $query->when($this->filtered, function ($q) {
+            $q->when($this->filter->start, fn($query) => $query->whereDate('events.start', '>=', $this->filter->start))
+              ->when($this->filter->end, fn($query) => $query->whereDate('events.end', '<=', $this->filter->end))
+              ->when($this->filter->name, fn($query) => $query->where('users.name', $this->filter->name))
+              ->when($this->filter->family_name1, fn($query) => $query->where('users.family_name1', $this->filter->family_name1))
+              ->when($this->filter->is_open, fn($query) => $query->where('events.is_open', '1'))
+              ->when($this->filter->event_type_id, fn($query) => $query->where('events.event_type_id', $this->filter->event_type_id));
+        });
+
+        // "Show only open" toggle
+        $query->when($this->confirmed, function ($q) {
+            $q->where('events.is_open', '=', '1');
+        });
+
+        $this->events = $query->orderBy($this->sort, $this->direction)->paginate($this->qtytoshow);
     }
 
     /**
@@ -278,5 +268,28 @@ class GetTimeRegisters extends Component
     public function loadEvents()
     {
         $this->readyonload = true;
+    }
+
+    public function isDark($hexColor)
+    {
+        if(empty($hexColor)) return false;
+        $hexColor = str_replace('#', '', $hexColor);
+        if(strlen($hexColor) != 6) return false;
+        $r = hexdec(substr($hexColor, 0, 2));
+        $g = hexdec(substr($hexColor, 2, 2));
+        $b = hexdec(substr($hexColor, 4, 2));
+        $luminance = (0.299 * $r + 0.587 * $g + 0.114 * $b) / 255;
+        return $luminance < 0.5;
+    }
+
+    public function toggleAuthorization($eventId)
+    {
+        if ($this->isTeamAdmin) {
+            $event = Event::find($eventId);
+            if ($event && $event->eventType && $event->eventType->is_all_day) {
+                $event->is_authorized = !$event->is_authorized;
+                $event->save();
+            }
+        }
     }
 }

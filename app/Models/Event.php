@@ -21,9 +21,16 @@ class Event extends Model
         'start',
         'end',
         'is_open',
+        'is_authorized',
         'description',
-        'observations'
+        'observations',
+        'event_type_id',
     ];
+
+    public function eventType()
+    {
+        return $this->belongsTo(EventType::class);
+    }
 
     public function user()
     {

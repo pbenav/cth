@@ -31,7 +31,7 @@
     <div class="mx-auto w-full max-w-6xl" wire:init="loadEvents">
 
         <!-- Filters Modal -->
-        <x-setfilters :isteamadmin="$isTeamAdmin" :isinspector="$isInspector"></x-setfilters>
+        <x-setfilters :isteamadmin="$isTeamAdmin" :isinspector="$isInspector" :eventTypes="$eventTypes"></x-setfilters>
 
         <div class="flex flex-row flex-wrap">
             <!-- Add Event Modal and Button -->
@@ -121,6 +121,7 @@
                             </th>
 
                             <th class="p-1 text-center text-white bg-gray-600 md:table-cell">{{ __('Duration') }}</th>
+                            <th class="p-1 text-center text-white bg-gray-600 md:table-cell">{{ __('Authorized') }}</th>
 
                             @if (!$isInspector || $isTeamAdmin)
                                 <th class="p-1 text-center text-white bg-gray-600 md:table-cell">{{ __('Actions') }}</th>
@@ -131,16 +132,34 @@
                     <tbody class="block md:table-row-group">
                         @foreach ($events as $ev)
                             <tr class="block border md:table-row">
-                                <td class="p-1 text-center md:table-cell">{{ $ev->id }}</td>
+                                <td class="p-1 text-center md:table-cell" style="background-color: {{ $ev->eventType->color ?? 'transparent' }}; color: {{ $ev->eventType && $this->isDark($ev->eventType->color) ? 'white' : 'black' }}">
+                                    {{ $ev->id }}
+                                </td>
 
                                 @if ($isTeamAdmin || $isInspector)
-                                    <td class="p-1 text-left md:table-cell">{{ $ev->user_id . ' - ' . $ev->name . ' ' . $ev->family_name1 }}</td>
+                                    <td class="p-1 text-left md:table-cell">{{ $ev->user->name . ' ' . $ev->user->family_name1 }}</td>
                                 @endif
 
                                 <td class="p-1 text-left md:table-cell">{{ Carbon\Carbon::parse($ev->start)->format('d/m/y H:i:s') }}</td>
                                 <td class="p-1 text-left md:table-cell">{{ $ev->end ? Carbon\Carbon::parse($ev->end)->format('d/m/y H:i:s') : '' }}</td>
-                                <td class="p-1 text-left md:table-cell">{{ __($ev->description) }}</td>
+                                <td class="p-1 text-left md:table-cell">
+                                    @if ($ev->eventType)
+                                        <span class="inline-block w-3 h-3 mr-2 rounded-full" style="background-color: {{ $ev->eventType->color }}"></span>
+                                        <span>{{ $ev->eventType->name }}</span>
+                                    @else
+                                        {{ __($ev->description) }}
+                                    @endif
+                                </td>
                                 <td class="p-1 text-center md:table-cell">{{ $ev->getPeriod() }}</td>
+                                <td class="p-1 text-center md:table-cell">
+                                    @if ($ev->eventType && $ev->eventType->is_all_day)
+                                        <x-jet-checkbox
+                                            wire:click="toggleAuthorization({{ $ev->id }})"
+                                            :checked="$ev->is_authorized"
+                                            :disabled="!$isTeamAdmin"
+                                        />
+                                    @endif
+                                </td>
 
                                 @if (!$isInspector || $isTeamAdmin)
                                     <td class="flex justify-center items-center p-1 md:table-cell">

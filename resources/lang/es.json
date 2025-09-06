@@ -301,5 +301,11 @@
     "Holidays": "Vacaciones",
     "Own Affairs": "Asuntos propios",
     "Code format is invalid.": "El formato del código es inválido",
-    "Invalid code.": "Código inválido."
+    "Invalid code.": "Código inválido.",
+    "Event Type": "Tipo de Evento",
+    "Hours by Event Type": "Horas por Tipo de Evento",
+    "No events found for the selected filter.": "No se han encontrado eventos para el filtro seleccionado.",
+    "Evento de día completo": "Evento de día completo",
+    "Authorized": "Autorizado",
+    "Select an option": "Selecciona una opción"
 }
