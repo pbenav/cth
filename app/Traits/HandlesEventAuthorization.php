@@ -144,8 +144,8 @@ trait HandlesEventAuthorization
                 }
 
                 if ($isTodayInSlot) {
-                    $startTime = Carbon::parse($timeToCheck->format('Y-m-d') . ' ' . $slot['start']);
-                    $endTime = Carbon::parse($timeToCheck->format('Y-m-d') . ' ' . $slot['end']);
+                    $startTime = Carbon::parse($timeToCheck->format('Y-m-d') . ' ' . $slot['start'], $timeToCheck->timezone);
+                    $endTime = Carbon::parse($timeToCheck->format('Y-m-d') . ' ' . $slot['end'], $timeToCheck->timezone);
 
                     if ($endTime->lessThan($startTime)) {
                         $endTime->addDay();

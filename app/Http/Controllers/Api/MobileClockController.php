@@ -562,6 +562,8 @@ class MobileClockController extends Controller
                 'current_team_id' => $user->current_team_id,
                 'current_team_name' => $user->currentTeam?->name,
                 'current_work_center_code' => $user->currentTeam?->workCenters()->first()?->code,
+                'force_clock_in_delay' => (bool)($user->currentTeam->force_clock_in_delay ?? false),
+                'clock_in_delay_minutes' => (int)($user->currentTeam->clock_in_delay_minutes ?? 0),
             ];
             
             Log::debug('[MobileClockController][status] Resource data:', [

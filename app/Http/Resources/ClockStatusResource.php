@@ -68,6 +68,8 @@ class ClockStatusResource extends JsonResource
             'current_team_id' => $this->resource['current_team_id'] ?? null,
             'current_team_name' => $this->resource['current_team_name'] ?? null,
             'current_work_center_code' => $this->resource['current_work_center_code'] ?? null,
+            'force_clock_in_delay' => $this->resource['force_clock_in_delay'] ?? false,
+            'clock_in_delay_minutes' => $this->resource['clock_in_delay_minutes'] ?? 0,
         ];
     }
 }
