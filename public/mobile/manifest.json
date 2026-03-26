@@ -1,6 +1,6 @@
 {
-    "name": "sientiaCTH_mobile",
-    "short_name": "sientiaCTH_mobile",
+    "name": "cth_mobile",
+    "short_name": "cth_mobile",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
