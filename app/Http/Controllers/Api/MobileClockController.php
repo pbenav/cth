@@ -893,7 +893,9 @@ class MobileClockController extends Controller
                     ],
                     'work_centers' => $workCenters,
                     'work_schedule' => $workSchedule,
-                    'holidays' => $holidays
+                    'holidays' => $holidays,
+                    'force_clock_in_delay' => (bool) ($user->currentTeam->force_clock_in_delay ?? false),
+                    'clock_in_delay_minutes' => (int) ($user->currentTeam->clock_in_delay_minutes ?? 0),
                 ]
             ]);
 
