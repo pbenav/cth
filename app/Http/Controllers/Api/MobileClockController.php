@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\WorkCenter;
+use App\Models\Team;
 use App\Services\SmartClockInService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -632,19 +633,15 @@ class MobileClockController extends Controller
             }
 
             // Verify user can access this work center's team
+            // APK requirement: must be a member or owner, even if global admin
             $canAccess = false;
-            
-            if ($user->is_admin) {
-                $canAccess = true;
-            } elseif ($workCenter->team && $user->id === $workCenter->team->user_id) {
-                $canAccess = true;
-            } elseif ($user->teams()->where('teams.id', $workCenter->team_id)->exists()) {
+            if ($workCenter->team && ($user->belongsToTeam($workCenter->team) || $user->id === $workCenter->team->user_id)) {
                 $canAccess = true;
             }
-
+            
             if (!$canAccess) {
                 return response()->json([
-                    'message' => __('You are not authorized to switch to this team')
+                    'message' => 'No tienes permisos para acceder a este equipo'
                 ], 403);
             }
 
@@ -810,7 +807,15 @@ class MobileClockController extends Controller
                 ], 404);
             }
 
-            $allTeams = $user->allTeams();
+            // Restrict teams to those the user is specifically assigned to or included in
+            // Bypass global admin check from allTeams() for APK
+            $allTeams = $user->ownedTeams->merge($user->teams)
+                ->where('personal_team', false)
+                ->filter(function ($team) {
+                    return $team->name !== Team::WELCOME_TEAM_NAME;
+                })
+                ->sortBy('name');
+
             $workCenters = collect();
 
             foreach ($allTeams as $team) {
