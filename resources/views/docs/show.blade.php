@@ -67,8 +67,8 @@
                                 </svg>
                                 {{ __('Android APK') }}
                             </a>
-                            <div class="mt-1 text-[9px] text-gray-400 font-mono break-all leading-tight">
-                                MD5: 15e264d1f572d6bb3ed7e59ce154a51c
+                             <div class="mt-1 text-[9px] text-gray-400 font-mono break-all leading-tight">
+                                MD5: a8459d9e8a7dcb5be6abcda3d04d2c23
                             </div>
                             <p class="text-[10px] text-gray-400 mt-1">
                                 Version: {{ config('app.version') }}
