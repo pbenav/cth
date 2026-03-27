@@ -633,9 +633,12 @@ class MobileClockController extends Controller
             }
 
             // Verify user can access this work center's team
-            // APK requirement: must be a member or owner, even if global admin
+            // APK requirement: must be a member or owner, OR a global administrator
             $canAccess = false;
-            if ($workCenter->team && ($user->belongsToTeam($workCenter->team) || $user->id === $workCenter->team->user_id)) {
+            
+            if ($user->is_admin) {
+                $canAccess = true;
+            } elseif ($workCenter->team && ($user->belongsToTeam($workCenter->team) || $user->id === $workCenter->team->user_id)) {
                 $canAccess = true;
             }
             
@@ -808,12 +811,13 @@ class MobileClockController extends Controller
             }
 
             // Restrict teams to those the user is specifically assigned to or included in
-            // Bypass global admin check from allTeams() for APK
+            // (Owned or Member). We allow personal teams because primary work teams 
+            // can be marked as personal in this database.
             $allTeams = $user->ownedTeams->merge($user->teams)
-                ->where('personal_team', false)
                 ->filter(function ($team) {
                     return $team->name !== Team::WELCOME_TEAM_NAME;
                 })
+                ->unique('id')
                 ->sortBy('name');
 
             $workCenters = collect();
