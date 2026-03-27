@@ -251,17 +251,11 @@ trait HandlesEventAuthorization
                             $endTime->addDay();
                         }
                         
-                        // Define entry window: start - delay to start + delay
-                        $entryWindowStart = $startTime->copy()->subMinutes($delayMinutes);
-                        $entryWindowEnd = $startTime->copy()->addMinutes($delayMinutes);
+                        // Define a continuous window: start - delay to end + delay
+                        $windowStart = $startTime->copy()->subMinutes($delayMinutes);
+                        $windowEnd = $endTime->copy()->addMinutes($delayMinutes);
                         
-                        // Define exit window: end - delay to end + delay
-                        $exitWindowStart = $endTime->copy()->subMinutes($delayMinutes);
-                        $exitWindowEnd = $endTime->copy()->addMinutes($delayMinutes);
-                        
-                        // Check if we're within EITHER the entry window OR the exit window
-                        if ($timeToCheck->between($entryWindowStart, $entryWindowEnd) ||
-                            $timeToCheck->between($exitWindowStart, $exitWindowEnd)) {
+                        if ($timeToCheck->between($windowStart, $windowEnd)) {
                             return true;
                         }
                     } else {
