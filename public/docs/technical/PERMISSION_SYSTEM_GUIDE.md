@@ -307,4 +307,4 @@ php artisan optimize
 
 ## 💖 Apoya el Proyecto
 
-👉 **[Apoyar en Patreon](https://www.patreon.com/cw/sientiaCTH_ControlHorario)**
+👉 **[Apoyar en Patreon](https://www.patreon.com/cw/sientia)**

@@ -70,7 +70,7 @@ Al crear nuevos archivos PHP, utiliza el siguiente encabezado estándar:
 Para más detalles, consulta el archivo [LICENSE](../../../LICENSE) en la raíz del proyecto.
 
 > [!TIP]
-> **¿Te gusta el proyecto?** Considera apoyarlo en [Patreon](https://www.patreon.com/cw/sientiaCTH_ControlHorario) para asegurar su desarrollo continuo.
+> **¿Te gusta el proyecto?** Considera apoyarlo en [Patreon](https://www.patreon.com/cw/sientia) para asegurar su desarrollo continuo.
 
 ---
 
@@ -237,7 +237,7 @@ El sistema utiliza el **Log** de Laravel para registrar errores y eventos críti
 
 Si sientiaCTH te ayuda en tu flujo de trabajo o en tu empresa, considera apoyarnos en Patreon:
 
-👉 **[sientiaCTH en Patreon](https://www.patreon.com/cw/sientiaCTH_ControlHorario)**
+👉 **[sientiaCTH en Patreon](https://www.patreon.com/cw/sientia)**
 
 ---
 *Manual del Desarrollador - Versión 1.0*

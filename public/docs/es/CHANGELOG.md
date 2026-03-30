@@ -319,4 +319,4 @@ Este documento recoge los hitos más importantes en la evolución de **sientiaCT
 
 ## 💖 Apoya el Proyecto
 
-👉 **[Apoyar en Patreon](https://www.patreon.com/cw/sientiaCTH_ControlHorario)**
+👉 **[Apoyar en Patreon](https://www.patreon.com/cw/sientia)**

@@ -382,4 +382,4 @@ La aplicación ahora es significativamente más rápida y escalable, preparada p
 
 Si encuentras útiles estas optimizaciones y quieres apoyar el desarrollo de sientiaCTH:
 
-👉 **[Apoyar en Patreon](https://www.patreon.com/cw/sientiaCTH_ControlHorario)**
+👉 **[Apoyar en Patreon](https://www.patreon.com/cw/sientia)**

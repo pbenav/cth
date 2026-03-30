@@ -77,7 +77,7 @@
                             <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
                                 {{ __('Support Project') }}
                             </p>
-                            <a href="https://www.patreon.com/cw/sientiaCTH_ControlHorario" target="_blank"
+                            <a href="https://www.patreon.com/cw/sientia" target="_blank"
                                 class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors duration-200">
                                 <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
                                     <path

@@ -73,7 +73,7 @@
 
                     <!-- Versions -->
                     <div class="ml-4 text-sm text-center text-gray-500 flex items-center gap-4">
-                        <a href="https://www.patreon.com/cw/sientiaCTH_ControlHorario" target="_blank"
+                        <a href="https://www.patreon.com/cw/sientia" target="_blank"
                             class="text-orange-500 hover:text-orange-400 font-medium transition-colors flex items-center">
                             <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
                                 <path

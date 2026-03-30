@@ -847,4 +847,4 @@ Con el sistema de cache y índices adecuados:
 
 ## 💖 Apoya el Proyecto
 
-👉 **[Apoyar en Patreon](https://www.patreon.com/cw/sientiaCTH_ControlHorario)**
+👉 **[Apoyar en Patreon](https://www.patreon.com/cw/sientia)**

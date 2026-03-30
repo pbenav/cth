@@ -246,7 +246,7 @@ This ensures that the software remains free for all its users. Under this licens
 
 If you find this project useful and would like to support its maintenance and continuous development, consider making a donation through Patreon:
 
-👉 **[Support on Patreon](https://www.patreon.com/cw/sientiaCTH_ControlHorario)**
+👉 **[Support on Patreon](https://www.patreon.com/cw/sientia)**
 
 Any support is greatly appreciated and helps sientiaCTH stay free and open source for everyone.
 

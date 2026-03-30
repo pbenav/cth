@@ -319,4 +319,4 @@ This document collects the most important milestones in the evolution of **sient
 
 ## 💖 Support the Project
 
-👉 **[Support on Patreon](https://www.patreon.com/cw/sientiaCTH_ControlHorario)**
+👉 **[Support on Patreon](https://www.patreon.com/cw/sientia)**

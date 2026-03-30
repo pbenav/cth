@@ -202,7 +202,7 @@
                             {{ __('sientiaCTH is an open-source project maintained by the community. We use Patreon to cover development, server, and technical support costs, allowing the application to remain free and accessible for everyone. You can help by becoming a patron, which helps us continue innovating and improving.') }}
                         </p>
                         <div class="flex flex-col sm:flex-row items-center gap-4 justify-center md:justify-start">
-                            <a href="https://www.patreon.com/cw/sientiaCTH_ControlHorario" target="_blank"
+                            <a href="https://www.patreon.com/cw/sientia" target="_blank"
                                 class="w-full sm:w-auto px-8 py-4 rounded-xl bg-[#FF424D] hover:bg-[#e03a43] text-white font-bold text-lg shadow-lg shadow-red-500/20 transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2">
                                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                                     <path

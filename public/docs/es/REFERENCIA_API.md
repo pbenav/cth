@@ -271,4 +271,4 @@ sientiaCTH implementa un sistema de permisos granular con los siguientes roles:
 
 ## 💖 Apoya el Proyecto
 
-👉 **[Apoyar en Patreon](https://www.patreon.com/cw/sientiaCTH_ControlHorario)**
+👉 **[Apoyar en Patreon](https://www.patreon.com/cw/sientia)**

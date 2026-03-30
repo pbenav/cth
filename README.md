@@ -220,7 +220,7 @@ Esto garantiza que el software seguirá siendo libre para todos sus usuarios. Ba
 
 Si este proyecto te resulta útil y te gustaría apoyar su mantenimiento y desarrollo continuo, considera realizar una donación a través de Patreon:
 
-👉 **[Apoyar en Patreon](https://www.patreon.com/cw/sientiaCTH_ControlHorario)**
+👉 **[Apoyar en Patreon](https://www.patreon.com/cw/sientia)**
 
 Cualquier apoyo es enormemente agradecido y ayuda a que sientiaCTH siga siendo gratuito y de código abierto para todos.
 

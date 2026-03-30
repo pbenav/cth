@@ -271,4 +271,4 @@ sientiaCTH implements a granular permission system with the following roles:
 
 ## 💖 Support the Project
 
-👉 **[Support on Patreon](https://www.patreon.com/cw/sientiaCTH_ControlHorario)**
+👉 **[Support on Patreon](https://www.patreon.com/cw/sientia)**
