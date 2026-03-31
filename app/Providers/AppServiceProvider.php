@@ -36,6 +36,11 @@ class AppServiceProvider extends ServiceProvider
 
         // Override Jetstream's UpdateTeamNameForm with our custom one
         \Livewire\Livewire::component('teams.update-team-name-form', \App\Http\Livewire\Teams\UpdateTeamNameForm::class);
+
+        // CONFIGURACIÓN PARA PROXY SSL (Se basa directamente en la URL configurada)
+        if (str_starts_with(config('app.url') ?? '', 'https')) {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
     }
 
     /**
