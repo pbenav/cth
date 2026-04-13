@@ -28,8 +28,9 @@ class AuditLogComponent extends Component
 
     public function mount()
     {
-        $this->dateFrom = now()->subMonth()->format('Y-m-d');
-        $this->dateTo = now()->format('Y-m-d');
+        // Sin filtro por defecto: evita ocultar registros antiguos
+        $this->dateFrom = null;
+        $this->dateTo = null;
     }
 
     public function updatingSearch()
@@ -241,21 +242,15 @@ class AuditLogComponent extends Component
 
         // Role based filtering + Team filtering
         if ($user->is_admin) {
-            // Global admin sees all (but can still filter by team if needed)
-            if ($user->currentTeam) {
-                $teamId = $user->currentTeam->id;
-                $query->where(function($q) use ($teamId) {
-                    $q->whereRaw("JSON_EXTRACT(modified_event, '$.team_id') = ?", [$teamId])
-                      ->orWhereRaw("JSON_EXTRACT(original_event, '$.team_id') = ?", [$teamId]);
-                });
-            }
+            // Admin global: ve todos los registros (sin filtrar por equipo implícitamente)
         } elseif ($user->isTeamAdmin() || $user->isInspector()) {
             // Filter by current team's events
             if ($user->currentTeam) {
                 $teamId = $user->currentTeam->id;
                 $query->where(function($q) use ($teamId) {
-                    $q->whereRaw("JSON_EXTRACT(modified_event, '$.team_id') = ?", [$teamId])
-                      ->orWhereRaw("JSON_EXTRACT(original_event, '$.team_id') = ?", [$teamId]);
+                    // JSON_EXTRACT devuelve JSON; descomillas para comparar de forma robusta
+                    $q->whereRaw("JSON_UNQUOTE(JSON_EXTRACT(modified_event, '$.team_id')) = ?", [(string) $teamId])
+                      ->orWhereRaw("JSON_UNQUOTE(JSON_EXTRACT(original_event, '$.team_id')) = ?", [(string) $teamId]);
                 });
             } else {
                 // No team, see nothing
