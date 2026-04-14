@@ -56,5 +56,13 @@
   "status.PAUSE_SUCCESS": "Workday paused successfully",
   "status.RESUME_SUCCESS": "Workday resumed successfully",
   "status.EXCEPTIONAL_REQUEST_CREATED": "Exceptional request created. Please complete the process.",
-  "status.ERROR": "An error occurred"
+  "status.ERROR": "An error occurred",
+  "about.title": "About",
+  "about.version": "Version",
+  "about.developed_by": "Developed by",
+  "about.tech_ai": "Technology and Artificial Intelligence",
+  "about.support_patreon": "Support on Patreon",
+  "about.back_to_web": "Back to Web Interface",
+  "about.support_title": "Do you like the app?",
+  "about.web_url": "Open Web Interface"
 }
