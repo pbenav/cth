@@ -41,18 +41,16 @@ class UserResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'family_name1' => $this->family_name1,
-            'family_name2' => $this->family_name2,
-            'email' => $this->email,
-            'user_code' => $this->user_code,
-            'dni' => $this->dni,
-            'profile_photo_url' => $this->profile_photo_url,
-            'current_team_id' => $this->current_team_id,
-            // Include other relevant fields, but avoid sensitive ones like password
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'id' => $this->id ?? null,
+            'name' => $this->name ?? null,
+            'family_name1' => $this->family_name1 ?? null,
+            'family_name2' => $this->family_name2 ?? null,
+            'email' => $this->email ?? null,
+            'code' => $this->user_code ?? null,  // Renombrar a 'code' para consistencia con API
+            'profile_photo_url' => $this->profile_photo_url ?? null,
+            'current_team_id' => $this->current_team_id ?? null,
+            'created_at' => $this->created_at ? $this->created_at->toIso8601String() : null,
+            'updated_at' => $this->updated_at ? $this->updated_at->toIso8601String() : null,
         ];
     }
 }
