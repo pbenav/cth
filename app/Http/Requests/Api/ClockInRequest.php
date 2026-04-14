@@ -16,7 +16,9 @@ class ClockInRequest extends FormRequest
         return [
             'work_center_code' => 'sometimes|string|max:50',
             'manual_work_center_code' => 'sometimes|string|max:50',
-            'user_code' => 'required|string|max:50',
+            // Con auth:sanctum, el servidor identifica al usuario por el token.
+            // user_code puede llegar desde clientes legacy como comprobación adicional.
+            'user_code' => 'sometimes|string|max:50',
             'action' => 'sometimes|string|in:pause,resume_workday,clock_out,confirm_exceptional_clock_in,exceptional_clock_in',
             'pause_event_id' => 'sometimes|integer',
             'location' => 'sometimes|array',

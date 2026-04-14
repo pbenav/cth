@@ -57,17 +57,22 @@ class MobileClockController extends Controller
     public function clock(ClockInRequest $request): JsonResponse
     {
         try {
-            Log::debug('[MobileClockController][clock] Request body:', $request->all());
+            if (config('app.debug')) {
+                Log::debug('[MobileClockController][clock] Request body:', $request->all());
+            }
 
             // Normalize work center code
             $workCenterCode = $request->work_center_code ?? $request->manual_work_center_code ?? null;
 
-            // If work center code not provided, try to infer from user->currentTeam
-            $user = User::where('user_code', $request->user_code)->first();
+            // Con auth:sanctum, el usuario debe venir autenticado.
+            $user = $request->user();
             if (!$user) {
-                return response()->json([
-                    'message' => 'Usuario no encontrado'
-                ], 404);
+                return response()->json(['message' => 'No autenticado'], 401);
+            }
+
+            // Si el cliente envía user_code, validamos coherencia (evita operar sobre otro usuario)
+            if ($request->filled('user_code') && $request->user_code !== $user->user_code) {
+                return response()->json(['message' => 'Usuario no autorizado'], 403);
             }
 
             if (!$workCenterCode) {
@@ -496,26 +501,25 @@ class MobileClockController extends Controller
      */
     public function status(Request $request): JsonResponse
     {
-        // Obtener el estado del trabajador
-        $request->validate([
-            'user_code' => 'required|string'
-        ]);
-
-        $user = User::where('user_code', $request->user_code)->first();
+        $user = $request->user();
         if (!$user) {
-            return response()->json([
-                'message' => 'Usuario no encontrado'
-            ], 404);
+            return response()->json(['message' => 'No autenticado'], 401);
+        }
+
+        if ($request->filled('user_code') && $request->input('user_code') !== $user->user_code) {
+            return response()->json(['message' => 'Usuario no autorizado'], 403);
         }
 
         try {
             $clockAction = $this->smartClockInService->getClockAction($user);
             $clockAction = $clockAction ?? [];
             
-            Log::debug('[MobileClockController][status] Clock action:', [
-                'user_code' => $user->user_code,
-                'clock_action' => $clockAction
-            ]);
+            if (config('app.debug')) {
+                Log::debug('[MobileClockController][status] Clock action:', [
+                    'user_code' => $user->user_code,
+                    'clock_action' => $clockAction
+                ]);
+            }
 
             $todayStats = $this->getTodayStats($user) ?? [];
 
@@ -567,10 +571,12 @@ class MobileClockController extends Controller
                 'clock_in_delay_minutes' => (int)($user->currentTeam->clock_in_delay_minutes ?? 0),
             ];
             
-            Log::debug('[MobileClockController][status] Resource data:', [
-                'pause_event_id' => $resourceData['pause_event_id'],
-                'action' => $resourceData['action']
-            ]);
+            if (config('app.debug')) {
+                Log::debug('[MobileClockController][status] Resource data:', [
+                    'pause_event_id' => $resourceData['pause_event_id'],
+                    'action' => $resourceData['action']
+                ]);
+            }
 
             return response()->json([
                 'success' => true,
@@ -612,17 +618,18 @@ class MobileClockController extends Controller
      */
     public function confirmTeamSwitch(Request $request): JsonResponse
     {
-        $request->validate([
-            'user_code' => 'required|string',
-            'work_center_code' => 'required|string',
-        ]);
-
         try {
-            $user = User::where('user_code', $request->user_code)->first();
+            $request->validate([
+                'work_center_code' => 'required|string',
+            ]);
+
+            $user = $request->user();
             if (!$user) {
-                return response()->json([
-                    'message' => 'Usuario no encontrado'
-                ], 404);
+                return response()->json(['message' => 'No autenticado'], 401);
+            }
+
+            if ($request->filled('user_code') && $request->input('user_code') !== $user->user_code) {
+                return response()->json(['message' => 'Usuario no autorizado'], 403);
             }
 
             $workCenter = WorkCenter::where('code', $request->work_center_code)->first();
@@ -718,11 +725,13 @@ class MobileClockController extends Controller
     public function sync(SyncRequest $request): JsonResponse
     {
         $workCenterCode = $request->work_center_code ?? null;
-        $user = User::where('user_code', $request->user_code)->first();
+        $user = $request->user();
         if (!$user) {
-            return response()->json([
-                'message' => 'Usuario no encontrado'
-            ], 404);
+            return response()->json(['message' => 'No autenticado'], 401);
+        }
+
+        if ($request->filled('user_code') && $request->input('user_code') !== $user->user_code) {
+            return response()->json(['message' => 'Usuario no autorizado'], 403);
         }
 
         if (!$workCenterCode) {
@@ -801,13 +810,14 @@ class MobileClockController extends Controller
     public function getWorkerData(string $code): JsonResponse
     {
         try {
-            $user = User::where('user_code', $code)->first();
-
+            $user = request()->user();
             if (!$user) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Trabajador no encontrado'
-                ], 404);
+                return response()->json(['success' => false, 'message' => 'No autenticado'], 401);
+            }
+
+            // Solo permitimos obtener datos del propio usuario autenticado.
+            if ($code !== $user->user_code) {
+                return response()->json(['success' => false, 'message' => 'Usuario no autorizado'], 403);
             }
 
             // Restrict teams to those the user is specifically assigned to or included in

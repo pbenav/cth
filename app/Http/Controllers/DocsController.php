@@ -79,32 +79,56 @@ class DocsController extends Controller
             $locale = null;
         }
 
-        // Build the file path
-        $path = $locale 
-            ? "docs/{$locale}/{$file}.md" 
+        // Sanitizar parámetros para evitar path traversal
+        if ($locale !== null && !in_array($locale, ['es', 'en'], true)) {
+            abort(404, 'Documentation file not found');
+        }
+        if (!is_string($file) || !preg_match('/^[A-Za-z0-9._-]+$/', $file)) {
+            abort(404, 'Documentation file not found');
+        }
+
+        // Build the file path (relative to public/docs)
+        $path = $locale
+            ? "docs/{$locale}/{$file}.md"
             : "docs/{$file}.md";
 
+        $docsBase = realpath(public_path('docs'));
+        if ($docsBase === false) {
+            abort(404, 'Documentation file not found');
+        }
+
         $fullPath = public_path($path);
+        $resolved = realpath($fullPath);
+        if ($resolved === false || !str_starts_with($resolved, $docsBase . DIRECTORY_SEPARATOR)) {
+            abort(404, 'Documentation file not found');
+        }
 
         // If file doesn't exist, check if it's a localized file without the locale in the URL
-        if (!File::exists($fullPath) && !$locale) {
+        if (!File::exists($resolved) && !$locale) {
             $userLocale = auth()->check() && auth()->user()->locale 
                 ? auth()->user()->locale 
                 : app()->getLocale();
             
-            $localizedPath = "docs/{$userLocale}/{$file}.md";
-            if (File::exists(public_path($localizedPath))) {
-                $path = $localizedPath;
-                $fullPath = public_path($path);
-                $locale = $userLocale;
+            if (in_array($userLocale, ['es', 'en'], true)) {
+                $localizedPath = "docs/{$userLocale}/{$file}.md";
+                $localizedFullPath = public_path($localizedPath);
+                $localizedResolved = realpath($localizedFullPath);
+                if ($localizedResolved !== false
+                    && str_starts_with($localizedResolved, $docsBase . DIRECTORY_SEPARATOR)
+                    && File::exists($localizedResolved)
+                ) {
+                    $path = $localizedPath;
+                    $resolved = $localizedResolved;
+                    $locale = $userLocale;
+                }
             }
         }
 
-        if (!File::exists($fullPath)) {
+        if (!File::exists($resolved)) {
             abort(404, 'Documentation file not found');
         }
 
-        $content = File::get($fullPath);
+        $content = File::get($resolved);
         $html = $this->parseMarkdown($content, $locale);
 
         // Extract title from first H1

@@ -27,6 +27,14 @@ class TeamPreferencesController extends Controller
         }
 
         try {
+            // Muy sensible: solo permitir si está habilitado explícitamente
+            if (!config('security.allow_team_dependency_install')) {
+                return response()->json([
+                    'success' => false,
+                    'log' => 'Instalación de dependencias deshabilitada por configuración.',
+                ], 403);
+            }
+
             if (!function_exists('exec')) {
                 throw new \Exception('La función exec() está deshabilitada en este servidor.');
             }
@@ -56,13 +64,13 @@ class TeamPreferencesController extends Controller
             $logMessages[] = "✓ npm encontrado en: {$npmPath}";
     
             // Get Node.js version
-            @exec("{$nodePath} --version 2>&1", $nodeVersion, $nodeReturn);
+            @exec(escapeshellarg($nodePath) . " --version 2>&1", $nodeVersion, $nodeReturn);
             if ($nodeReturn === 0) {
                 $logMessages[] = "  Node.js versión: " . trim($nodeVersion[0]);
             }
     
             // Get npm version
-            @exec("{$npmPath} --version 2>&1", $npmVersion, $npmReturn);
+            @exec(escapeshellarg($npmPath) . " --version 2>&1", $npmVersion, $npmReturn);
             if ($npmReturn === 0) {
                 $logMessages[] = "  npm versión: " . trim($npmVersion[0]);
             }
@@ -82,15 +90,17 @@ class TeamPreferencesController extends Controller
             
             // Set environment variables for installation
             // NOTA: .puppeteerrc.cjs ya configura skipChromeHeadlessShellDownload
-            $envVars = "PATH={$nodeDir}:/usr/local/bin:/usr/bin:/bin npm_config_cache={$npmCacheDir} HOME={$projectRoot}";
+            $envVars = "PATH=" . escapeshellarg("{$nodeDir}:/usr/local/bin:/usr/bin:/bin")
+                . " npm_config_cache=" . escapeshellarg($npmCacheDir)
+                . " HOME=" . escapeshellarg($projectRoot);
             
             // Uninstall Puppeteer first to force fresh download of Chrome
             $logMessages[] = "\n🗑️  Limpiando instalación previa de Puppeteer...";
-            @exec("cd {$projectRoot} && {$envVars} {$npmPath} uninstall puppeteer 2>&1", $uninstallOutput, $uninstallReturn);
+            @exec("cd " . escapeshellarg($projectRoot) . " && {$envVars} " . escapeshellarg($npmPath) . " uninstall puppeteer 2>&1", $uninstallOutput, $uninstallReturn);
             
             // Install Puppeteer using npm
             $logMessages[] = "📥 Descargando Puppeteer y Chromium (~250MB, puede tardar 2-5 minutos)...";
-            @exec("cd {$projectRoot} && {$envVars} {$npmPath} install puppeteer 2>&1", $output, $returnVar);
+            @exec("cd " . escapeshellarg($projectRoot) . " && {$envVars} " . escapeshellarg($npmPath) . " install puppeteer 2>&1", $output, $returnVar);
     
             if ($returnVar === 0) {
                 $logMessages[] = "✓ Puppeteer instalado correctamente";
@@ -101,30 +111,11 @@ class TeamPreferencesController extends Controller
                 if ($chromePath) {
                     $logMessages[] = "\n🔍 Chromium detectado en: {$chromePath}";
                     
-                    // Update .env file with detected paths
-                    $envUpdated = $this->updateEnvFile([
-                        'NODE_BINARY_PATH' => $nodePath,
-                        'NPM_BINARY_PATH' => $npmPath,
-                        'CHROME_BINARY_PATH' => $chromePath,
-                    ]);
-                    
-                    if ($envUpdated) {
-                        $logMessages[] = "\n✓ Archivo .env actualizado con las rutas detectadas:";
-                        $logMessages[] = "  NODE_BINARY_PATH={$nodePath}";
-                        $logMessages[] = "  NPM_BINARY_PATH={$npmPath}";
-                        $logMessages[] = "  CHROME_BINARY_PATH={$chromePath}";
-                        
-                        // Clear Laravel config cache
-                        try {
-                            \Artisan::call('config:clear');
-                            $logMessages[] = "\n✓ Caché de configuración limpiado";
-                        } catch (\Exception $e) {
-                            $logMessages[] = "\n⚠️  Advertencia: No se pudo limpiar la caché automáticamente";
-                            $logMessages[] = "   Ejecuta manualmente: php artisan config:clear";
-                        }
-                    } else {
-                        $logMessages[] = "\n⚠️  No se pudo actualizar el archivo .env";
-                    }
+                    // No escribir .env desde una petición web (operación sensible).
+                    $logMessages[] = "\nℹ️  Rutas detectadas (configúralas manualmente en tu entorno si las necesitas):";
+                    $logMessages[] = "  NODE_BINARY_PATH={$nodePath}";
+                    $logMessages[] = "  NPM_BINARY_PATH={$npmPath}";
+                    $logMessages[] = "  CHROME_BINARY_PATH={$chromePath}";
                 } else {
                     $logMessages[] = "\n⚠️  No se pudo detectar Chromium en la instalación local";
                     $logMessages[] = "   Verifica que Puppeteer se haya instalado correctamente";

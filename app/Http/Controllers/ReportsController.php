@@ -338,23 +338,19 @@ class ReportsController extends Controller
 
     public function download($file)
     {
-        // Security check: ensure file is in reports directory and user has access
+        // Seguridad: evitar path traversal y forzar nombres simples
+        // (no directorios, no .., solo caracteres seguros)
+        if (!is_string($file) || !preg_match('/^[A-Za-z0-9._-]+$/', $file)) {
+            abort(404);
+        }
+
         $path = 'reports/' . $file;
         
         if (!\Illuminate\Support\Facades\Storage::exists($path)) {
             abort(404);
         }
 
-        $content = \Illuminate\Support\Facades\Storage::get($path);
-        $mime = \Illuminate\Support\Facades\Storage::mimeType($path);
-
-        if (!$mime) {
-            $mime = 'application/pdf';
-        }
-
-        return response($content, 200, [
-            'Content-Type' => $mime,
-            'Content-Disposition' => 'attachment; filename="' . $file . '"'
-        ]);
+        // Descargar en streaming (evita cargar el fichero completo en memoria)
+        return \Illuminate\Support\Facades\Storage::download($path, $file);
     }
 }

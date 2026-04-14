@@ -137,20 +137,14 @@ Route::middleware([
 });
 
 // Admin routes - Only accessible to global administrators
-Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'verified', 'is_admin'])->prefix('admin')->name('admin.')->group(function () {
     // Mail Settings
     Route::get('/mail-settings', function () {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            abort(403, 'Unauthorized action.');
-        }
         return view('admin.mail-settings');
     })->name('mail-settings');
 
     // Global App Settings
     Route::get('/settings', function () {
-        if (!auth()->user() || !auth()->user()->is_admin) {
-            abort(403, 'Unauthorized action.');
-        }
         return view('admin.app-settings');
     })->name('settings');
 
