@@ -6,6 +6,8 @@ use App\Models\Event;
 use App\Models\EventType;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\App;
+use Carbon\Carbon;
 
 class VerifyAndFixEventData extends Command
 {
@@ -14,7 +16,7 @@ class VerifyAndFixEventData extends Command
      *
      * @var string
      */
-    protected $signature = 'events:verify-and-fix {--dry-run : Show what would be fixed without making changes} {--fix-descriptions : Fix events without descriptions} {--fix-extra-hours : Fix extra hours logic} {--fix-workday-types : Fix workday event types}';
+    protected $signature = 'events:verify-and-fix {--dry-run : Show what would be fixed without making changes} {--fix-descriptions : Fix events without descriptions} {--fix-extra-hours : Fix extra hours logic} {--fix-workday-types : Fix workday event types} {--fix-legacy-autoclose : Fix old 1-minute autoclose records to new 1-hour standard}';
 
     /**
      * The console command description.
@@ -32,6 +34,7 @@ class VerifyAndFixEventData extends Command
         $fixDescriptions = $this->option('fix-descriptions');
         $fixExtraHours = $this->option('fix-extra-hours');
         $fixWorkdayTypes = $this->option('fix-workday-types');
+        $fixLegacy = $this->option('fix-legacy-autoclose');
 
         if ($dryRun) {
             $this->warn('🔍 DRY RUN MODE - No changes will be made');
@@ -41,19 +44,21 @@ class VerifyAndFixEventData extends Command
 
         $totalFixed = 0;
 
-        // Fix workday event types if requested or no specific option given
-        if ($fixWorkdayTypes || (!$fixDescriptions && !$fixExtraHours && !$fixWorkdayTypes)) {
+        // Run specific fixes
+        if ($fixWorkdayTypes || (!$fixDescriptions && !$fixExtraHours && !$fixWorkdayTypes && !$fixLegacy)) {
             $totalFixed += $this->fixWorkdayEventTypes($dryRun);
         }
 
-        // Fix descriptions if requested or no specific option given
-        if ($fixDescriptions || (!$fixDescriptions && !$fixExtraHours && !$fixWorkdayTypes)) {
+        if ($fixDescriptions || (!$fixDescriptions && !$fixExtraHours && !$fixWorkdayTypes && !$fixLegacy)) {
             $totalFixed += $this->fixEventDescriptions($dryRun);
         }
 
-        // Fix extra hours logic if requested or no specific option given
-        if ($fixExtraHours || (!$fixDescriptions && !$fixExtraHours && !$fixWorkdayTypes)) {
+        if ($fixExtraHours || (!$fixDescriptions && !$fixExtraHours && !$fixWorkdayTypes && !$fixLegacy)) {
             $totalFixed += $this->fixExtraHoursLogic($dryRun);
+        }
+
+        if ($fixLegacy || (!$fixDescriptions && !$fixExtraHours && !$fixWorkdayTypes && !$fixLegacy)) {
+            $totalFixed += $this->fixLegacyAutoCloseEvents($dryRun);
         }
 
         // Run verification checks
@@ -70,6 +75,52 @@ class VerifyAndFixEventData extends Command
         }
 
         return 0;
+    }
+
+    /**
+     * Fix old 1-minute auto-closed events to the new 1-hour standard with proper translation.
+     */
+    private function fixLegacyAutoCloseEvents(bool $dryRun): int
+    {
+        $this->line("\n🧹 Cleaning up legacy 1-minute auto-closed registrations...");
+
+        $oldMessage = 'Closed automatically due to expiration. Duration set to 1 minute.';
+        
+        $events = Event::where('observations', 'like', '%' . $oldMessage . '%')
+            ->with('user')
+            ->get();
+
+        if ($events->isEmpty()) {
+            $this->info("   ✅ No legacy 1-minute auto-closed events found.");
+            return 0;
+        }
+
+        $this->warn("   ⚠️  Found {$events->count()} legacy auto-closed events that need updating.");
+
+        if (!$dryRun) {
+            $fixed = 0;
+            foreach ($events as $event) {
+                $user = $event->user;
+                $locale = ($user && $user->locale) ? $user->locale : 'es';
+                App::setLocale($locale);
+
+                // Use the new standard message
+                $newMessage = __('The record is closed with a single hour because it had no exit date or confirmed closure.');
+                
+                // Adjust duration to exactly 1 hour from start
+                $newEnd = Carbon::parse($event->start)->addHour();
+
+                $event->updateQuietly([
+                    'end' => $newEnd->format('Y-m-d H:i:s'),
+                    'observations' => str_replace($oldMessage, $newMessage, $event->observations)
+                ]);
+                $fixed++;
+            }
+            $this->info("   ✅ Updated {$fixed} legacy registrations to the new 1-hour standard.");
+            return $fixed;
+        }
+
+        return $events->count();
     }
 
     /**
