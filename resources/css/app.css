@@ -79,12 +79,12 @@
     background-color: #d1d5db !important; /* gray-300 */
     color: #111827 !important;
     text-align: center !important;
-    padding: 0.75rem 2.5rem !important;
+    padding: 0.6rem 2rem !important; /* Reduced slightly */
     border-radius: 0.5rem !important;
     cursor: pointer !important;
     border: none !important;
     transition: all 0.7s !important;
-    font-size: 1.25rem !important;
+    font-size: 1.125rem !important; /* Reduced to text-lg approx */
     margin-bottom: 0.5rem !important;
     display: inline-block !important;
 }
