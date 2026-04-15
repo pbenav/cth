@@ -1104,5 +1104,7 @@
   "Insertar código": "Insertar código",
   "Restablecer": "Restablecer",
   "Borrar": "Borrar",
-  "Código de usuario": "Código de usuario"
+  "Código de usuario": "Código de usuario",
+  "The record is closed because its duration exceeds the maximum workday value and is therefore invalid.": "Se cierra el registro porque su duración excede el valor de la jornada laboral máxima y por tanto es inválido.",
+  "The record is closed with a single hour because it had no exit date or confirmed closure.": "Se cierra el registro con una sola hora, porque no tenía fecha de salida ni cierre confirmado."
 }

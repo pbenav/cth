@@ -78,12 +78,18 @@
                             $isLong = strlen(strip_tags($bodyContent)) > 150;
                         @endphp
                         
-                        <div x-show="!expanded" class="line-clamp-2">
-                            {!! \Illuminate\Support\Str::limit(strip_tags($bodyContent), 150) !!}
-                        </div>
-                        <div x-show="expanded" style="display: none;">
-                            {!! $bodyContent !!}
-                        </div>
+                        @if ($isLong)
+                            <div x-show="!expanded" class="line-clamp-2">
+                                {!! \Illuminate\Support\Str::limit(strip_tags($bodyContent), 150) !!}
+                            </div>
+                            <div x-show="expanded" style="display: none;">
+                                {!! $bodyContent !!}
+                            </div>
+                        @else
+                            <div>
+                                {!! $bodyContent !!}
+                            </div>
+                        @endif
                         
                         @if ($isLong)
                             <button @click="expanded = !expanded" class="text-blue-600 hover:text-blue-800 text-xs font-medium mt-1">

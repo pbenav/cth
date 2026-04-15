@@ -15,6 +15,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\NewMessage;
 
 class GenerateReportJob implements ShouldQueue
 {
@@ -63,6 +65,11 @@ class GenerateReportJob implements ShouldQueue
                 throw new \Exception('User or team not found');
             }
 
+            // Set locale to user's preference for translated messages
+            if ($user->locale) {
+                app()->setLocale($user->locale);
+            }
+
             // Handle statistics reports differently
             if ($this->reportSource === 'statistics') {
                 $fileName = 'sientiaCTH_estadisticas_' . date('YmdHis') . '.pdf';
@@ -99,6 +106,10 @@ class GenerateReportJob implements ShouldQueue
                     'body' => $body,
                 ]);
                 $message->recipients()->attach($this->userId);
+                
+                // Active notification (email/database)
+                $user->notify(new NewMessage($message));
+                
                 return;
             }
 
@@ -201,6 +212,9 @@ class GenerateReportJob implements ShouldQueue
             ]);
 
             $message->recipients()->attach($this->userId);
+
+            // Active notification (email/database)
+            $user->notify(new NewMessage($message));
 
         } catch (\Exception $e) {
             // Send error message to user

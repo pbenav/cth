@@ -64,5 +64,7 @@
   "Insertar código": "Insert code",
   "Restablecer": "Reset",
   "Borrar": "Delete",
-  "Código de usuario": "User code"
+  "Código de usuario": "User code",
+  "The record is closed because its duration exceeds the maximum workday value and is therefore invalid.": "The record is closed because its duration exceeds the maximum workday value and is therefore invalid.",
+  "The record is closed with a single hour because it had no exit date or confirmed closure.": "The record is closed with a single hour because it had no exit date or confirmed closure."
 }
