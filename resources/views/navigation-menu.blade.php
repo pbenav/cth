@@ -2,15 +2,15 @@
     <!-- Primary Navigation Menu -->
     <div class="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-auto">
-            <div class="flex">
+            <div class="flex min-w-0 shrink">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('events') }}">
                         <x-jet-application-mark class="block h-9 w-auto" />
                     </a>
                     <!-- App title for mobile -->
-                    <span class="sm:hidden ml-3 text-xl md:text-2xl lg:text-3xl font-bold text-gray-800">
-                        sientiaCTH - Control Horario
+                    <span class="sm:hidden ml-2 font-bold text-gray-800 leading-tight max-w-[160px] xs:max-w-[190px]" style="font-size: clamp(0.95rem, 5vw, 1.2rem); line-height: 1.1;">
+                        sientiaCTH<br><span class="font-normal text-gray-500" style="font-size: clamp(0.75rem, 3.5vw, 0.95rem);">Control Horario</span>
                     </span>
                 </div>
 
@@ -202,31 +202,26 @@
             </div>
 
             <!-- Mobile Notifications and Hamburger -->
-            <div class="-mr-2 flex items-center space-x-2 sm:hidden">
-                <!-- Mobile Icons Container -->
-                <div class="flex flex-col space-y-1">
-                    <!-- Quick switch to mobile UI -->
-                    <div class="relative flex items-center justify-center">
-                        <a href="{{ route('mobile.home') }}" title="{{ __('ui.layout.open_mobile') }}"
-                            class="relative inline-flex items-center p-2 rounded-md hover:bg-gray-50 hover:text-gray-700 text-gray-600 transition-colors duration-200"
-                            data-tooltip="Abrir versión móvil">
-                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M7 2a1 1 0 00-1 1v12a1 1 0 001 1h6a1 1 0 001-1V3a1 1 0 00-1-1H7z"></path>
-                                <path d="M3 6h14v2H3V6z" fill-opacity="0.6"></path>
-                            </svg>
-                        </a>
-                    </div>
+            <div class="-mr-2 flex items-center space-x-1 sm:hidden">
+                <!-- Quick switch to mobile UI -->
+                <a href="{{ route('mobile.home') }}" title="{{ __('ui.layout.open_mobile') }}"
+                    class="relative inline-flex items-center p-1.5 rounded-md hover:bg-gray-50 hover:text-gray-700 text-gray-600 transition-colors duration-200"
+                    data-tooltip="Abrir versión móvil">
+                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M7 2a1 1 0 00-1 1v12a1 1 0 001 1h6a1 1 0 001-1V3a1 1 0 00-1-1H7z"></path>
+                        <path d="M3 6h14v2H3V6z" fill-opacity="0.6"></path>
+                    </svg>
+                </a>
 
-                    <!-- Mobile Notification Icon -->
-                    <div class="relative flex items-center justify-center">
-                        @livewire('notification-icon')
-                    </div>
+                <!-- Mobile Notification Icon -->
+                <div class="relative flex items-center justify-center">
+                    @livewire('notification-icon')
                 </div>
 
                 <!-- Hamburger Button -->
                 <button @click="open = ! open"
-                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                    class="inline-flex items-center justify-center p-1.5 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition">
+                    <svg class="h-5 w-5" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
                             stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 6h16M4 12h16M4 18h16" />

@@ -172,19 +172,21 @@ class TeamController extends Controller
             $welcomeTeam->users()->detach($user);
         }
 
-        // If this is the user's first real team (not Welcome), set it as current
-        if ($user->current_team_id === $welcomeTeam?->id) {
-            $user->forceFill([
-                'current_team_id' => $team->id,
-            ])->save();
-        }
+        // Set the new team as current team to avoid "limbo" states
+        $user->forceFill([
+            'current_team_id' => $team->id,
+        ])->save();
 
         // Verify email if not verified
         if (!$user->hasVerifiedEmail()) {
             $user->markEmailAsVerified();
         }
 
-        return back()->with('success', __('User added to team successfully.'));
+        // Force a "reseteo total" of the interface by clearing the user's sessions
+        // This forces them to re-login and ensures all fresh data is loaded
+        DB::table('sessions')->where('user_id', $user->id)->delete();
+
+        return back()->with('success', __('User added to team successfully and sessions reset.'));
     }
 
     /**
@@ -373,8 +375,15 @@ class TeamController extends Controller
         $targetTeam = Team::findOrFail($validated['target_team_id']);
 
         try {
-            $transferAction->transfer($user, $targetTeam, $validated['role']);
-            return back()->with('success', __('User transferred successfully.'));
+            DB::transaction(function () use ($user, $targetTeam, $validated, $transferAction) {
+                $transferAction->transfer($user, $targetTeam, $validated['role']);
+                
+                // Force a "reseteo total" of the interface by clearing the user's sessions
+                // This forces them to re-login and ensures all fresh data is loaded
+                DB::table('sessions')->where('user_id', $user->id)->delete();
+            });
+
+            return back()->with('success', __('User transferred successfully and sessions reset.'));
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
@@ -406,12 +415,10 @@ class TeamController extends Controller
             $welcomeTeam->users()->detach($user);
         }
 
-        // If this is the user's first real team (not Welcome), set it as current
-        if ($user->current_team_id === $welcomeTeam?->id) {
-            $user->forceFill([
-                'current_team_id' => $team->id,
-            ])->save();
-        }
+        // Set the new team as current team to avoid "limbo" states
+        $user->forceFill([
+            'current_team_id' => $team->id,
+        ])->save();
 
         // Verify email if not verified
         if (!$user->hasVerifiedEmail()) {
@@ -422,7 +429,11 @@ class TeamController extends Controller
         // Delete invitation
         $invitation->delete();
 
-        return back()->with('success', __('Invitation accepted successfully. User added to team.'));
+        // Force a "reseteo total" of the interface by clearing the user's sessions
+        // This forces them to re-login and ensures all fresh data is loaded
+        DB::table('sessions')->where('user_id', $user->id)->delete();
+
+        return back()->with('success', __('Invitation accepted successfully and sessions reset.'));
     }
 }
 
