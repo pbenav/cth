@@ -69,7 +69,7 @@ Route::middleware([
     Route::get('/informes', ReportsComponent::class)->name('reports');
     Route::get('/informes/preview', [App\Http\Controllers\ReportsController::class, 'preview'])->name('reports.preview');
     Route::get('/informes/export', [App\Http\Controllers\ReportsController::class, 'export'])->name('reports.export');
-    Route::get('/informes/download/{file}', [App\Http\Controllers\ReportsController::class, 'download'])->name('reports.download');
+    Route::get('/descarga/reporte/{file}', [App\Http\Controllers\ReportsController::class, 'download'])->name('reports.download');
     
     // Messages - Team messages
     Route::get('/mensajes', function () {

@@ -120,7 +120,7 @@ class ReportsController extends Controller
                 
                 $pdf = $exporter->generate();
 
-                $fn = 'sientiaCTH_estadisticas_' . date('YmdHis') . '.pdf';
+                $fn = 'cth_stats_' . date('YmdHis') . '.pdf';
 
                 return response($pdf, 200, [
                     'Content-Type' => 'application/pdf',
@@ -237,7 +237,7 @@ class ReportsController extends Controller
         $exporter = new \App\Exports\EventsPdfExport($events, $team, $workCenter, $fromDate, $toDate, $groupBy, $orderBy);
         $pdf = $exporter->generate();
 
-        $fn = 'sientiaCTH_informe_' . date('YmdHis') . '.pdf';
+        $fn = 'cth_report_' . date('YmdHis') . '.pdf';
         
         $download = $request->input('download', false);
         $disposition = $download ? 'attachment' : 'inline';

@@ -72,7 +72,7 @@ class GenerateReportJob implements ShouldQueue
 
             // Handle statistics reports differently
             if ($this->reportSource === 'statistics') {
-                $fileName = 'sientiaCTH_estadisticas_' . date('YmdHis') . '.pdf';
+                $fileName = 'cth_report_' . date('YmdHis') . '.pdf';
                 $filePath = 'reports/' . $fileName;
 
                 $exporter = new \App\Exports\StatsPdfExport(
@@ -149,7 +149,7 @@ class GenerateReportJob implements ShouldQueue
 
             // Generate the file
             $ext = strtolower($this->rtype);
-            $fileName = 'sientiaCTH_informe_' . date('YmdHis') . '.' . $ext;
+            $fileName = 'cth_report_' . date('YmdHis') . '.' . $ext;
             $filePath = 'reports/' . $fileName;
 
             if ($this->rtype === 'PDF') {
