@@ -3,7 +3,7 @@
         style="background-image: url('{{ config('view.login_background_image') }}'); background-repeat: no-repeat; background-size: cover; background-position: left;">
         <!-- Topbar login and register links -->
         @if (Route::has('login'))
-            <div class="flex fixed top-0 right-0 px-6 py-4 items-center">
+            <div class="flex fixed top-0 right-0 px-6 py-4 items-center w-full bg-gray-100 my-auto">
                 <div
                     class="flex items-center bg-white/10 dark:bg-gray-800/50 rounded-full px-2 py-1 border border-white/10 mr-4">
                     <a href="{{ route('set-locale', 'es') }}"
@@ -36,7 +36,7 @@
         @endif
 
         <!-- Main content -->
-        <div class="mx-auto max-w-6xl sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-6xl sm:px-6 lg:px-8 pt-2">
 
             <!-- Numpad -->
             <div class="p-4 mt-8 bg-gray-500 shadow dark:bg-gray-800 sm:rounded-lg" style="max-width:450px;">
@@ -72,7 +72,7 @@
                     </div>
 
                     <!-- Versions -->
-                    <div class="ml-4 text-sm text-center text-gray-500 flex items-center gap-4">
+                    {{-- <div class="ml-4 text-sm text-center text-gray-500 flex items-center gap-4">
                         <a href="https://www.patreon.com/cw/sientia" target="_blank"
                             class="text-orange-500 hover:text-orange-400 font-medium transition-colors flex items-center">
                             <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
@@ -83,7 +83,7 @@
                         </a>
                         <a href="https://cv.sientia.com" target="_blank">©{{ config('app.name') }}
                             v{{ config('app.app_version') }} </a>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 
