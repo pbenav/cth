@@ -15,23 +15,23 @@
         @endif
     </div>
 
-    <div class="max-w-lg">
-        <div class="content-center">
+    <div class="max-w-[200px] mx-auto">
+        <div class="flex flex-col items-center">
             {{-- Branding Section --}}
-            <div class="flex flex-col items-center mb-4 sm:mb-6">
+            <div class="flex flex-col items-center mb-2">
                 {{-- Logo --}}
-                <div class="mb-3 sm:mb-4">
+                <div class="mb-1">
                     <img src="{{ asset('images/sientiaCTH-logo.png') }}" 
                          alt="{{ config('app.name') }}" 
-                         class="w-16 sm:w-20 md:w-24 aspect-square object-contain">
+                         class="w-12 aspect-square object-contain">
                 </div>
                 {{-- App Name --}}
-                <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-white text-center">
+                <h1 class="text-lg font-bold text-white text-center">
                     {{ config('app.name') }}
                 </h1>
             </div>
 
-            <div class="mt-2">
+            <div class="mb-4 flex justify-center">
                 <x-clock>{{ __('Reloj') }}</x-clock>
             </div>
 
