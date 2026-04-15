@@ -8,14 +8,14 @@
                     <a href="{{ route('events') }}">
                         <x-jet-application-mark class="block h-9 w-auto" />
                     </a>
-                    <!-- App title for mobile -->
-                    <span class="lg:hidden ml-2 font-bold text-gray-800 leading-tight max-w-[160px] xs:max-w-[190px]" style="font-size: clamp(0.95rem, 5vw, 1.2rem); line-height: 1.1;">
-                        sientiaCTH<br><span class="font-normal text-gray-500" style="font-size: clamp(0.75rem, 3.5vw, 0.95rem);">Control Horario</span>
+                    <!-- App title for desktop/mobile -->
+                    <span class="lg:hidden ml-2 font-bold text-gray-800 leading-tight" style="font-size: clamp(0.9rem, 4.5vw, 1.15rem); line-height: 1.1;">
+                        sientiaCTH<br><span class="font-normal text-gray-500" style="font-size: clamp(0.7rem, 3vw, 0.9rem);">Control Horario</span>
                     </span>
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden lg:flex align-middle ml-1 flex-wrap gap-4 py-4">
+                <div class="hidden lg:flex items-center ml-2 flex-nowrap gap-x-1 xl:gap-x-2">
                     <x-jet-nav-link href="{{ route('inicio') }}" :active="request()->routeIs('inicio')">
                         {{ __('Start') }}
                     </x-jet-nav-link>
@@ -33,7 +33,7 @@
                     </x-jet-nav-link>
                     @if (Auth::user()->is_admin || Auth::user()->isTeamAdmin() || Auth::user()->isInspector())
                         <x-jet-nav-link href="{{ route('audit.index') }}" :active="request()->routeIs('audit.index')">
-                            {{ __('Audit Log') }}
+                            {{ __('Audit') }}
                         </x-jet-nav-link>
                     @endif
                     <x-jet-nav-link href="{{ route('docs.index') }}" :active="request()->routeIs('docs.*')">
@@ -56,15 +56,15 @@
                 </div>
             </div>
 
-            <div class="hidden lg:flex lg:items-center lg:ml-6">
+            <div class="hidden lg:flex lg:items-center lg:ml-2 xl:ml-3">
                 <!-- Teams Dropdown -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                     <div class="ml-3 relative">
                         <x-jet-dropdown align="right" width="60">
                             <x-slot name="trigger">
                                 <span class="inline-flex rounded-md">
-                                    <button type="button" class="text-formatted">
-                                        {{ Auth::user()->currentTeam?->name ?? __('No Team') }}
+                                    <button type="button" class="inline-flex items-center px-2 py-1 border border-transparent text-xs leading-tight font-medium rounded-md text-gray-400 bg-white hover:text-gray-700 focus:outline-none transition whitespace-nowrap">
+                                        <span class="max-w-[10rem] truncate">{{ Auth::user()->currentTeam?->name ?? __('No Team') }}</span>
                                         <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 20 20" fill="currentColor">
                                             <path fill-rule="evenodd"
@@ -144,8 +144,8 @@
                         <x-slot name="trigger">
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                                 <span class="inline-flex rounded-md">
-                                    <span class="text-formatted">
-                                        {{ Auth::user()->name . ' ' . Auth::user()->family_name1 }}</span>
+                                    <span class="inline-flex items-center px-2 py-1 border border-transparent text-xs leading-tight font-medium rounded-md text-gray-400 bg-white whitespace-nowrap">
+                                        <span class="max-w-[8rem] truncate">{{ Auth::user()->name . ' ' . Auth::user()->family_name1 }}</span></span>
                                     <button
                                         class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
                                         <img class="h-8 w-8 rounded-full object-cover"
@@ -156,8 +156,8 @@
                             @else
                                 <span class="inline-flex rounded-md">
                                     <button type="button"
-                                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition">
-                                        {{ Auth::user()->name }} {{ Auth::user()->family_name1 }}
+                                        class="inline-flex items-center px-2 py-1 border border-transparent text-xs leading-tight font-medium rounded-md text-gray-400 bg-white hover:text-gray-700 focus:outline-none transition whitespace-nowrap">
+                                        <span class="max-w-[8rem] truncate">{{ Auth::user()->name }} {{ Auth::user()->family_name1 }}</span>
 
                                         <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 20 20" fill="currentColor">
@@ -203,6 +203,11 @@
 
             <!-- Mobile Notifications and Hamburger -->
             <div class="-mr-2 flex items-center space-x-1 lg:hidden">
+                <!-- Mobile Notification Icon -->
+                <div class="relative flex items-center justify-center">
+                    @livewire('notification-icon')
+                </div>
+
                 <!-- Quick switch to mobile UI -->
                 <a href="{{ route('mobile.home') }}" title="{{ __('ui.layout.open_mobile') }}"
                     class="relative inline-flex items-center p-1.5 rounded-md hover:bg-gray-50 hover:text-gray-700 text-gray-600 transition-colors duration-200"
@@ -212,11 +217,6 @@
                         <path d="M3 6h14v2H3V6z" fill-opacity="0.6"></path>
                     </svg>
                 </a>
-
-                <!-- Mobile Notification Icon -->
-                <div class="relative flex items-center justify-center">
-                    @livewire('notification-icon')
-                </div>
 
                 <!-- Hamburger Button -->
                 <button @click="open = ! open"

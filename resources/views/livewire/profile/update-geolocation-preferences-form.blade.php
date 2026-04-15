@@ -1,3 +1,4 @@
+<div>
 <x-jet-form-section submit="updateGeolocationPreferences">
     <x-slot name="title">
         {{ __('Geolocation Preferences') }}
@@ -210,4 +211,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
-
+</div>

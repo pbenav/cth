@@ -8,5 +8,5 @@
 }
 
 .text-formatted {
-  @apply inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:bg-gray-50 hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition;
+  @apply inline-flex items-center px-3 py-1 border border-transparent text-[11px] leading-tight font-bold rounded-md text-gray-500 bg-white hover:bg-gray-50 hover:text-gray-700 focus:outline-none transition whitespace-nowrap uppercase tracking-wider;
 }

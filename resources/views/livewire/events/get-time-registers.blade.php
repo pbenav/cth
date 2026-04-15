@@ -1,7 +1,7 @@
 <div class="flex flex-col m-5 sm:m-10">
     <!-- Header Section -->
     <x-slot name="header">
-        <h2 class="text-xl font-semibold leading-tight text-gray-800">{{ __('Events') }}</h2>
+        <h2 class="text-xl font-semibold leading-tight text-gray-800">📋 {{ __('Events') }}</h2>
 
     </x-slot>
 
