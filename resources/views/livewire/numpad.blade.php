@@ -15,24 +15,24 @@
         @endif
     </div>
 
-    <div class="max-w-[350px] mx-auto">
-        <div class="flex flex-col items-center">
+    <div class="mb-4">
+        <div id="ct7" class="btn-aux"></div>
+    </div>
+
+    <div class="max-w-lg">
+        <div class="content-center">
             {{-- Branding Section --}}
-            <div class="flex flex-col items-center mb-6">
+            <div class="flex flex-col items-center mb-4 sm:mb-6">
                 {{-- Logo --}}
-                <div class="mb-4">
+                <div class="mb-3 sm:mb-4">
                     <img src="{{ asset('images/sientiaCTH-logo.png') }}" 
                          alt="{{ config('app.name') }}" 
-                         class="w-20 sm:w-24 aspect-square object-contain">
+                         class="w-16 sm:w-20 md:w-24 aspect-square object-contain">
                 </div>
                 {{-- App Name --}}
-                <h1 class="text-2xl font-bold text-white text-center">
-                    {{ __('Control Horario') }}
+                <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-white text-center">
+                    {{ config('app.name') }}
                 </h1>
-            </div>
-
-            <div class="mb-4 w-full">
-                <x-clock>{{ __('Reloj') }}</x-clock>
             </div>
 
             <div class="w-auto mb-3 sm:mb-4 text-center">
@@ -45,16 +45,16 @@
             </div>
 
             <div id="buttons" class="grid grid-cols-3 gap-2 sm:gap-4" role="group" aria-label="{{ __('Teclado numérico') }}">
-                <button @click="addCode('1')" class="btn-pad text-lg sm:text-xl" aria-label="1">1</button>
-                <button @click="addCode('2')" class="btn-pad text-lg sm:text-xl" aria-label="2">2</button>
-                <button @click="addCode('3')" class="btn-pad text-lg sm:text-xl" aria-label="3">3</button>
-                <button @click="addCode('4')" class="btn-pad text-lg sm:text-xl" aria-label="4">4</button>
-                <button @click="addCode('5')" class="btn-pad text-lg sm:text-xl" aria-label="5">5</button>
-                <button @click="addCode('6')" class="btn-pad text-lg sm:text-xl" aria-label="6">6</button>
-                <button @click="addCode('7')" class="btn-pad text-lg sm:text-xl" aria-label="7">7</button>
-                <button @click="addCode('8')" class="btn-pad text-lg sm:text-xl" aria-label="8">8</button>
-                <button @click="addCode('9')" class="btn-pad text-lg sm:text-xl" aria-label="9">9</button>
-                <button @click="addCode('0')" class="btn-pad col-span-3 text-lg sm:text-xl" aria-label="0">0</button>
+                <button @click="addCode('1')" class="btn-pad" aria-label="1">1</button>
+                <button @click="addCode('2')" class="btn-pad" aria-label="2">2</button>
+                <button @click="addCode('3')" class="btn-pad" aria-label="3">3</button>
+                <button @click="addCode('4')" class="btn-pad" aria-label="4">4</button>
+                <button @click="addCode('5')" class="btn-pad" aria-label="5">5</button>
+                <button @click="addCode('6')" class="btn-pad" aria-label="6">6</button>
+                <button @click="addCode('7')" class="btn-pad" aria-label="7">7</button>
+                <button @click="addCode('8')" class="btn-pad" aria-label="8">8</button>
+                <button @click="addCode('9')" class="btn-pad" aria-label="9">9</button>
+                <button @click="addCode('0')" class="btn-pad col-span-3" aria-label="0">0</button>
             </div>
 
             <div class="mt-3 sm:mt-4">
@@ -63,16 +63,92 @@
                 </button>
             </div>
 
-            <div class="grid grid-cols-2 gap-4 mt-6">
-                <button @click="resetCode()" class="btn-aux w-full" aria-label="{{ __('Restablecer') }}">
+            <div class="mt-0 text-center content-center">
+                <button @click="resetCode()" class="btn-aux" aria-label="{{ __('Restablecer') }}">
                     {{ __('Restablecer') }}
                 </button>
-                <button @click="deleteCode()" class="btn-aux w-full" aria-label="{{ __('Borrar') }}">
+                <button @click="deleteCode()" class="btn-aux" aria-label="{{ __('Borrar') }}">
                     {{ __('Borrar') }}
                 </button>
             </div>
         </div>
     </div>
+
+    <style>
+        .btn-pad {
+            background-color: #d1d5db !important; /* gray-300 */
+            color: #111827 !important; /* gray-900 */
+            text-align: center !important;
+            padding: 0.75rem 0.5rem !important;
+            border-radius: 0.5rem !important;
+            cursor: pointer !important;
+            border: none !important;
+            transition: all 0.7s duration-700 !important;
+            font-size: 1.125rem !important;
+        }
+
+        .btn-pad:hover {
+            background-color: #374151 !important; /* gray-700 */
+            color: #ffffff !important;
+        }
+
+        .btn-aux {
+            background-color: #d1d5db !important; /* gray-300 */
+            color: #111827 !important; /* gray-900 */
+            text-align: center !important;
+            padding: 0.75rem 2.5rem !important;
+            border-radius: 0.5rem !important;
+            cursor: pointer !important;
+            border: none !important;
+            transition: all 0.7s duration-700 !important;
+            font-size: 1.25rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+
+        .btn-aux:hover {
+            background-color: #374151 !important; /* gray-700 */
+            color: #ffffff !important;
+        }
+
+        .btn-code {
+            width: 100% !important;
+            background-color: #22c55e !important; /* green-500 approx */
+            color: #ffffff !important;
+            font-weight: 900 !important;
+            text-transform: uppercase !important;
+            text-align: center !important;
+            padding: 0.75rem !important;
+            border-radius: 0.5rem !important;
+            cursor: pointer !important;
+            border: none !important;
+            transition: all 0.7s duration-700 !important;
+            display: block !important;
+        }
+
+        .btn-code:hover {
+            background-color: #16a34a !important; /* green-600 */
+        }
+
+        .pin-input {
+            width: 100% !important;
+            background-color: #fef9c3 !important; /* light yellow */
+            color: #111827 !important;
+            font-size: 1.5rem !important;
+            font-weight: 700 !important;
+            text-align: center !important;
+            padding: 0.75rem !important;
+            border-radius: 0.375rem !important;
+            border: 1px solid #d1d5db !important;
+            outline: none !important;
+        }
+
+        /* Clock override to use btn-aux like styles as per original */
+        #ct7.btn-aux {
+            width: 100% !important;
+            display: block !important;
+            padding: 0.75rem !important;
+        }
+    </style>
 
     <script>
         window.onload = () => {
