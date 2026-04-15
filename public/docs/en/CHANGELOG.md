@@ -16,6 +16,11 @@ This document collects the most important milestones in the evolution of **sient
 - **Full Localization**: Automatic translation of all panel buttons and indicators into English and Spanish.
 - **Style Stabilization**: Consolidation of direct CSS to avoid purging or deferred loading issues in production.
 
+### Mobile App and REST API
+- **Sanctum Security**: Implementation of mandatory expiration for personal access tokens to reinforce API security.
+- **APK Distribution**: New build of the Android application available for direct download (v1.2.0).
+- **Layout Fixes**: Resolution of AppBar overlaps for small screens in the mobile app.
+
 ---
 
 ## 🎖️ February 2026 (v1.1.0) - Professional Reports and Audit Optimization

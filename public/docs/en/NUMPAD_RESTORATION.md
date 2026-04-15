@@ -21,5 +21,11 @@ The Clock-in Pad is now fully bilingual:
 ## 🛠️ Technical Stabilization
 CSS code has been consolidated, removing aggressive compilation dependencies that caused random display errors. This ensures the keypad looks **perfect** on all browsers and devices on every load.
 
+## 📱 New Mobile App & API Security
+As part of this 1.2.0 release, we haven't just improved the web, but also the mobile ecosystem:
+- **APK Distribution**: The new version of the Android application is now available for direct download from this same documentation panel.
+- **REST Security**: We have reinforced the authentication endpoint by implementing mandatory expiration for Sanctum tokens, closing potential security gaps.
+- **App Improvements**: Design bugs in the top bar (AppBar) that caused overlaps on certain phone models have been fixed, ensuring menus are always visible.
+
 ---
 *© 2026 sientiaCTH - Evolving for you*

@@ -21,5 +21,11 @@ El Panel de Fichaje ahora es totalmente bilingüe:
 ## 🛠️ Estabilización Técnica
 Se ha consolidado el código CSS eliminando dependencias de compilación agresivas que causaban errores de visualización aleatorios. Esto garantiza que el teclado se vea **perfecto** en todos los navegadores y dispositivos en cada carga.
 
+## 📱 Nueva App Móvil y Seguridad API
+Como parte de esta versión 1.2.0, no solo ha mejorado la web, sino también el ecosistema móvil:
+- **Distribución de APK**: La nueva versión de la aplicación Android ya está disponible para descarga directa desde este mismo panel de documentación.
+- **Securización REST**: Hemos reforzado el endpoint de autenticación mediante la implementación de expiración obligatoria en los tokens de Sanctum, cerrando posibles brechas de seguridad.
+- **Mejoras en la App**: Se han corregido errores de diseño en la barra superior (AppBar) que causaban solapamientos en ciertos modelos de teléfono, garantizando que los menús sean siempre visibles.
+
 ---
 *© 2026 sientiaCTH - Evolucionando para ti*

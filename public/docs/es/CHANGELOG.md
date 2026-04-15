@@ -16,6 +16,11 @@ Este documento recoge los hitos más importantes en la evolución de **sientiaCT
 - **Localización Completa**: Traducción automática de todos los botones e indicadores del panel al Inglés y Español.
 - **Estabilización de Estilos**: Consolidación de CSS directo para evitar problemas de purga o carga diferida en producción.
 
+### App Móvil y API REST
+- **Seguridad Sanctum**: Implementación de expiración obligatoria en los tokens de acceso personal para reforzar la seguridad de la API.
+- **Distribución APK**: Nueva compilación de la aplicación Android disponible para descarga directa (v1.2.0).
+- **Correcciones de Layout**: Resolución de solapamientos en la AppBar para pantallas pequeñas en la app móvil.
+
 ---
 
 ## 🎖️ Febrero 2026 (v1.1.0) - Informes Profesionales y Optimización de Auditoría
