@@ -36,10 +36,10 @@
         @endif
 
         <!-- Main content -->
-        <div class="mx-auto max-w-6xl sm:px-6 lg:px-8 py-24">
+        <div class="mx-auto max-w-6xl sm:px-4 lg:px-6 py-10 min-w-80">
 
             <!-- Numpad -->
-            <div class="p-4 mt-8 bg-gray-500 shadow dark:bg-gray-800 sm:rounded-lg" style="max-width:576px;">
+            <div class="p-4 mt-8 bg-gray-500 shadow dark:bg-gray-800 sm:rounded-lg">
                 @livewire('numpad')
 
                 <!-- Landing Link -->
