@@ -18,24 +18,24 @@
     <div class="max-w-lg">
         <div class="content-center">
             {{-- Branding Section --}}
-            <div class="flex flex-col items-center mb-4 sm:mb-6">
+            <div class="flex flex-col items-center mb-2">
                 {{-- Logo --}}
-                <div class="mb-3 sm:mb-4">
+                <div class="mb-1">
                     <img src="{{ asset('images/sientiaCTH-logo.png') }}" 
                          alt="{{ config('app.name') }}" 
-                         class="w-16 sm:w-20 md:w-24 aspect-square object-contain">
+                         class="w-12 sm:w-16 aspect-square object-contain">
                 </div>
                 {{-- App Name --}}
-                <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-white text-center">
+                <h1 class="text-lg sm:text-xl font-bold text-white text-center">
                     {{ config('app.name') }}
                 </h1>
             </div>
 
-            <div class="mt-2">
+            <div class="mt-1 flex items-center justify-center">
                 <x-clock>{{ __('Reloj') }}</x-clock>
             </div>
 
-            <div class="w-auto mb-3 sm:mb-4 text-center">
+            <div class="w-auto mb-2 text-center">
                 <form wire:submit.prevent="insertCode">
                     <input type="password" id="user_code" x-model="user_code" class="btn btn-pad"
                         aria-label="{{ __('Código de usuario') }}"
@@ -44,7 +44,7 @@
                 </form>
             </div>
 
-            <div id="buttons" class="grid grid-cols-3 gap-2 sm:gap-4" role="group" aria-label="{{ __('Teclado numérico') }}">
+            <div id="buttons" class="grid grid-cols-3 gap-2" role="group" aria-label="{{ __('Teclado numérico') }}">
                 <button @click="addCode('1')" class="btn-pad text-lg sm:text-xl" aria-label="1">1</button>
                 <button @click="addCode('2')" class="btn-pad text-lg sm:text-xl" aria-label="2">2</button>
                 <button @click="addCode('3')" class="btn-pad text-lg sm:text-xl" aria-label="3">3</button>
@@ -57,17 +57,17 @@
                 <button @click="addCode('0')" class="btn-pad col-span-3 text-lg sm:text-xl" aria-label="0">0</button>
             </div>
 
-            <div class="mt-3 sm:mt-4">
+            <div class="mt-2">
                 <button type="submit" wire:click="insertCode" class="btn-code" aria-label="{{ __('Insertar código') }}">
                     {{ __('Insertar código') }}
                 </button>
             </div>
 
             <div class="mt-0 text-center content-center">
-                <button @click="resetCode()" class="mt-3 sm:mt-4 btn-aux w-min" aria-label="{{ __('Restablecer') }}">
+                <button @click="resetCode()" class="mt-2 btn-aux" aria-label="{{ __('Restablecer') }}">
                     {{ __('Restablecer') }}
                 </button>
-                <button @click="deleteCode()" class="mt-3 sm:mt-4 btn-aux w-min sm:ml-4 sm:mt-0" aria-label="{{ __('Borrar') }}">
+                <button @click="deleteCode()" class="mt-2 btn-aux sm:ml-2" aria-label="{{ __('Borrar') }}">
                     {{ __('Borrar') }}
                 </button>
             </div>
