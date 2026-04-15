@@ -51,93 +51,73 @@
 }
 
 .btn-pad {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    background-color: #cbd5e1 !important; /* Original light gray */
-    color: #334155 !important;
-    font-weight: 600 !important;
+    background-color: #d1d5db !important; /* gray-300 */
+    color: #111827 !important; /* gray-900 */
     text-align: center !important;
-    padding: 0.8rem !important;
-    border-radius: 0.4rem !important;
-    transition: background-color 0.2s ease !important;
+    padding: 0.75rem 0.5rem !important;
+    border-radius: 0.5rem !important;
     cursor: pointer !important;
     border: none !important;
+    font-size: 1rem !important;
+    transition: all 0.7s !important;
     width: 100% !important;
-    font-size: 1.125rem !important;
+    display: inline-block !important;
+}
+
+@media (min-width: 640px) {
+    .btn-pad {
+        font-size: 1.5rem !important;
+    }
 }
 
 .btn-pad:hover {
-    background-color: #94a3b8 !important;
+    background-color: #374151 !important; /* gray-700 */
+    color: #ffffff !important;
 }
 
 .btn-aux {
-    background-color: #cbd5e1 !important;
-    color: #334155 !important;
-    font-weight: 600 !important;
+    background-color: #d1d5db !important; /* gray-300 */
+    color: #111827 !important;
     text-align: center !important;
-    padding: 1rem !important;
-    border-radius: 0.4rem !important;
-    border: none !important;
-    transition: background-color 0.2s ease !important;
+    padding: 0.75rem 2.5rem !important;
+    border-radius: 0.5rem !important;
     cursor: pointer !important;
-    font-size: 1rem !important;
+    border: none !important;
+    transition: all 0.7s !important;
+    font-size: 1.25rem !important;
+    margin-bottom: 0.5rem !important;
+    display: inline-block !important;
 }
 
 .btn-aux:hover {
-    background-color: #94a3b8 !important;
+    background-color: #374151 !important; /* gray-700 */
+    color: #ffffff !important;
 }
 
 .btn-code {
     width: 100% !important;
-    background-color: #22c55e !important; /* Original bright green */
+    background-color: #22c55e !important; /* green-500 approx */
     color: #ffffff !important;
-    font-weight: 700 !important;
+    font-weight: 900 !important;
     text-transform: uppercase !important;
     text-align: center !important;
-    padding: 1rem !important;
-    border-radius: 0.4rem !important;
-    transition: filter 0.2s ease !important;
+    padding: 0.75rem 0.5rem !important;
+    border-radius: 0.5rem !important;
     cursor: pointer !important;
     border: none !important;
-    letter-spacing: 0.1em !important;
+    transition: all 0.7s !important;
     display: block !important;
-    font-size: 1.125rem !important;
-}
-
-.btn-code:hover {
-    filter: brightness(1.1) !important;
-}
-
-.pin-input {
-    width: 100% !important;
-    background-color: #fef9c3 !important; /* Light yellow */
-    color: #111827 !important;
-    font-size: 1.5rem !important;
-    font-weight: 700 !important;
-    text-align: center !important;
-    padding: 0.6rem !important;
-    border-radius: 0.25rem !important;
-    border: 2px solid #3b82f6 !important;
-    letter-spacing: 0.4em !important;
-    outline: none !important;
-}
-
-.comp-clock-bar {
-    background-color: #cbd5e1 !important;
-    color: #334155 !important;
-    font-weight: 600 !important;
-    text-align: center !important;
-    padding: 0.6rem !important;
-    border-radius: 0.4rem !important;
-    width: 100% !important;
     font-size: 1rem !important;
 }
 
-/* Dark mode variations to match card context */
-.dark .btn-pad, .dark .btn-aux, .dark .comp-clock-bar {
-    background-color: #cbd5e1 !important;
-    color: #334155 !important;
+.btn-code:hover {
+    background-color: #16a34a !important; /* green-600 */
+}
+
+/* Specific PIN input reset since it also uses btn-pad in original code but was broken by my earlier attempts to split them */
+input.btn-pad {
+    background-color: #fef9c3 !important; /* light yellow */
+    letter-spacing: 0.5em !important;
 }
 
 .sl-select{
