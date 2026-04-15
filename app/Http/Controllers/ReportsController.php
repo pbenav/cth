@@ -194,7 +194,31 @@ class ReportsController extends Controller
 
         // Check if async generation is needed for downloads (regular events)
         if ($isDownload && $start->diffInDays($end) > ($asyncThreshold * 30.5)) {
-            // Dispatch async job
+            $viewContent = view('reports.async-message', [
+                'title' => __('Please wait, the report may take a few minutes...'),
+                'message' => __('This report will be generated asynchronously and sent to your inbox.'),
+                'async' => true
+            ])->render();
+
+            if (function_exists('fastcgi_finish_request')) {
+                // Return response and finish connection to user immediately
+                ignore_user_abort(true);
+                header("Content-Type: text/html");
+                header("Content-Length: " . strlen($viewContent));
+                header("Connection: close");
+                echo $viewContent;
+                
+                if (ob_get_level() > 0) ob_end_flush();
+                flush();
+                
+                session_write_close();
+                fastcgi_finish_request();
+                
+                // Re-increase time limit for the background process
+                set_time_limit(600);
+            }
+
+            // Dispatch job (if sync, it runs now; if database, it queues)
             \App\Jobs\GenerateReportJob::dispatch(
                 $user->id,
                 $team->id,
@@ -209,15 +233,11 @@ class ReportsController extends Controller
                 $isChrome
             );
 
-            // Return HTML message indicating async generation
-            $message = __('This report will be generated asynchronously and sent to your inbox.');
-            $title = __('Please wait, the report may take a few minutes...');
-            
-            return response()->view('reports.async-message', [
-                'title' => $title,
-                'message' => $message,
-                'async' => true
-            ], 202);
+            if (function_exists('fastcgi_finish_request')) {
+                exit; // End process after job completion
+            }
+
+            return response($viewContent, 202);
         }
 
         $events = $query->get();
