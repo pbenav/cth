@@ -8,7 +8,7 @@
                     class="flex items-center bg-white/10 dark:bg-gray-800/50 rounded-full px-2 py-1 border border-white/10 mr-4">
                     <a href="{{ route('set-locale', 'es') }}"
                         class="px-2 py-1 text-xs font-bold transition-colors {{ app()->getLocale() == 'es' ? 'text-blue-400' : 'text-gray-400 hover:text-white' }}">ES</a>
-                    <span class="text-white/10 text-xs">|</span>
+                    <span class="text-gray-500 text-xs">|</span>
                     <a href="{{ route('set-locale', 'en') }}"
                         class="px-2 py-1 text-xs font-bold transition-colors {{ app()->getLocale() == 'en' ? 'text-blue-400' : 'text-gray-400 hover:text-white' }}">EN</a>
                 </div>
