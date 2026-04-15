@@ -336,21 +336,4 @@ class ReportsController extends Controller
         return Excel::download(new EventsExport($events, $fromDate, $toDate, $teamTimezone), $fn, $types[$rtype] ?? \Maatwebsite\Excel\Excel::XLSX);
     }
 
-    public function download($file)
-    {
-        // Seguridad: evitar path traversal y forzar nombres simples
-        // (no directorios, no .., solo caracteres seguros)
-        if (!is_string($file) || !preg_match('/^[A-Za-z0-9._-]+$/', $file)) {
-            abort(404);
-        }
-
-        $path = 'reports/' . $file;
-        
-        if (!\Illuminate\Support\Facades\Storage::exists($path)) {
-            abort(404);
-        }
-
-        // Descargar en streaming (evita cargar el fichero completo en memoria)
-        return \Illuminate\Support\Facades\Storage::download($path, $file);
-    }
 }

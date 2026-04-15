@@ -13,7 +13,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\NewMessage;
@@ -70,10 +70,14 @@ class GenerateReportJob implements ShouldQueue
                 app()->setLocale($user->locale);
             }
 
+            // Prepare public directory
+            $publicDir = public_path('descargas/informes');
+            File::ensureDirectoryExists($publicDir);
+
             // Handle statistics reports differently
             if ($this->reportSource === 'statistics') {
-                $fileName = 'cth_report_' . date('YmdHis') . '.pdf';
-                $filePath = 'reports/' . $fileName;
+                $fileName = 'cth_stats_' . date('YmdHis') . '.pdf';
+                $filePath = $publicDir . '/' . $fileName;
 
                 $exporter = new \App\Exports\StatsPdfExport(
                     $this->userId,
@@ -85,10 +89,10 @@ class GenerateReportJob implements ShouldQueue
                 );
                 
                 $pdf = $exporter->generate();
-                Storage::put($filePath, $pdf);
+                File::put($filePath, $pdf);
 
-                // Create download URL and send message
-                $downloadUrl = route('reports.download', ['file' => $fileName]);
+                // Create direct download URL
+                $downloadUrl = url('descargas/informes/' . $fileName);
                 
                 $body = __('The report for period :from to :to is ready for download. :link', [
                     'from' => $this->fromdate,
@@ -128,7 +132,6 @@ class GenerateReportJob implements ShouldQueue
             $query = Event::query()
                 ->with(['user', 'eventType'])
                 ->where('team_id', $team->id)
-                // Use timestamp comparison instead of whereDate to account for timezone
                 ->where(function($q) use ($fromDateTimeUTC, $toDateTimeUTC) {
                     $q->where('start', '<=', $toDateTimeUTC)
                       ->where('end', '>=', $fromDateTimeUTC);
@@ -150,7 +153,7 @@ class GenerateReportJob implements ShouldQueue
             // Generate the file
             $ext = strtolower($this->rtype);
             $fileName = 'cth_report_' . date('YmdHis') . '.' . $ext;
-            $filePath = 'reports/' . $fileName;
+            $filePath = $publicDir . '/' . $fileName;
 
             if ($this->rtype === 'PDF') {
                 // Determine Work Center
@@ -175,24 +178,35 @@ class GenerateReportJob implements ShouldQueue
                     $this->orderBy
                 );
                 $pdf = $exporter->generate();
-
-                // Store PDF
-                Storage::put($filePath, $pdf);
+                File::put($filePath, $pdf);
             } else {
                 // Get team timezone for event clipping
                 $teamTimezone = $team->timezone ?: config('app.timezone');
                 
-                // Store other formats
+                // Store other formats using Excel
                 Excel::store(
                     new EventsExport($events, $this->fromdate, $this->todate, $teamTimezone),
-                    $filePath,
-                    'local',
-                    $this->getRtypeConstant($this->rtype)
+                    'descargas/informes/' . $fileName,
+                    'public_direct' // We will define this temporary disk or use a workaround
                 );
+                
+                // Workaround: if no disk, move it manually
+                if (!File::exists($filePath)) {
+                    // Fallback to local and move
+                     Excel::store(
+                        new EventsExport($events, $this->fromdate, $this->todate, $teamTimezone),
+                        $fileName,
+                        'local'
+                    );
+                    $localPath = storage_path('app/' . $fileName);
+                    if (File::exists($localPath)) {
+                        File::move($localPath, $filePath);
+                    }
+                }
             }
 
-            // Create download URL
-            $downloadUrl = route('reports.download', ['file' => $fileName]);
+            // Create direct URL
+            $downloadUrl = url('descargas/informes/' . $fileName);
 
             $body = __('The report for period :from to :to is ready for download. :link', [
                 'from' => $this->fromdate,
