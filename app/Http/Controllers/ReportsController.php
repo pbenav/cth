@@ -203,6 +203,7 @@ class ReportsController extends Controller
             if (function_exists('fastcgi_finish_request')) {
                 // Return response and finish connection to user immediately
                 ignore_user_abort(true);
+                http_response_code(202);
                 header("Content-Type: text/html");
                 header("Content-Length: " . strlen($viewContent));
                 header("Connection: close");
