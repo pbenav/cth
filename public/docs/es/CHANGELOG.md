@@ -8,6 +8,16 @@ Este documento recoge los hitos más importantes en la evolución de **sientiaCT
 
 ---
 
+## 🎨 Abril 2026 (v1.2.0) - Restauración de Interfaz y Mejora de UX
+
+### Rediseño del Panel de Fichaje (Numpad)
+- **Restauración Histórica**: Regreso al diseño estable del commit `c23964fa8` con alta fidelidad visual y contrastes mejorados.
+- **Compactación Vertical**: Reducción de márgenes y paddings para optimizar el espacio en dispositivos móviles y reducir el scroll.
+- **Localización Completa**: Traducción automática de todos los botones e indicadores del panel al Inglés y Español.
+- **Estabilización de Estilos**: Consolidación de CSS directo para evitar problemas de purga o carga diferida en producción.
+
+---
+
 ## 🎖️ Febrero 2026 (v1.1.0) - Informes Profesionales y Optimización de Auditoría
 
 ### Sistema de Informes Profesional

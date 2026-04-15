@@ -7,6 +7,7 @@ Bienvenido al repositorio de documentación de sientiaCTH. Aquí encontrarás to
 - [Manual de Usuario](USER_MANUAL.md): Guía completa para trabajadores y supervisores.
 - [Manual del Desarrollador](DEVELOPER_MANUAL.md): Información técnica para el mantenimiento y extensión del sistema.
 - [Referencia API](REFERENCIA_API.md): Documentación de los puntos de entrada de la API para integraciones.
+- [Restauración del Numpad (Nuevo)](RESTAURACION_NUMPAD.md): Detalles de las mejoras de diseño y UX en la V1.2.0.
 
 ## 🚀 Acceso Rápido
 

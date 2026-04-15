@@ -137,6 +137,12 @@ sientiaCTH allows you to pause your workday easily.
 ![Pause System](images/sistema-pausas.png)
 *Caption: Pause and Resume buttons in the SmartClockIn interface.*
 
+#### E. Clock-in Pad (Numpad)
+The **Numpad** is the classic interface designed for ultra-fast clock-ins. In version 1.2.0, this component has been optimized:
+- **Compact Design**: Takes up less vertical space, ideal for fixed tablets or mobile devices.
+- **Bilingual**: Controls adapt to your preferred language automatically.
+- **High Fidelity**: Recovers the contrast and readability of the most stable original versions.
+
 ---
 
 ## 4. Event Management
@@ -239,8 +245,8 @@ Make sure you are within the allowed time range or request an exceptional clock-
 If you experience issues with the **Dashboard** or the **SmartClockIn** system, try reloading the page (F5) or clearing your browser cache. For persistent issues, contact technical support providing your user ID.
 
 ---
-*Manual updated: February 2026*
-*Version: 1.0.1*
+*Manual updated: April 2026*
+*Version: 1.2.0*
 ---
 
 ## 💖 Support the Project
@@ -252,4 +258,4 @@ If you find this project useful and would like to support its maintenance and co
 Any support is greatly appreciated and helps sientiaCTH stay free and open source for everyone.
 
 ---
-*© 2025 sientiaCTH - Time and Schedule Control*
+*© 2026 sientiaCTH - Time and Schedule Control*

@@ -136,6 +136,12 @@ sientiaCTH permite pausar tu jornada laboral de forma sencilla.
 ![Sistema de Pausas](images/sistema-pausas.png)
 *Caption: Botones de Pausa y Reanudación en la interfaz de SmartClockIn.*
 
+#### E. Panel de Fichaje (Clock-in Pad / Numpad)
+El **Numpad** es la interfaz clásica diseñada para un fichaje ultrarrápido. En la versión 1.2.0, este componente ha sido optimizado:
+- **Diseño Compacto**: Ocupa menos espacio vertical, ideal para tablets fijas o móviles.
+- **Bilingüe**: Los controles se adaptan a tu idioma preferido.
+- **Alta Fidelidad**: Recupera el contraste y legibilidad de las versiones originales más estables.
+
 ---
 
 ## 4. Gestión de Eventos
@@ -238,8 +244,8 @@ Asegúrate de estar dentro del rango horario permitido o solicita un enlace de f
 Si experimentas problemas con el **Dashboard** o el sistema **SmartClockIn**, intenta recargar la página (F5) o limpiar la caché de tu navegador. Para problemas persistentes, contacta con el soporte técnico proporcionando tu ID de usuario.
 
 ---
-*Manual actualizado: Febrero 2026*
-*Versión: 1.0.1*
+*Manual actualizado: Abril 2026*
+*Versión: 1.2.0*
 ---
 
 ## 💖 Apoya el Proyecto
@@ -251,4 +257,4 @@ Si este proyecto te resulta útil y te gustaría apoyar su mantenimiento y desar
 Cualquier apoyo es enormemente agradecido y ayuda a que sientiaCTH siga siendo gratuito y de código abierto para todos.
 
 ---
-*© 2025 sientiaCTH - Control de Tiempo y Horarios*
+*© 2026 sientiaCTH - Control de Tiempo y Horarios*

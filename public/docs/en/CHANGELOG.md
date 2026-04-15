@@ -8,6 +8,16 @@ This document collects the most important milestones in the evolution of **sient
 
 ---
 
+## 🎨 April 2026 (v1.2.0) - Interface Restoration and UX Improvement
+
+### Clock-in Pad (Numpad) Redesign
+- **Historical Restoration**: Return to the stable design of commit `c23964fa8` with high visual fidelity and improved contrasts.
+- **Vertical Compaction**: Reduced margins and paddings to optimize space on mobile devices and reduce scrolling.
+- **Full Localization**: Automatic translation of all panel buttons and indicators into English and Spanish.
+- **Style Stabilization**: Consolidation of direct CSS to avoid purging or deferred loading issues in production.
+
+---
+
 ## 🎖️ February 2026 (v1.1.0) - Professional Reports and Audit Optimization
 
 ### Professional Reporting System
