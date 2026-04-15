@@ -15,7 +15,7 @@
         @endif
     </div>
 
-    <div class="max-w-lg">
+    <div class="max-w-lg" style="padding-top:64px;">
         <div class="content-center">
             {{-- Branding Section --}}
             <div class="flex flex-col items-center mb-2">
