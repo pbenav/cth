@@ -39,7 +39,7 @@
         <div class="mx-auto max-w-6xl sm:px-6 lg:px-8 pt-2">
 
             <!-- Numpad -->
-            <div class="p-4 mt-8 bg-gray-500 shadow dark:bg-gray-800 sm:rounded-lg" style="max-width:450px;">
+            <div class="p-4 mt-8 bg-gray-500 shadow dark:bg-gray-800 sm:rounded-lg" style="max-width:576px;">
                 @livewire('numpad')
 
                 <!-- Landing Link -->
