@@ -15,23 +15,23 @@
         @endif
     </div>
 
-    <div class="max-w-[200px] mx-auto">
+    <div class="max-w-[350px] mx-auto">
         <div class="flex flex-col items-center">
             {{-- Branding Section --}}
-            <div class="flex flex-col items-center mb-2">
+            <div class="flex flex-col items-center mb-6">
                 {{-- Logo --}}
-                <div class="mb-1">
+                <div class="mb-4">
                     <img src="{{ asset('images/sientiaCTH-logo.png') }}" 
                          alt="{{ config('app.name') }}" 
-                         class="w-12 aspect-square object-contain">
+                         class="w-20 sm:w-24 aspect-square object-contain">
                 </div>
                 {{-- App Name --}}
-                <h1 class="text-lg font-bold text-white text-center">
-                    {{ config('app.name') }}
+                <h1 class="text-2xl font-bold text-white text-center">
+                    {{ __('Control Horario') }}
                 </h1>
             </div>
 
-            <div class="mb-4 flex justify-center">
+            <div class="mb-4 w-full">
                 <x-clock>{{ __('Reloj') }}</x-clock>
             </div>
 
@@ -63,11 +63,11 @@
                 </button>
             </div>
 
-            <div class="mt-0 text-center content-center">
-                <button @click="resetCode()" class="mt-3 sm:mt-4 btn-aux w-min" aria-label="{{ __('Restablecer') }}">
+            <div class="grid grid-cols-2 gap-4 mt-6">
+                <button @click="resetCode()" class="btn-aux w-full" aria-label="{{ __('Restablecer') }}">
                     {{ __('Restablecer') }}
                 </button>
-                <button @click="deleteCode()" class="mt-3 sm:mt-4 btn-aux w-min sm:ml-4 sm:mt-0" aria-label="{{ __('Borrar') }}">
+                <button @click="deleteCode()" class="btn-aux w-full" aria-label="{{ __('Borrar') }}">
                     {{ __('Borrar') }}
                 </button>
             </div>
