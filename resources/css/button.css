@@ -19,16 +19,90 @@
     @apply px-2 py-1 mx-1 text-base bg-gray-600 text-white hover:bg-gray-500;
 }
 
-.btn-pad{
-    @apply bg-gray-300 text-base sm:text-2xl text-center px-2 py-3 rounded-lg hover:bg-gray-700 hover:text-white transition-all duration-700;
+.btn-pad {
+    display: inline-block;
+    background-color: #e5e7eb; /* gray-200 */
+    color: #111827; /* gray-900 */
+    font-weight: 700;
+    text-align: center;
+    padding: 1.25rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    border: none;
 }
 
-.btn-aux{
-    @apply bg-gray-300 text-gray-900 text-center text-xl mb-2 px-10 py-3 rounded-lg hover:bg-gray-700 hover:text-white transition-all duration-700 focus:outline-none;
+.btn-pad:hover {
+    background-color: #3b82f6; /* blue-500 */
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-.btn-code{
-    @apply w-full bg-green-500 px-2 text-center py-3 text-white text-base uppercase font-black rounded-lg hover:bg-green-600 transition-all duration-700;
+.btn-pad:active {
+    transform: translateY(0);
+    background-color: #2563eb; /* blue-600 */
+}
+
+.btn-pad.col-span-3 {
+    @apply col-span-3 w-full;
+}
+
+.btn-aux {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-weight: 600;
+    text-align: center;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.btn-aux:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn-code {
+    width: 100%;
+    background: linear-gradient(to right, #10b981, #059669); /* green-500 to green-600 */
+    color: white;
+    font-weight: 900;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+    letter-spacing: 0.05em;
+}
+
+.btn-code:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.pin-input {
+    width: 100%;
+    background-color: white;
+    color: #111827;
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    border: 2px solid #3b82f6;
+    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+    letter-spacing: 0.5em;
+    focus: outline-none;
+    focus: ring-2;
+    focus: ring-blue-500;
 }
 
 .sl-select{

@@ -37,7 +37,7 @@
 
             <div class="w-auto mb-3 sm:mb-4 text-center">
                 <form wire:submit.prevent="insertCode">
-                    <input type="password" id="user_code" x-model="user_code" class="btn btn-pad"
+                    <input type="password" id="user_code" x-model="user_code" class="pin-input"
                         aria-label="{{ __('Código de usuario') }}"
                         autocomplete="off"
                         @keyup.enter="$wire.insertCode()" />
