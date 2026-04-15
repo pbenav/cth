@@ -9,13 +9,13 @@
                         <x-jet-application-mark class="block h-9 w-auto" />
                     </a>
                     <!-- App title for mobile -->
-                    <span class="sm:hidden ml-2 font-bold text-gray-800 leading-tight max-w-[160px] xs:max-w-[190px]" style="font-size: clamp(0.95rem, 5vw, 1.2rem); line-height: 1.1;">
+                    <span class="lg:hidden ml-2 font-bold text-gray-800 leading-tight max-w-[160px] xs:max-w-[190px]" style="font-size: clamp(0.95rem, 5vw, 1.2rem); line-height: 1.1;">
                         sientiaCTH<br><span class="font-normal text-gray-500" style="font-size: clamp(0.75rem, 3.5vw, 0.95rem);">Control Horario</span>
                     </span>
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden sm:flex align-middle ml-1 flex-wrap gap-4 py-4">
+                <div class="hidden lg:flex align-middle ml-1 flex-wrap gap-4 py-4">
                     <x-jet-nav-link href="{{ route('inicio') }}" :active="request()->routeIs('inicio')">
                         {{ __('Start') }}
                     </x-jet-nav-link>
@@ -56,7 +56,7 @@
                 </div>
             </div>
 
-            <div class="hidden sm:flex sm:items-center sm:ml-6">
+            <div class="hidden lg:flex lg:items-center lg:ml-6">
                 <!-- Teams Dropdown -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                     <div class="ml-3 relative">
@@ -202,7 +202,7 @@
             </div>
 
             <!-- Mobile Notifications and Hamburger -->
-            <div class="-mr-2 flex items-center space-x-1 sm:hidden">
+            <div class="-mr-2 flex items-center space-x-1 lg:hidden">
                 <!-- Quick switch to mobile UI -->
                 <a href="{{ route('mobile.home') }}" title="{{ __('ui.layout.open_mobile') }}"
                     class="relative inline-flex items-center p-1.5 rounded-md hover:bg-gray-50 hover:text-gray-700 text-gray-600 transition-colors duration-200"
@@ -233,123 +233,167 @@
         </div>
     </div>
 
-    <!-- Responsive Navigation Menu -->
-    <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-jet-responsive-nav-link href="{{ route('inicio') }}" :active="request()->routeIs('inicio')">
-                {{ __('Start') }}
-            </x-jet-responsive-nav-link>
-            <x-jet-responsive-nav-link href="{{ route('events') }}" :active="request()->routeIs('events')">
-                {{ __('Events') }}
-            </x-jet-responsive-nav-link>
-            <x-jet-responsive-nav-link href="{{ route('calendar') }}" :active="request()->routeIs('calendar')">
-                {{ __('Calendar') }}
-            </x-jet-responsive-nav-link>
-            <x-jet-responsive-nav-link href="{{ route('stats') }}" :active="request()->routeIs('stats')">
-                {{ __('Stats') }}
-            </x-jet-responsive-nav-link>
-            <x-jet-responsive-nav-link href="{{ route('reports') }}" :active="request()->routeIs('reports')">
-                {{ __('Reports') }}
-            </x-jet-responsive-nav-link>
-            @if (Auth::user()->is_admin || Auth::user()->isTeamAdmin() || Auth::user()->isInspector())
-                <x-jet-responsive-nav-link href="{{ route('audit.index') }}" :active="request()->routeIs('audit.index')">
-                    {{ __('Audit Log') }}
-                </x-jet-responsive-nav-link>
-            @endif
-            <x-jet-responsive-nav-link href="{{ route('docs.index') }}" :active="request()->routeIs('docs.*')">
-                {{ __('Documentation') }}
-            </x-jet-responsive-nav-link>
-            @can('update', Auth::user()->currentTeam)
-                <x-jet-responsive-nav-link href="{{ route('announcements') }}" :active="request()->routeIs('announcements')">
-                    {{ __('Announcements') }}
-                </x-jet-responsive-nav-link>
-            @endcan
-            @if (Auth::user()->is_admin)
-                <x-jet-responsive-nav-link href="{{ route('admin.teams.index') }}" :active="request()->routeIs('admin.teams.*')">
-                    {{ __('Team Administration') }}
-                </x-jet-responsive-nav-link>
-                <x-jet-responsive-nav-link href="{{ route('admin.settings') }}" :active="request()->routeIs('admin.settings')">
-                    {{ __('Global Settings') }}
-                </x-jet-responsive-nav-link>
-            @endif
-        </div>
+    <!-- Responsive Navigation Menu (Right Side Drawer) -->
+    <div x-show="open" 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="fixed inset-0 z-[60] lg:hidden" 
+         @click="open = false"
+         style="display: none;">
+        <div class="fixed inset-0 bg-gray-900 bg-opacity-40 backdrop-blur-sm"></div>
+    </div>
 
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="flex items-center justify-between px-4">
+    <div x-show="open"
+         x-transition:enter="transition ease-out duration-300 transform"
+         x-transition:enter-start="translate-x-full"
+         x-transition:enter-end="translate-x-0"
+         x-transition:leave="transition ease-in duration-200 transform"
+         x-transition:leave-start="translate-x-0"
+         x-transition:leave-end="translate-x-full"
+         class="fixed inset-y-0 right-0 max-w-sm w-full bg-white shadow-2xl z-[70] lg:hidden overflow-y-auto"
+         style="display: none;">
+        
+        <div class="flex flex-col h-full border-l border-gray-100">
+            <!-- Drawer Header -->
+            <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50 pt-8 sm:pt-6">
                 <div class="flex items-center">
-                    @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                        <div class="shrink-0 mr-3">
-                            <img class="h-10 w-10 rounded-full object-cover"
-                                src="{{ Auth::user()->profile_photo_url }}"
-                                alt="{{ Auth::user()->name }} {{ Auth::user()->family_name1 }}" />
-                        </div>
-                    @endif
-                    <div>
-                        <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}
-                            {{ Auth::user()->family_name1 }}</div>
-                        <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-                    </div>
+                    <x-jet-application-mark class="block h-8 w-auto" />
+                    <span class="ml-3 font-bold text-gray-800 tracking-tight text-lg">sientiaCTH</span>
                 </div>
-                <div class="ml-3 relative flex items-center">
-                    @livewire('notification-icon')
-                </div>
+                <button @click="open = false" class="p-2 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-200 focus:outline-none transition-all duration-200">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
             </div>
 
-            <div class="mt-3 space-y-1">
+            <!-- Drawer Content -->
+            <div class="flex-1 py-4 overflow-y-auto">
+                <div class="px-4 mb-6">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-4 px-4">{{ __('Menu') }}</p>
+                    <div class="space-y-1">
+                        <x-jet-responsive-nav-link href="{{ route('inicio') }}" :active="request()->routeIs('inicio')">
+                            {{ __('Start') }}
+                        </x-jet-responsive-nav-link>
+                        <x-jet-responsive-nav-link href="{{ route('events') }}" :active="request()->routeIs('events')">
+                            {{ __('Events') }}
+                        </x-jet-responsive-nav-link>
+                        <x-jet-responsive-nav-link href="{{ route('calendar') }}" :active="request()->routeIs('calendar')">
+                            {{ __('Calendar') }}
+                        </x-jet-responsive-nav-link>
+                        <x-jet-responsive-nav-link href="{{ route('stats') }}" :active="request()->routeIs('stats')">
+                            {{ __('Stats') }}
+                        </x-jet-responsive-nav-link>
+                        <x-jet-responsive-nav-link href="{{ route('reports') }}" :active="request()->routeIs('reports')">
+                            {{ __('Reports') }}
+                        </x-jet-responsive-nav-link>
+                        @if (Auth::user()->is_admin || Auth::user()->isTeamAdmin() || Auth::user()->isInspector())
+                            <x-jet-responsive-nav-link href="{{ route('audit.index') }}" :active="request()->routeIs('audit.index')">
+                                {{ __('Audit Log') }}
+                            </x-jet-responsive-nav-link>
+                        @endif
+                        <x-jet-responsive-nav-link href="{{ route('docs.index') }}" :active="request()->routeIs('docs.*')">
+                            {{ __('Documentation') }}
+                        </x-jet-responsive-nav-link>
+                        @can('update', Auth::user()->currentTeam)
+                            <x-jet-responsive-nav-link href="{{ route('announcements') }}" :active="request()->routeIs('announcements')">
+                                {{ __('Announcements') }}
+                            </x-jet-responsive-nav-link>
+                        @endcan
+                        @if (Auth::user()->is_admin)
+                            <x-jet-responsive-nav-link href="{{ route('admin.teams.index') }}" :active="request()->routeIs('admin.teams.*')">
+                                {{ __('Team Administration') }}
+                            </x-jet-responsive-nav-link>
+                            <x-jet-responsive-nav-link href="{{ route('admin.settings') }}" :active="request()->routeIs('admin.settings')">
+                                {{ __('Global Settings') }}
+                            </x-jet-responsive-nav-link>
+                        @endif
+                    </div>
+                </div>
+
                 <!-- Account Management -->
-                <x-jet-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
-                    {{ __('Profile') }}
-                </x-jet-responsive-nav-link>
+                <div class="pt-6 border-t border-gray-100">
+                    <div class="px-8 mb-4">
+                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">{{ __('Account') }}</p>
+                    </div>
+                    <div class="space-y-1">
+                        <x-jet-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
+                            {{ __('Profile') }}
+                        </x-jet-responsive-nav-link>
 
-                @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                    <x-jet-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()->routeIs('api-tokens.index')">
-                        {{ __('API Tokens') }}
-                    </x-jet-responsive-nav-link>
-                @endif
+                        @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
+                            <x-jet-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()->routeIs('api-tokens.index')">
+                                {{ __('API Tokens') }}
+                            </x-jet-responsive-nav-link>
+                        @endif
 
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}" x-data>
-                    @csrf
-
-                    <x-jet-responsive-nav-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
-                        {{ __('Log Out') }}
-                    </x-jet-responsive-nav-link>
-                </form>
+                        <!-- Authentication -->
+                        <form method="POST" action="{{ route('logout') }}" x-data>
+                            @csrf
+                            <x-jet-responsive-nav-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
+                                {{ __('Log Out') }}
+                            </x-jet-responsive-nav-link>
+                        </form>
+                    </div>
+                </div>
 
                 <!-- Team Management -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
-                    <div class="border-t border-gray-200"></div>
+                    <div class="pt-6 mt-6 border-t border-gray-100 pb-8">
+                        <div class="px-8 mb-4">
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">{{ __('Team Management') }}</p>
+                        </div>
+                        <div class="space-y-1">
+                            @if (Auth::user()->currentTeam)
+                                <!-- Team Settings -->
+                                <x-jet-responsive-nav-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}" :active="request()->routeIs('teams.show')">
+                                    {{ __('Team Settings') }}
+                                </x-jet-responsive-nav-link>
 
-                    <div class="block px-4 py-2 text-xs text-gray-400">
-                        {{ __('Manage Team') }}
+                                @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
+                                    <x-jet-responsive-nav-link href="{{ route('teams.create') }}" :active="request()->routeIs('teams.create')">
+                                        {{ __('Create New Team') }}
+                                    </x-jet-responsive-nav-link>
+                                @endcan
+
+                                <div class="border-t border-gray-100 my-4 mx-8"></div>
+
+                                <!-- Team Switcher -->
+                                <div class="px-8 py-2">
+                                    <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">{{ __('Switch Teams') }}</p>
+                                </div>
+
+                                @foreach (Auth::user()->allTeams() as $team)
+                                    <x-jet-switchable-team :team="$team" component="jet-responsive-nav-link" />
+                                @endforeach
+                            @endif
+                        </div>
                     </div>
+                @endif
+            </div>
 
-                    <!-- Team Settings -->
-                    @if (Auth::user()->currentTeam)
-                        <x-jet-responsive-nav-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}"
-                            :active="request()->routeIs('teams.show')">
-                            {{ __('Team Settings') }}
-                        </x-jet-responsive-nav-link>
+            <!-- Drawer Footer -->
+            <div class="p-6 border-t border-gray-100 bg-gray-50/80">
+                <div class="flex items-center">
+                    @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
+                        <img class="h-12 w-12 rounded-full object-cover border-2 border-white shadow-md"
+                             src="{{ Auth::user()->profile_photo_url }}"
+                             alt="{{ Auth::user()->name }} {{ Auth::user()->family_name1 }}" />
+                    @else
+                        <div class="h-12 w-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold border-2 border-white shadow-md text-lg">
+                            {{ substr(Auth::user()->name, 0, 1) }}
+                        </div>
                     @endif
 
-                    @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
-                        <x-jet-responsive-nav-link href="{{ route('teams.create') }}" :active="request()->routeIs('teams.create')">
-                            {{ __('Create New Team') }}
-                        </x-jet-responsive-nav-link>
-                    @endcan
-
-                    <div class="border-t border-gray-200"></div>
-
-                    <!-- Team Switcher -->
-                    <div class="block px-4 py-2 text-xs text-gray-400">
-                        {{ __('Switch Teams') }}
+                    <div class="ml-4 overflow-hidden">
+                        <div class="font-bold text-gray-900 truncate tracking-tight">{{ Auth::user()->name }} {{ Auth::user()->family_name1 }}</div>
+                        <div class="text-sm text-gray-500 truncate">{{ Auth::user()->email }}</div>
                     </div>
-
-                    @foreach (Auth::user()->allTeams() as $team)
-                        <x-jet-switchable-team :team="$team" component="jet-responsive-nav-link" />
-                    @endforeach
-                @endif
+                </div>
             </div>
         </div>
     </div>

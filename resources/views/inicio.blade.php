@@ -400,7 +400,12 @@
                     
                     // Destroy existing sortable if it exists
                     if (this.sortable) {
-                        this.sortable.destroy();
+                        try {
+                            this.sortable.destroy();
+                        } catch (e) {
+                            console.warn('Sortable destruction failed:', e);
+                        }
+                        this.sortable = null;
                     }
                     
                     // Don't enable drag & drop on mobile
