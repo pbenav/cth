@@ -216,11 +216,12 @@ Esto garantiza que el software seguirá siendo libre para todos sus usuarios. Ba
 
 ---
 
-## � Apoya el Proyecto
+## 💖 Apoya el Proyecto
 
-Si este proyecto te resulta útil y te gustaría apoyar su mantenimiento y desarrollo continuo, considera realizar una donación a través de Patreon:
+Si este proyecto te resulta útil y te gustaría apoyar su mantenimiento y desarrollo continuo, considera realizar una donación a través de Patreon o Buy Me a Coffee:
 
-👉 **[Apoyar en Patreon](https://www.patreon.com/cw/sientia)**
+👉 **[Apoyar en Patreon](https://www.patreon.com/cw/sientia)**  
+👉 **[Invítame a un café](https://buymeacoffee.com/sientia)**
 
 Cualquier apoyo es enormemente agradecido y ayuda a que sientiaCTH siga siendo gratuito y de código abierto para todos.
 

@@ -72,18 +72,20 @@
                             </p>
                         </div>
 
-                        <!-- Patreon Support Section -->
-                        <div class="mt-8 pt-6 border-t border-gray-100 text-center">
-                            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+                        <!-- Support Section -->
+                        <div class="mt-8 pt-6 border-t border-gray-100 text-center space-y-3">
+                            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">
                                 {{ __('Support Project') }}
                             </p>
                             <a href="https://www.patreon.com/cw/sientia" target="_blank"
-                                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors duration-200">
-                                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                                    <path
-                                        d="M2.912 8.411c-.312 0-.533.225-.533.533v11.43c0 .312.225.533.533.533H21.09c.312 0 .533-.225.533-.533V8.944c0-.312-.225-.533-.533-.533H2.912zm0-2.666H21.09c1.782 0 3.2 1.418 3.2 3.2v11.43c0 1.782-1.418 3.2-3.2 3.2H2.912C1.13 23.535-.285 22.117-.285 20.335V8.944c0-1.782 1.418-3.2 3.2-3.2zM4.156 2.666c0-.533.433-.966.966-.966h13.754c.533 0 .966.433.966.966s-.433.966-.966.966H5.122c-.533 0-.966-.433-.966-.966z" />
-                                </svg>
+                                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors duration-200 w-full justify-center">
+                                <i class="fab fa-patreon mr-2"></i>
                                 {{ __('Support on Patreon') }}
+                            </a>
+                            <a href="https://buymeacoffee.com/sientia" target="_blank"
+                                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-gray-900 bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-colors duration-200 w-full justify-center">
+                                <i class="fas fa-coffee mr-2"></i>
+                                {{ __('Buy me a coffee') }}
                             </a>
                         </div>
                     </div>

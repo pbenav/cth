@@ -244,9 +244,10 @@ This ensures that the software remains free for all its users. Under this licens
 
 ## 💖 Support the Project
 
-If you find this project useful and would like to support its maintenance and continuous development, consider making a donation through Patreon:
+If you find this project useful and would like to support its maintenance and continuous development, consider making a donation through Patreon or Buy Me a Coffee:
 
-👉 **[Support on Patreon](https://www.patreon.com/cw/sientia)**
+👉 **[Support on Patreon](https://www.patreon.com/cw/sientia)**  
+👉 **[Buy me a coffee](https://buymeacoffee.com/sientia)**
 
 Any support is greatly appreciated and helps sientiaCTH stay free and open source for everyone.
 
