@@ -28,6 +28,11 @@ Route::get('/set-locale/{locale}', function ($locale) {
     return back();
 })->name('set-locale');
 
+// Legal pages
+Route::get('/privacy-policy', [App\Http\Controllers\LegalController::class, 'privacy'])->name('privacy');
+Route::get('/terms-of-service', [App\Http\Controllers\LegalController::class, 'terms'])->name('terms');
+Route::get('/cookie-policy', [App\Http\Controllers\LegalController::class, 'cookies'])->name('cookies');
+
 // Landing page — shown to all (auth users see a CTA to their dashboard)
 Route::get('/', function () {
     return view('welcome');

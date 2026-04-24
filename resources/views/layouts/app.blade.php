@@ -110,6 +110,12 @@
                     </a>
                 </div>
                 
+                <div class="flex items-center gap-4 text-[10px]">
+                    <a href="{{ route('privacy') }}" class="hover:text-blue-600 transition-colors">{{ __('Privacidad') }}</a>
+                    <a href="{{ route('terms') }}" class="hover:text-blue-600 transition-colors">{{ __('Términos') }}</a>
+                    <a href="{{ route('cookies') }}" class="hover:text-blue-600 transition-colors">{{ __('Cookies') }}</a>
+                </div>
+                <span class="text-gray-300 mx-1">|</span>
                 <div class="flex items-center gap-5">
                     <a href="https://www.patreon.com/cw/sientia" target="_blank"
                         class="text-orange-600 hover:text-orange-700 font-bold transition-colors flex items-center gap-1.5 group">
