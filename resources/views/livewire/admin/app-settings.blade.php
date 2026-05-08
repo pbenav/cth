@@ -45,30 +45,30 @@
             <!-- Legal Configuration Section Header -->
             <div class="col-span-6">
                 <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-1">
-                    ⚖️ {{ __('Legal and Privacy Information') }}
+                    ⚖️ {{ __('Información Legal y de Privacidad') }}
                 </h3>
                 <p class="text-xs text-gray-500">
-                    {{ __('Configure the data of the legal representative and the company to be dynamically printed on the privacy policies, terms of service and cookie pages.') }}
+                    {{ __('Configura los datos del representante legal y de la empresa para que se muestren dinámicamente en las páginas de políticas de privacidad, términos de servicio y cookies.') }}
                 </p>
             </div>
 
             <!-- Legal Representative -->
             <div class="col-span-6 sm:col-span-4">
-                <x-jet-label for="legal_representative" value="{{ __('Legal Representative') }}" />
+                <x-jet-label for="legal_representative" value="{{ __('Representante Legal') }}" />
                 <x-jet-input id="legal_representative" type="text" class="mt-1 block w-full" wire:model.defer="state.LEGAL_REPRESENTATIVE" />
                 <x-jet-input-error for="state.LEGAL_REPRESENTATIVE" class="mt-2" />
             </div>
 
             <!-- Legal Company -->
             <div class="col-span-6 sm:col-span-4">
-                <x-jet-label for="legal_company" value="{{ __('Company Name') }}" />
+                <x-jet-label for="legal_company" value="{{ __('Nombre de la Empresa') }}" />
                 <x-jet-input id="legal_company" type="text" class="mt-1 block w-full" wire:model.defer="state.LEGAL_COMPANY" />
                 <x-jet-input-error for="state.LEGAL_COMPANY" class="mt-2" />
             </div>
 
             <!-- Legal Email -->
             <div class="col-span-6 sm:col-span-4">
-                <x-jet-label for="legal_email" value="{{ __('Contact Email') }}" />
+                <x-jet-label for="legal_email" value="{{ __('Email de Contacto') }}" />
                 <x-jet-input id="legal_email" type="email" class="mt-1 block w-full" wire:model.defer="state.LEGAL_EMAIL" />
                 <x-jet-input-error for="state.LEGAL_EMAIL" class="mt-2" />
             </div>
