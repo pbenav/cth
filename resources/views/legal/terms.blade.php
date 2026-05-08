@@ -30,12 +30,12 @@
             <li>No utilizar la plataforma para actividades ilícitas o fraudulentas.</li>
             <li>Respetar la propiedad intelectual y los derechos de terceros.</li>
             <li>No subir archivos maliciosos (virus, malware) o contenido ofensivo.</li>
-            <li>No interferir con el correcto funcionamiento de los servidores de Sientia.</li>
+            <li>No interferir con el correcto funcionamiento de los servidores de {{ config('legal.company', 'Sientia') }}.</li>
         </ul>
 
         <h2 class="text-xl font-bold text-gray-900 dark:text-white mt-8 mb-4">4. Propiedad Intelectual</h2>
         <p class="mb-4">
-            El software, diseño, logotipos y contenidos de sientiaCTH son propiedad exclusiva de <strong>Pablo Benavides</strong> y están protegidos por leyes de propiedad intelectual. La licencia de uso que se concede es personal, intransferible y revocable.
+            El software, diseño, logotipos y contenidos de sientiaCTH son propiedad exclusiva de <strong>{{ config('legal.representative', 'Pablo Benavides') }}</strong> y están protegidos por leyes de propiedad intelectual. La licencia de uso que se concede es personal, intransferible y revocable.
         </p>
 
         <h2 class="text-xl font-bold text-gray-900 dark:text-white mt-8 mb-4">5. Limitación de Responsabilidad</h2>

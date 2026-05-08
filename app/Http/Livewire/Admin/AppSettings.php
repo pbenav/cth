@@ -18,6 +18,9 @@ class AppSettings extends Component
     {
         $this->state = [
             'LOGIN_BACKGROUND_IMAGE' => env('LOGIN_BACKGROUND_IMAGE', '/images/login_bg.jpg'),
+            'LEGAL_REPRESENTATIVE' => env('LEGAL_REPRESENTATIVE', 'Pablo Benavides'),
+            'LEGAL_COMPANY' => env('LEGAL_COMPANY', 'Sientia'),
+            'LEGAL_EMAIL' => env('LEGAL_EMAIL', 'info@sientia.com'),
         ];
     }
 

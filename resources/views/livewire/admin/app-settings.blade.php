@@ -38,6 +38,40 @@
                     {{ __('Recommended size: 1920x1080px. Format: JPG, PNG. Max: 2MB.') }}
                 </p>
             </div>
+
+            <!-- Divider -->
+            <div class="col-span-6 border-t border-gray-100 dark:border-gray-800 my-4"></div>
+
+            <!-- Legal Configuration Section Header -->
+            <div class="col-span-6">
+                <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-1">
+                    ⚖️ {{ __('Legal and Privacy Information') }}
+                </h3>
+                <p class="text-xs text-gray-500">
+                    {{ __('Configure the data of the legal representative and the company to be dynamically printed on the privacy policies, terms of service and cookie pages.') }}
+                </p>
+            </div>
+
+            <!-- Legal Representative -->
+            <div class="col-span-6 sm:col-span-4">
+                <x-jet-label for="legal_representative" value="{{ __('Legal Representative') }}" />
+                <x-jet-input id="legal_representative" type="text" class="mt-1 block w-full" wire:model.defer="state.LEGAL_REPRESENTATIVE" />
+                <x-jet-input-error for="state.LEGAL_REPRESENTATIVE" class="mt-2" />
+            </div>
+
+            <!-- Legal Company -->
+            <div class="col-span-6 sm:col-span-4">
+                <x-jet-label for="legal_company" value="{{ __('Company Name') }}" />
+                <x-jet-input id="legal_company" type="text" class="mt-1 block w-full" wire:model.defer="state.LEGAL_COMPANY" />
+                <x-jet-input-error for="state.LEGAL_COMPANY" class="mt-2" />
+            </div>
+
+            <!-- Legal Email -->
+            <div class="col-span-6 sm:col-span-4">
+                <x-jet-label for="legal_email" value="{{ __('Contact Email') }}" />
+                <x-jet-input id="legal_email" type="email" class="mt-1 block w-full" wire:model.defer="state.LEGAL_EMAIL" />
+                <x-jet-input-error for="state.LEGAL_EMAIL" class="mt-2" />
+            </div>
         </x-slot>
 
         <x-slot name="actions">
