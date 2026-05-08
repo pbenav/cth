@@ -31,7 +31,7 @@
     <div class="min-h-screen flex flex-col items-center pt-12 pb-20 px-4">
         <div class="mb-12">
             <a href="/">
-                <x-jet-application-logo class="block h-12 w-auto fill-current text-gray-800 dark:text-white" />
+                <img src="{{ asset('images/sientiaCTH-logo.png') }}" class="h-12 w-auto" alt="sientiaCTH Logo">
             </a>
         </div>
 
