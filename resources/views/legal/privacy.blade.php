@@ -7,7 +7,7 @@
         </h1>
 
         <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300 mb-6">
-            En <strong>{{ config('app.name', 'Sientia') }}</strong>, nos tomamos muy en serio la privacidad de tus datos. Esta Política de Privacidad describe cómo recopilamos, utilizamos y protegemos tu información personal cuando utilizas nuestra plataforma integral de gestión de proyectos (MTX, Gantt y Kanban).
+            En <strong>{{ config('app.name', 'Sientia') }}</strong>, nos tomamos muy en serio la privacidad de tus datos. Esta Política de Privacidad describe cómo recopilamos, utilizamos y protegemos tu información personal cuando utilizas nuestra plataforma integral de control horario (sientiaCTH).
         </p>
 
         <h2 class="text-xl font-bold text-gray-900 dark:text-white mt-8 mb-4">1. Identificación del Responsable</h2>
@@ -16,10 +16,10 @@
         </p>
 
         <h2 class="text-xl font-bold text-gray-900 dark:text-white mt-8 mb-4">2. Datos que Recopilamos</h2>
-        <p class="mb-4">Para el correcto funcionamiento de SientiaMTX, recopilamos los siguientes datos:</p>
+        <p class="mb-4">Para el correcto funcionamiento de sientiaCTH, recopilamos los siguientes datos:</p>
         <ul class="list-disc pl-5 mb-6 space-y-2">
-            <li><strong>Información de Registro:</strong> Nombre, apellidos, dirección de correo electrónico y contraseña (cifrada).</li>
-            <li><strong>Información de Uso:</strong> Registro de tareas (MTX, Gantt, Kanban), mensajes en foros, eventos de calendario y archivos adjuntos subidos a la plataforma.</li>
+            <li><strong>Información de Registro:</strong> Nombre, apellidos, dirección de correo electrónico, DNI y contraseña (cifrada).</li>
+            <li><strong>Información de Uso:</strong> Registro de jornadas, horas de entrada y salida, geolocalización (si aplica) y archivos adjuntos subidos a la plataforma.</li>
             <li><strong>Preferencias del Usuario:</strong> Idioma, zona horaria y configuración de la interfaz (tema oscuro/claro).</li>
         </ul>
 
@@ -27,8 +27,8 @@
         <p class="mb-4">Tus datos se utilizan exclusivamente para:</p>
         <ul class="list-disc pl-5 mb-6 space-y-2">
             <li>Proporcionar y gestionar tu acceso a la plataforma.</li>
-            <li>Sincronizar tus tareas y eventos con servicios externos autorizados (como Google Calendar).</li>
-            <li>Enviar notificaciones críticas relacionadas con tus tareas y equipos.</li>
+            <li>Sincronizar tus registros de entrada y salida de jornada de forma segura.</li>
+            <li>Enviar notificaciones críticas relacionadas con tus turnos y horarios.</li>
             <li>Mejorar continuamente la experiencia de usuario y la seguridad del sistema.</li>
         </ul>
 

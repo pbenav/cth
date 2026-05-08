@@ -20,7 +20,7 @@
             <div class="p-5 border border-gray-100 dark:border-gray-800 rounded-2xl bg-gray-50 dark:bg-gray-800/50">
                 <h3 class="font-bold text-gray-900 dark:text-white mb-2">Cookies Técnicas (Necesarias)</h3>
                 <p class="text-sm">
-                    Son esenciales para que la plataforma funcione. Permiten el inicio de sesión seguro, la gestión de sesiones y la navegación por las diferentes secciones de SientiaMTX. Sin ellas, el servicio no podría prestarse correctamente.
+                    Son esenciales para que la plataforma funcione. Permiten el inicio de sesión seguro, la gestión de sesiones y la navegación por las diferentes secciones de sientiaCTH. Sin ellas, el servicio no podría prestarse correctamente.
                 </p>
             </div>
 
@@ -41,7 +41,7 @@
 
         <h2 class="text-xl font-bold text-gray-900 dark:text-white mt-8 mb-4">3. Cómo Gestionar las Cookies</h2>
         <p class="mb-4">
-            Puedes restringir, bloquear o borrar las cookies de SientiaMTX utilizando la configuración de tu navegador. Aquí tienes los enlaces de ayuda de los navegadores más comunes:
+            Puedes restringir, bloquear o borrar las cookies de sientiaCTH utilizando la configuración de tu navegador. Aquí tienes los enlaces de ayuda de los navegadores más comunes:
         </p>
         <ul class="list-disc pl-5 mb-6 space-y-2 text-blue-600 dark:text-blue-400 text-sm font-medium">
             <li><a href="https://support.google.com/chrome/answer/95647" target="_blank">Google Chrome</a></li>
