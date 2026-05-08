@@ -11,7 +11,7 @@ class LegalController extends Controller
      */
     public function privacy()
     {
-        return view('legal.privacy');
+        return view('legal.privacy', ['content' => null]);
     }
 
     /**
@@ -19,7 +19,7 @@ class LegalController extends Controller
      */
     public function terms()
     {
-        return view('legal.terms');
+        return view('legal.terms', ['content' => null]);
     }
 
     /**
@@ -27,6 +27,6 @@ class LegalController extends Controller
      */
     public function cookies()
     {
-        return view('legal.cookies');
+        return view('legal.cookies', ['content' => null]);
     }
 }
