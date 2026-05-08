@@ -28,9 +28,9 @@
             </div>
 
             <div class="mt-4">
-                <x-jet-label for="dni" value="{{ __('DNI/NIE') }}" />
+                <x-jet-label for="dni" value="{{ __('DNI/NIE') }}" class="required" />
                 <x-jet-input id="dni" class="block mt-1 w-full" type="text" name="dni"
-                    :value="old('dni')" autocomplete="dni" />
+                    :value="old('dni')" required autocomplete="dni" />
             </div>
 
             <div class="mt-4">
