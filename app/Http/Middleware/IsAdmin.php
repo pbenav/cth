@@ -23,7 +23,7 @@ class IsAdmin
         $user = auth()->user();
 
         // Check if user has is_admin property or admin role
-        if ((property_exists($user, 'is_admin') && $user->is_admin) || 
+        if ($user->is_admin || 
             (method_exists($user, 'hasRole') && $user->hasRole('admin'))) {
             return $next($request);
         }
