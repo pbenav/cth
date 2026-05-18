@@ -5,6 +5,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta property="og:site_name" content="Sientia Open Labs">
+
+    <!-- Datos estructurados de Schema.org para Google (Site Name) -->
+    <script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@type": "WebSite",
+      "name": "Sientia Open Labs",
+      "alternateName": ["Sientia", "sientiaMTX", "sientiaERP", "sientiaCTH"],
+      "url": "https://sientia.com"
+    }
+    </script>
 
     <title>{{ config('app.name', 'sientiaCTH :: Control Horario') }}</title>
 
