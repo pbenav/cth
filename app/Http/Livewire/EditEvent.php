@@ -369,200 +369,31 @@ class EditEvent extends Component
         $this->emit('refreshCalendar');
     }
 
-    public function applyAdjustment($type)
+    public function applyAdjustment($type, \App\Services\EventAdjustmentService $adjustmentService)
     {
-        $maxMinutes = $this->maxMinutes;
-        
-        // We need to work with the Carbon objects relative to the team timezone to adjust properly
-        // Converting from the inputs directly is easier as they are already in local time (or what user sees)
-        $startCarbon = Carbon::parse($this->start_date . ' ' . $this->start_time);
-        
-        // Calculate end based on start for calculations (user input)
-        $endCarbon = Carbon::parse($this->end_date . ' ' . $this->end_time);
+        $result = $adjustmentService->apply(
+            $this->event,
+            $type,
+            $this->maxMinutes,
+            $this->start_date,
+            $this->start_time,
+            $this->end_date,
+            $this->end_time,
+            $this->getEventTimezone($this->event),
+            $this->user
+        );
 
-        switch ($type) {
-            case 'adjust_start':
-                // Move start forward: newStart = end - maxMinutes
-                $newStart = $endCarbon->copy()->subMinutes($maxMinutes);
-                
-                // Update properties
-                $this->start_date = $newStart->format('Y-m-d');
-                $this->start_time = $newStart->format('H:i');
-                $this->start_datetime = $newStart->format('Y-m-d H:i:s');
-                
-                // Add observation about adjustment
-                if (empty($this->event->observations)) {
-                    $this->event->observations = '';
-                } else {
-                    $this->event->observations .= "\n";
-                }
-                $this->event->observations .= __('Ajuste de hora de inicio para cumplir con el máximo de jornada (:minutes min)', ['minutes' => $maxMinutes]);
-                break;
-
-            case 'adjust_end':
-                // Move end backward: newEnd = start + maxMinutes
-                $newEnd = $startCarbon->copy()->addMinutes($maxMinutes);
-                
-                // Update properties
-                $this->end_date = $newEnd->format('Y-m-d');
-                $this->end_time = $newEnd->format('H:i');
-                $this->end_datetime = $newEnd->format('Y-m-d H:i:s');
-                
-                // Add observation
-                if (empty($this->event->observations)) {
-                    $this->event->observations = '';
-                } else {
-                    $this->event->observations .= "\n";
-                }
-                $this->event->observations .= __('Ajuste de hora de salida para cumplir con el máximo de jornada (:minutes min)', ['minutes' => $maxMinutes]);
-                break;
-
-            case 'adjust_schedule':
-                // Distribute time across multiple work schedule slots
-                $user = $this->user;
-                $scheduleMeta = $user->meta->where('meta_key', 'work_schedule')->first();
-                $schedule = $scheduleMeta ? json_decode($scheduleMeta->meta_value, true) : [];
-                
-                if (empty($schedule)) {
-                    // Fallback to adjust end if no schedule
-                    return $this->applyAdjustment('adjust_end');
-                }
-                
-                // Calculate time already used today by other events
-                $team = $user->currentTeam;
-                $eventDate = Carbon::parse($this->start_date)->startOfDay();
-                $dayStartUTC = $eventDate->copy()->setTimezone('UTC');
-                $dayEndUTC = $eventDate->copy()->endOfDay()->setTimezone('UTC');
-                
-                // Get all other workday events from the same day (excluding current event)
-                $dayEvents = Event::where('user_id', $user->id)
-                    ->where('team_id', $team->id)
-                    ->where('id', '!=', $this->event->id)
-                    ->whereHas('eventType', function($q) {
-                        $q->where('is_workday_type', true);
-                    })
-                    ->where('is_open', false)
-                    ->where('start', '>=', $dayStartUTC)
-                    ->where('start', '<=', $dayEndUTC)
-                    ->get();
-                
-                // Calculate total minutes already used today
-                $usedMinutes = 0;
-                foreach ($dayEvents as $dayEvent) {
-                    if ($dayEvent->end) {
-                        $eventStart = Carbon::parse($dayEvent->start, 'UTC');
-                        $eventEnd = Carbon::parse($dayEvent->end, 'UTC');
-                        $usedMinutes += $eventEnd->diffInMinutes($eventStart);
-                    }
-                }
-                
-                // Calculate available minutes (max duration - already used)
-                $maxDuration = $team->max_workday_duration_minutes ?? 480; // Default 8 hours
-                $availableMinutes = max(0, $maxDuration - $usedMinutes);
-                
-                // Limit to available minutes
-                $remainingMinutes = min($maxMinutes, $availableMinutes);
-                
-                if ($remainingMinutes <= 0) {
-                    $this->emit('alertFail', __('No hay tiempo disponible. Ya se ha alcanzado el máximo de jornada diaria.'));
-                    return;
-                }
-                
-                // Get ALL slots (ignore day-of-week for manual adjustment)
-                // Sort by start time to distribute chronologically
-                $slots = collect($schedule)->sortBy('start')->values();
-                
-                if ($slots->isEmpty()) {
-                    $this->emit('alertFail', __('No hay tramos horarios definidos.'));
-                    return;
-                }
-                
-                // Calculate how much time we need to distribute
-                $eventsToCreate = [];
-                
-                foreach ($slots as $slot) {
-                    if ($remainingMinutes <= 0) break;
-                    
-                    $slotStart = Carbon::parse($this->start_date . ' ' . $slot['start']);
-                    $slotEnd = Carbon::parse($this->start_date . ' ' . $slot['end']);
-                    
-                    // Handle slots that cross midnight
-                    if ($slotEnd->lt($slotStart)) {
-                        $slotEnd->addDay();
-                    }
-                    
-                    $slotDurationMinutes = $slotEnd->diffInMinutes($slotStart);
-                    
-                    // Determine how much of this slot to fill
-                    $minutesToUse = min($remainingMinutes, $slotDurationMinutes);
-                    
-                    // Calculate actual end time for this slot
-                    $actualEnd = $slotStart->copy()->addMinutes($minutesToUse);
-                    
-                    $eventsToCreate[] = [
-                        'start' => $slotStart,
-                        'end' => $actualEnd,
-                        'minutes' => $minutesToUse
-                    ];
-                    
-                    $remainingMinutes -= $minutesToUse;
-                }
-                
-                if (empty($eventsToCreate)) {
-                    return $this->applyAdjustment('adjust_end');
-                }
-                
-                // Update the current event with the first slot
-                $firstEvent = $eventsToCreate[0];
-                $this->start_date = $firstEvent['start']->format('Y-m-d');
-                $this->start_time = $firstEvent['start']->format('H:i');
-                $this->start_datetime = $firstEvent['start']->format('Y-m-d H:i:s');
-                $this->end_date = $firstEvent['end']->format('Y-m-d');
-                $this->end_time = $firstEvent['end']->format('H:i');
-                $this->end_datetime = $firstEvent['end']->format('Y-m-d H:i:s');
-                
-                if (empty($this->event->observations)) $this->event->observations = '';
-                else $this->event->observations .= "\n";
-                $this->event->observations .= __('Ajuste automático al primer tramo horario (:minutes min)', ['minutes' => $firstEvent['minutes']]);
-                
-                // Create additional events for remaining slots.
-                // Use withoutEvents() to avoid triggering duration validation
-                // for each partial slot (the total adjustment is already validated above).
-                $teamTimezone = $this->getEventTimezone($this->event);
-                for ($i = 1; $i < count($eventsToCreate); $i++) {
-                    $slotEvent = $eventsToCreate[$i];
-                    
-                    // Convert to UTC for storage using team timezone
-                    $startUTC = Carbon::parse($slotEvent['start'], $teamTimezone)
-                        ->setTimezone('UTC')
-                        ->format('Y-m-d H:i:s');
-                    $endUTC = Carbon::parse($slotEvent['end'], $teamTimezone)
-                        ->setTimezone('UTC')
-                        ->format('Y-m-d H:i:s');
-                    
-                    Event::withoutEvents(fn () => Event::create([
-                        'user_id' => $this->event->user_id,
-                        'event_type_id' => $this->event->event_type_id,
-                        'team_id' => $this->event->team_id,
-                        'work_center_id' => $this->event->work_center_id,
-                        'start' => $startUTC,
-                        'end' => $endUTC,
-                        'description' => $this->event->description,
-                        'observations' => __('Ajuste automático al tramo horario :number (:minutes min)', [
-                            'number' => $i + 1,
-                            'minutes' => $slotEvent['minutes']
-                        ]),
-                        'is_open' => true,
-                        'is_authorized' => false,
-                        'is_exceptional' => false,
-                        'is_extra_hours' => false,
-                        'is_closed_automatically' => false,
-                        'ip_address' => request()->ip(),
-                    ]));
-                }
-                
-                break;
+        if (!$result['success']) {
+            $this->emit('alertFail', $result['message']);
+            return;
         }
+
+        $this->start_date = $result['start_date'];
+        $this->start_time = $result['start_time'];
+        $this->start_datetime = $result['start_datetime'];
+        $this->end_date = $result['end_date'];
+        $this->end_time = $result['end_time'];
+        $this->end_datetime = $result['end_datetime'];
 
         // Hide modal and save with the adjustment flag set to skip re-validation
         $this->showAdjustmentModal = false;
@@ -570,6 +401,7 @@ class EditEvent extends Component
         $this->update();
         $this->isApplyingAdjustment = false;
     }
+
 
     /**
      * Render the component.

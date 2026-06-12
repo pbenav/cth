@@ -80,7 +80,8 @@ class DashboardStatsComponent extends Component
         $todayStart = Carbon::now($userTimezone)->startOfDay();
         $todayEnd = Carbon::now($userTimezone)->endOfDay();
         
-        $todayEvents = Event::where('user_id', $user->id)
+        $todayEvents = Event::with('eventType')
+            ->where('user_id', $user->id)
             ->where('start', '>=', $todayStart)
             ->where('start', '<=', $todayEnd)
             ->get();
@@ -114,7 +115,8 @@ class DashboardStatsComponent extends Component
         $weekStart = Carbon::now($userTimezone)->startOfWeek();
         $weekEnd = Carbon::now($userTimezone)->endOfDay();
         
-        $weekEvents = Event::where('user_id', $user->id)
+        $weekEvents = Event::with('eventType')
+            ->where('user_id', $user->id)
             ->where('start', '>=', $weekStart)
             ->where('start', '<=', $weekEnd)
             ->get();

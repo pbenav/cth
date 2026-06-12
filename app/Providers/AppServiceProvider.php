@@ -41,6 +41,11 @@ class AppServiceProvider extends ServiceProvider
         if (str_starts_with(config('app.url') ?? '', 'https')) {
             \Illuminate\Support\Facades\URL::forceScheme('https');
         }
+
+        // PREVENCIÓN DE N+1 QUERIES
+        // Lanza una excepción si se intenta cargar una relación de forma perezosa
+        // (lazy loading) fuera del entorno de producción.
+        \Illuminate\Database\Eloquent\Model::preventLazyLoading(!app()->isProduction());
     }
 
     /**
