@@ -145,6 +145,9 @@ Route::middleware([
 
 // Admin routes - Only accessible to global administrators
 Route::middleware(['auth', 'verified', 'is_admin'])->prefix('admin')->name('admin.')->group(function () {
+    // Admin Dashboard
+    Route::get('/dashboard', \App\Livewire\Admin\AdminDashboardComponent::class)->name('dashboard');
+
     // Mail Settings
     Route::get('/mail-settings', function () {
         return view('admin.mail-settings');

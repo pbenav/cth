@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('events:autoclose')->everyTenMinutes();
+        $schedule->command('events:cleanup')->dailyAt('03:00');
     }
 
     /**

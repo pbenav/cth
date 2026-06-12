@@ -45,6 +45,9 @@
                         </x-nav-link>
                     @endcan
                     @if (Auth::user()->is_admin)
+                        <x-nav-link href="{{ route('admin.dashboard') }}" :active="request()->routeIs('admin.dashboard')">
+                            {{ __('Global Dashboard') }}
+                        </x-nav-link>
                         <x-nav-link href="{{ route('admin.teams.index') }}" :active="request()->routeIs('admin.teams.*')">
                             {{ __('Team Administration') }}
                         </x-nav-link>
@@ -305,6 +308,9 @@
                             </x-responsive-nav-link>
                         @endcan
                         @if (Auth::user()->is_admin)
+                            <x-responsive-nav-link href="{{ route('admin.dashboard') }}" :active="request()->routeIs('admin.dashboard')">
+                                {{ __('Global Dashboard') }}
+                            </x-responsive-nav-link>
                             <x-responsive-nav-link href="{{ route('admin.teams.index') }}" :active="request()->routeIs('admin.teams.*')">
                                 {{ __('Team Administration') }}
                             </x-responsive-nav-link>
