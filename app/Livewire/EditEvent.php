@@ -239,7 +239,7 @@ class EditEvent extends Component
         } else {
             \Log::info('EditEvent::edit - Cannot modify event, emitting alertFail');
             $this->dispatch('alertFail', __("Event is confirmed."));
-            $this->reset(["showModalEditEvent"]);
+            $this->showModalEditEvent = false;
         }
 
         $this->dispatch('render')->to('get-time-registers');
@@ -271,7 +271,7 @@ class EditEvent extends Component
     {
         if (!$this->canModifyEvent($this->event)) {
             $this->dispatch('alertFail', __("You are not authorized to perform this action."));
-            $this->reset(["showModalEditEvent"]);
+            $this->showModalEditEvent = false;
             return;
         }
 
@@ -364,7 +364,8 @@ class EditEvent extends Component
             $this->insertHistory('events', $dbOriginal, $this->event, false);
         }
 
-        $this->reset(["showModalEditEvent", "showAdjustmentModal"]);
+        $this->showModalEditEvent = false;
+        $this->showAdjustmentModal = false;
         $this->dispatch('alert', __('Event updated!'));
         $this->dispatch('render')->to('get-time-registers');
         $this->dispatch('refreshCalendar');

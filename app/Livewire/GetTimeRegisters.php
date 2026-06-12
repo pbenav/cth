@@ -196,7 +196,7 @@ class GetTimeRegisters extends Component
         if (!$ev) {
             return;
         }
-        $this->dispatch('edit', $ev->id)->to('edit-event');
+        $this->dispatch('edit', eventId: $ev->id)->to('edit-event');
     }
 
     /**
@@ -210,7 +210,7 @@ class GetTimeRegisters extends Component
         $ev = Event::with(['user', 'eventType', 'workCenter', 'team'])->find($eventId);
         if (!$ev) return;
         
-        $this->dispatch('showEventDetails', $ev->id);
+        $this->dispatch('showEventDetails', data: $ev->id);
     }
 
 
@@ -275,7 +275,7 @@ class GetTimeRegisters extends Component
             $this->dispatch('incompleteEventConfirmation');
             return;
         }
-        $this->dispatch('confirmConfirmation', $ev->id);
+        $this->dispatch('confirmConfirmation', eventId: $ev->id);
     }
 
     /**
@@ -292,7 +292,7 @@ class GetTimeRegisters extends Component
             $this->dispatch('alertFail', __("This event is already closed and cannot be modified."));
             return;
         }
-        $this->dispatch('deleteConfirmation', $ev->id);
+        $this->dispatch('deleteConfirmation', eventId: $ev->id);
     }
 
     /**

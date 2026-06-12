@@ -257,7 +257,7 @@
                 <div class="flex items-center justify-between w-full">
                     <div>
                         @if (!$eventData['is_open'] && $eventData['user_id'] == auth()->id())
-                            <x-button onclick="Livewire.dispatch('openReopeningModal', {{ $eventData['id'] }})"
+                            <x-button onclick="Livewire.dispatch('openReopeningModal', [{{ $eventData['id'] }}])"
                                 class="bg-orange-600 hover:bg-orange-700">
                                 {{ __('Request Reopening') }}
                             </x-button>

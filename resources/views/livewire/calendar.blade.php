@@ -109,7 +109,7 @@
                             
                             if (isClosed) {
                                 // Show info modal for closed events using unified modal
-                                Livewire.dispatch('showEventDetails', eventId);
+                                Livewire.dispatch('showEventDetails', [eventId]);
                             } else {
                                 // Allow editing open events
                                 @this.call('triggerEditModal', eventId);

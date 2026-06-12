@@ -229,7 +229,7 @@
                                 @endif
 
                                 <tr wire:key="event-desktop-{{ $ev->id }}" class="hover:bg-gray-50 transition-colors">
-                                    <td class="px-4 py-3 whitespace-nowrap cursor-pointer" onclick="Livewire.dispatch('showEventDetails', {{ $ev->id }})">
+                                    <td class="px-4 py-3 whitespace-nowrap cursor-pointer" onclick="Livewire.dispatch('showEventDetails', [{{ $ev->id }}])">
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium shadow-sm" 
                                               style="background-color: {{ $eventColor }}; color: {{ $isDark ? 'white' : 'black' }}">
                                             #{{ $ev->id }}
@@ -348,7 +348,7 @@
                                 <div class="flex items-center justify-between mb-3">
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium shadow-sm cursor-pointer" 
                                           style="background-color: {{ $eventColor }}; color: {{ $isDark ? 'white' : 'black' }}"
-                                          onclick="Livewire.dispatch('showEventDetails', {{ $ev->id }})">
+                                          onclick="Livewire.dispatch('showEventDetails', [{{ $ev->id }}])">
                                         #{{ $ev->id }}
                                     </span>
                                     
