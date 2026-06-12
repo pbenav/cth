@@ -394,8 +394,12 @@ class MessagesComponent extends Component
                 ->whereNull('parent_id')
                 ->get();
         } elseif ($this->view === 'trash') {
-            $received = Auth::user()->receivedMessages()->whereNotNull('message_user.deleted_at')->get();
-            $sent = Auth::user()->messages()->with('recipients')->whereNotNull('sender_deleted_at')->whereNull('sender_purged_at')->get();
+            $received = Auth::user()->receivedMessages()
+                ->with(['replies.sender', 'replies.recipients'])
+                ->whereNotNull('message_user.deleted_at')->get();
+            $sent = Auth::user()->messages()->with(['recipients', 'replies.sender', 'replies.recipients'])
+                ->whereNotNull('sender_deleted_at')
+                ->whereNull('sender_purged_at')->get();
             $messageList = $received->merge($sent);
         } elseif ($this->view === 'alerts') {
             $messageList = Auth::user()->notifications->filter(function ($notification) {

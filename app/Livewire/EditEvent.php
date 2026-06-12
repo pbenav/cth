@@ -55,7 +55,7 @@ class EditEvent extends Component
      * @var Event $event Holds the event being edited.
      * @var Event $original_event Holds the original state of the event for logging.
      */
-    public Event $event, $original_event;
+    public Event $event;
 
     /**
      * The start and end date/time of the event.
@@ -142,7 +142,6 @@ class EditEvent extends Component
         $ev = Event::find($eventId);
         if (!$ev) return;
         $this->event = $ev->load('workCenter');
-        $this->original_event = clone $ev;
         $this->user = User::find($ev->user_id);
 
         // Obtener zona horaria del equipo del evento
@@ -276,6 +275,9 @@ class EditEvent extends Component
             return;
         }
 
+        // Fetch original unmutated database state for audit logging before any modifications
+        $dbOriginal = \App\Models\Event::find($this->event->id);
+
         $this->validate();
 
         // If it's an exceptional event and has observations, prepend "Exceptional event:"
@@ -359,8 +361,7 @@ class EditEvent extends Component
 
         if (auth()->user()->isTeamAdmin()) {
             // Audita todas las modificaciones realizadas por un administrador
-            $this->insertHistory('events', $this->original_event, $this->event, false);
-            unset($this->original_event);
+            $this->insertHistory('events', $dbOriginal, $this->event, false);
         }
 
         $this->reset(["showModalEditEvent", "showAdjustmentModal"]);
