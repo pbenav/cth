@@ -383,21 +383,21 @@ class MessagesComponent extends Component
             $messageList = Auth::user()->receivedMessages()
                 ->whereNull('message_user.deleted_at')
                 ->whereNull('parent_id')
-                ->with(['replies.sender', 'replies.recipients'])
+                ->with(['sender', 'recipients', 'replies.sender', 'replies.recipients'])
                 ->get();
         } elseif ($this->view === 'sent') {
             // Load only root messages sent by user
             $messageList = Auth::user()->messages()
-                ->with(['recipients', 'replies.sender', 'replies.recipients'])
+                ->with(['sender', 'recipients', 'replies.sender', 'replies.recipients'])
                 ->whereNull('sender_deleted_at')
                 ->whereNull('sender_purged_at')
                 ->whereNull('parent_id')
                 ->get();
         } elseif ($this->view === 'trash') {
             $received = Auth::user()->receivedMessages()
-                ->with(['replies.sender', 'replies.recipients'])
+                ->with(['sender', 'recipients', 'replies.sender', 'replies.recipients'])
                 ->whereNotNull('message_user.deleted_at')->get();
-            $sent = Auth::user()->messages()->with(['recipients', 'replies.sender', 'replies.recipients'])
+            $sent = Auth::user()->messages()->with(['sender', 'recipients', 'replies.sender', 'replies.recipients'])
                 ->whereNotNull('sender_deleted_at')
                 ->whereNull('sender_purged_at')->get();
             $messageList = $received->merge($sent);
