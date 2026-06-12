@@ -43,9 +43,8 @@
         }
     </style>
 
-    <!-- Alpine.js for dashboard customization -->
+    <!-- AlpineJS for dashboard customization (Stores are now handled by Livewire 3 bundled Alpine) -->
     @stack('alpine-stores')
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
 <body class="font-sans antialiased">
