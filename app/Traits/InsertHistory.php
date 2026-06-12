@@ -41,6 +41,15 @@ trait InsertHistory
             ? $modified_event->getAttributes() 
             : (is_array($modified_event) ? $modified_event : json_decode(json_encode($modified_event), true));
 
+        \Log::info('InsertHistory Dump', [
+            'originalData' => $originalData,
+            'modifiedData' => $modifiedData,
+            'isAuthChange' => $isAuthorizationChange,
+            'forceAudit' => $forceAudit,
+            'isOriginalModel' => $original_event instanceof \Illuminate\Database\Eloquent\Model,
+            'isModifiedModel' => $modified_event instanceof \Illuminate\Database\Eloquent\Model,
+        ]);
+
         // Calcular la diferencia: solo almacenar lo que ha cambiado
         $finalOriginal = [];
         $finalModified = [];
@@ -67,9 +76,9 @@ trait InsertHistory
             return;
         }
 
-        // Siempre inyectar el ID, user_id y event_type_id del evento para que AuditLogComponent pueda parsearlo correctamente
-        // Dado que la optimización redujo el JSON a solo las diferencias, la UI necesita las IDs para saber a qué afecta.
-        foreach (['id', 'user_id', 'event_type_id'] as $key) {
+        // Siempre inyectar el ID, user_id, event_type_id, team_id y work_center_id del evento para que AuditLogComponent pueda parsearlo correctamente
+        // Dado que la optimización redujo el JSON a solo las diferencias, la UI necesita las IDs para saber a qué afecta y no filtrarlos erróneamente.
+        foreach (['id', 'user_id', 'event_type_id', 'team_id', 'work_center_id'] as $key) {
             if (isset($originalData[$key])) {
                 $finalOriginal[$key] = $originalData[$key];
                 $finalModified[$key] = $originalData[$key];
