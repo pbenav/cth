@@ -345,9 +345,10 @@
         </script>
 
         <script>
-            Livewire.on('modalClosed', () => {
-                console.log('Modal closed from calendar view');
-                // Add any additional logic if needed
+            document.addEventListener('livewire:init', () => {
+                Livewire.on('modalClosed', () => {
+                    console.log('Modal closed from calendar view');
+                });
             });
         </script>
     @endpush

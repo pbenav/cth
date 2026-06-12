@@ -470,58 +470,62 @@
                     });
                 }
 
-                Livewire.on('alert', function(message) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: "{{ __('sweetalert.alert.title') }}",
-                        text: message,
-                        timer: 1500,
-                        timerProgressBar: true
+                document.addEventListener('livewire:init', () => {
+                    Livewire.on('alert', (event) => {
+                        let message = Array.isArray(event) ? event[0] : event;
+                        Swal.fire({
+                            icon: 'success',
+                            title: "{{ __('sweetalert.alert.title') }}",
+                            text: message,
+                            timer: 1500,
+                            timerProgressBar: true
+                        });
                     });
-                });
 
-                Livewire.on('incompleteEventConfirmation', function() {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: "{{ __('sweetalert.incomplete_event_confirmation.title') }}",
-                        text: "{{ __('sweetalert.incomplete_event_confirmation.text') }}",
-                        confirmButtonText: "{{ __('sweetalert.incomplete_event_confirmation.confirmButtonText') }}",
+                    Livewire.on('incompleteEventConfirmation', () => {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: "{{ __('sweetalert.incomplete_event_confirmation.title') }}",
+                            text: "{{ __('sweetalert.incomplete_event_confirmation.text') }}",
+                            confirmButtonText: "{{ __('sweetalert.incomplete_event_confirmation.confirmButtonText') }}",
+                        });
                     });
-                });
 
-                Livewire.on('confirmConfirmation', function(event) {
-                    Swal.fire({
-                        title: "{{ __('sweetalert.confirm_confirmation.title') }}",
-                        text: "{{ __('sweetalert.confirm_confirmation.text') }}",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: "{{ __('sweetalert.confirm_confirmation.confirmButtonText') }}",
-                        cancelButtonText: "{{ __('sweetalert.confirm_confirmation.cancelButtonText') }}",
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            Livewire.dispatch('confirm', event);
-                        }
+                    Livewire.on('confirmConfirmation', (event) => {
+                        let eventId = Array.isArray(event) ? event[0] : event;
+                        Swal.fire({
+                            title: "{{ __('sweetalert.confirm_confirmation.title') }}",
+                            text: "{{ __('sweetalert.confirm_confirmation.text') }}",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: "{{ __('sweetalert.confirm_confirmation.confirmButtonText') }}",
+                            cancelButtonText: "{{ __('sweetalert.confirm_confirmation.cancelButtonText') }}",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                Livewire.dispatch('confirm', { eventId: eventId });
+                            }
+                        });
                     });
-                });
 
-                Livewire.on('deleteConfirmation', function(event) {
-                    Swal.fire({
-                        title: "{{ __('sweetalert.delete_confirmation.title') }}",
-                        text: "{{ __('sweetalert.delete_confirmation.text') }}",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: "{{ __('sweetalert.delete_confirmation.confirmButtonText') }}",
-                        cancelButtonText: "{{ __('sweetalert.delete_confirmation.cancelButtonText') }}",
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            Livewire.dispatch('delete', event);
-                        }
+                    Livewire.on('deleteConfirmation', (event) => {
+                        let eventId = Array.isArray(event) ? event[0] : event;
+                        Swal.fire({
+                            title: "{{ __('sweetalert.delete_confirmation.title') }}",
+                            text: "{{ __('sweetalert.delete_confirmation.text') }}",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: "{{ __('sweetalert.delete_confirmation.confirmButtonText') }}",
+                            cancelButtonText: "{{ __('sweetalert.delete_confirmation.cancelButtonText') }}",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                Livewire.dispatch('delete', { eventId: eventId });
+                            }
+                        });
                     });
-                });
 
-                Livewire.on('modalClosed', () => {
-                    console.log('Modal closed from events view');
-                    // Add any additional logic if needed
+                    Livewire.on('modalClosed', () => {
+                        console.log('Modal closed from events view');
+                    });
                 });
             </script>
         @endpush
