@@ -192,7 +192,7 @@ class GetTimeRegisters extends Component
      */
     public function edit($eventId): void
     {
-        $ev = Event::with('eventType')->find($eventId);
+        $ev = Event::with(['eventType', 'team'])->find($eventId);
         if (!$ev) {
             return;
         }
@@ -207,7 +207,7 @@ class GetTimeRegisters extends Component
      */
     public function showEvent($eventId): void
     {
-        $ev = Event::with(['user', 'eventType', 'workCenter'])->find($eventId);
+        $ev = Event::with(['user', 'eventType', 'workCenter', 'team'])->find($eventId);
         if (!$ev) return;
         
         $this->dispatch('showEventDetails', $ev->id);
@@ -222,7 +222,7 @@ class GetTimeRegisters extends Component
      */
     public function confirm($eventId): void
     {
-        $ev = Event::with('user')->find($eventId);
+        $ev = Event::with(['user', 'team'])->find($eventId);
         if (!$ev || !$ev->hasCompleteDates()) {
             $this->dispatch('incompleteEventConfirmation');
             return;
@@ -265,7 +265,7 @@ class GetTimeRegisters extends Component
      */
     public function alertConfirm($eventId): void
     {
-        $ev = Event::find($eventId);
+        $ev = Event::with('team')->find($eventId);
         if (!$ev) return;
         if (!$ev->is_open && !$this->isTeamAdmin) {
             $this->dispatch('alertFail', __("This event is already closed and cannot be modified."));
@@ -286,7 +286,7 @@ class GetTimeRegisters extends Component
      */
     public function alertDelete($eventId): void
     {
-        $ev = Event::find($eventId);
+        $ev = Event::with('team')->find($eventId);
         if (!$ev) return;
         if (!$ev->is_open && !$this->isTeamAdmin) {
             $this->dispatch('alertFail', __("This event is already closed and cannot be modified."));
@@ -303,7 +303,7 @@ class GetTimeRegisters extends Component
      */
     public function delete($eventId): void
     {
-        $ev = Event::find($eventId);
+        $ev = Event::with('team')->find($eventId);
         if (!$ev) return;
         if ($this->isTeamAdmin || $ev->is_open) {
             $ev->delete();
@@ -421,7 +421,7 @@ class GetTimeRegisters extends Component
             return new \Illuminate\Pagination\LengthAwarePaginator([], 0, $this->qtytoshow);
         }
 
-        $query = Event::query()->with(['user', 'eventType']);
+        $query = Event::query()->with(['user', 'eventType', 'team']);
         $this->applyFilters($query);
 
         // Sorting
@@ -612,7 +612,7 @@ class GetTimeRegisters extends Component
             return;
         }
 
-        $event = Event::find($eventId);
+        $event = Event::with(['eventType', 'team', 'user'])->find($eventId);
 
         if (!$event || !$event->eventType || !$event->eventType->is_authorizable) {
             $this->dispatch('alertFail', __('This event cannot be authorized.'));

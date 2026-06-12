@@ -293,7 +293,7 @@ class ReportsComponent extends Component
         $toDateTimeUTC = $toDateTime->copy()->setTimezone('UTC');
         
         $query = Event::query()
-            ->with(['user', 'eventType'])
+            ->with(['user', 'eventType', 'team'])
             ->where('team_id', $this->team->id) // Sólo eventos de este equipo
             // Use timestamp comparison instead of whereDate to account for timezone
             // An event is included if it overlaps with the selected date range in team timezone

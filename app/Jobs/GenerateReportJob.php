@@ -130,7 +130,7 @@ class GenerateReportJob implements ShouldQueue
             
             // Query events for regular reports
             $query = Event::query()
-                ->with(['user', 'eventType'])
+                ->with(['user', 'eventType', 'team'])
                 ->where('team_id', $team->id)
                 ->where(function($q) use ($fromDateTimeUTC, $toDateTimeUTC) {
                     $q->where('start', '<=', $toDateTimeUTC)
