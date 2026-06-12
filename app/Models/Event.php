@@ -449,7 +449,7 @@ class Event extends Model
      * @param  bool  $is_open
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function scopefilterEvents(Builder $query, $start, $end, $user_id, $is_open)
+    public function scopeFilterEvents(Builder $query, $start, $end, $user_id, $is_open)
     {
         return $query->select('id, user_id, start, end, is_open, observations')
             ->where('start', '>=', Carbon::parse($start))

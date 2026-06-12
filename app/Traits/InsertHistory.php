@@ -41,15 +41,6 @@ trait InsertHistory
             ? $modified_event->getAttributes() 
             : (is_array($modified_event) ? $modified_event : json_decode(json_encode($modified_event), true));
 
-        \Log::info('InsertHistory Dump', [
-            'originalData' => $originalData,
-            'modifiedData' => $modifiedData,
-            'isAuthChange' => $isAuthorizationChange,
-            'forceAudit' => $forceAudit,
-            'isOriginalModel' => $original_event instanceof \Illuminate\Database\Eloquent\Model,
-            'isModifiedModel' => $modified_event instanceof \Illuminate\Database\Eloquent\Model,
-        ]);
-
         // Calcular la diferencia: solo almacenar lo que ha cambiado
         $finalOriginal = [];
         $finalModified = [];

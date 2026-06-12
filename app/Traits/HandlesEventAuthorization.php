@@ -26,24 +26,11 @@ trait HandlesEventAuthorization
         $user = Auth::user();
         
         if (!$user || !$user->currentTeam) {
-            \Log::info('canModifyEvent: No user or no currentTeam', ['user_id' => $user?->id]);
             return false;
         }
 
-        // Check admin status FIRST (before inspector check)
         // Admins can always modify events (including team owners and global admins).
-        $team = $user->currentTeam;
-        $isAdmin = $user->hasTeamRole($team, 'admin') || $user->ownsTeam($team) || $user->is_admin;
-        \Log::info('canModifyEvent: Checking roles', [
-            'user_id' => $user->id, 
-            'isAdmin' => $isAdmin, 
-            'isInspector' => $user->isInspector(),
-            'hasTeamRole' => $user->hasTeamRole($team, 'admin'),
-            'ownsTeam' => $user->ownsTeam($team),
-            'is_global_admin' => $user->is_admin,
-            'event_is_open' => $event->is_open, 
-            'event_user_id' => $event->user_id
-        ]);
+        $isAdmin = $user->isTeamAdmin() || $user->is_admin;
         
         if ($isAdmin) {
             return true;
@@ -51,13 +38,11 @@ trait HandlesEventAuthorization
 
         // Inspectors (who are NOT admins) can never modify events
         if ($user->isInspector()) {
-            \Log::info('canModifyEvent: User is inspector only (not admin)', ['user_id' => $user->id]);
             return false;
         }
 
         // Users can modify their own open events
         if ($event->user_id == $user->id && $event->is_open) {
-            \Log::info('canModifyEvent: User owns the event and it is open', ['user_id' => $user->id, 'event_id' => $event->id]);
             return true;
         }
 
