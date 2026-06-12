@@ -158,6 +158,17 @@ Route::middleware(['auth', 'verified', 'is_admin'])->prefix('admin')->name('admi
         return view('admin.app-settings');
     })->name('settings');
 
+    // SBOM Download
+    Route::get('/sbom', function () {
+        $path = base_path('sbom.json');
+        if (!file_exists($path)) {
+            abort(404, 'SBOM not generated yet.');
+        }
+        return response()->download($path, 'sbom.json', [
+            'Content-Type' => 'application/json',
+        ]);
+    })->name('sbom.download');
+
     // Team Administration
     Route::get('/teams', [App\Http\Controllers\Admin\TeamController::class, 'index'])->name('teams.index');
     Route::get('/teams/{team}/edit', [App\Http\Controllers\Admin\TeamController::class, 'edit'])->name('teams.edit');

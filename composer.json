@@ -32,6 +32,7 @@
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.12",
+        "cyclonedx/cyclonedx-php-composer": "*",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
@@ -67,6 +68,9 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "sbom:generate": [
+            "composer CycloneDX:make-sbom --output-format=JSON --output-file=sbom.json"
         ]
     },
     "extra": {
@@ -80,6 +84,9 @@
         "sort-packages": true,
         "platform": {
             "php": "8.4"
+        },
+        "allow-plugins": {
+            "cyclonedx/cyclonedx-php-composer": true
         }
     },
     "minimum-stability": "dev",
