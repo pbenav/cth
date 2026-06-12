@@ -1,6 +1,6 @@
 @props(['isteamadmin', 'isinspector', 'eventTypes', 'teamUserList'])
 <div>
-    <x-dialog-modal wire:model.live="showFiltersModal">
+    <x-dialog-modal wire:model="showFiltersModal">
 
         <x-slot name="title">
             {{ __('Set filters to get time register') }}

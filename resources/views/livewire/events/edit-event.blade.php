@@ -1,6 +1,6 @@
 <div>
     <!-- Event Edit Modal -->
-    <x-dialog-modal wire:model.live="showModalEditEvent" maxWidth="2xl">
+    <x-dialog-modal wire:model="showModalEditEvent" maxWidth="2xl">
         <x-slot name='title'>
             <div class="flex items-center justify-between pb-3 border-b border-gray-200">
                 <div class="flex items-center gap-3">
@@ -211,7 +211,7 @@
     </x-dialog-modal>
 
     <!-- Adjustment Modal -->
-    <x-dialog-modal wire:model.live="showAdjustmentModal" maxWidth="md">
+    <x-dialog-modal wire:model="showAdjustmentModal" maxWidth="md">
         <x-slot name="title">
             <div class="flex items-center text-blue-600">
                 <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
