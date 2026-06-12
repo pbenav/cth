@@ -39,7 +39,7 @@
             @if (!$isInspector || $isTeamAdmin)
                 <x-jet-button
                     class="justify-center h-12 bg-green-600 hover:bg-green-700 focus:ring-green-500"
-                    wire:click="$emitTo('add-event', 'add', '1')">
+                    wire:click="$dispatchTo('add-event', 'add', '1')">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
                     {{ __('Add event') }}
                 </x-jet-button>
@@ -229,7 +229,7 @@
                                 @endif
 
                                 <tr wire:key="event-desktop-{{ $ev->id }}" class="hover:bg-gray-50 transition-colors">
-                                    <td class="px-4 py-3 whitespace-nowrap cursor-pointer" onclick="Livewire.emit('showEventDetails', {{ $ev->id }})">
+                                    <td class="px-4 py-3 whitespace-nowrap cursor-pointer" onclick="Livewire.dispatch('showEventDetails', {{ $ev->id }})">
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium shadow-sm" 
                                               style="background-color: {{ $eventColor }}; color: {{ $isDark ? 'white' : 'black' }}">
                                             #{{ $ev->id }}
@@ -348,7 +348,7 @@
                                 <div class="flex items-center justify-between mb-3">
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium shadow-sm cursor-pointer" 
                                           style="background-color: {{ $eventColor }}; color: {{ $isDark ? 'white' : 'black' }}"
-                                          onclick="Livewire.emit('showEventDetails', {{ $ev->id }})">
+                                          onclick="Livewire.dispatch('showEventDetails', {{ $ev->id }})">
                                         #{{ $ev->id }}
                                     </span>
                                     
@@ -499,7 +499,7 @@
                         cancelButtonText: "{{ __('sweetalert.confirm_confirmation.cancelButtonText') }}",
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            Livewire.emit('confirm', event);
+                            Livewire.dispatch('confirm', event);
                         }
                     });
                 });
@@ -514,7 +514,7 @@
                         cancelButtonText: "{{ __('sweetalert.delete_confirmation.cancelButtonText') }}",
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            Livewire.emit('delete', event);
+                            Livewire.dispatch('delete', event);
                         }
                     });
                 });

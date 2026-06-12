@@ -186,7 +186,7 @@ class ReportsComponent extends Component
             );
 
             // Notify user in UI
-            $this->emit('async-report-started', [
+            $this->dispatch('async-report-started', [
                 'title' => __('Please wait, the report may take a few minutes...'),
                 'text' => __('This report will be generated asynchronously and sent to your inbox.')
             ]);
@@ -342,7 +342,7 @@ class ReportsComponent extends Component
                 $this->orderBy
             );
             // Emit event to trigger download via JavaScript
-            $this->emit('download-report', [
+            $this->dispatch('download-report', [
                 'url' => route('reports.preview', [
                     'worker' => $this->worker,
                     'fromdate' => $this->fromdate,
@@ -358,7 +358,7 @@ class ReportsComponent extends Component
         }
 
         // For non-PDF exports, also use JavaScript download
-        $this->emit('download-report', [
+        $this->dispatch('download-report', [
             'url' => route('reports.export', [
                 'worker' => $this->worker,
                 'fromdate' => $this->fromdate,

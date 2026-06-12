@@ -432,12 +432,12 @@ class GetTimeRegisters extends Component
                 ->orderBy('users.name', $this->direction);
         } else {
             // Default sort or specific column sort
-            $query->orderBy($this->sort, $this->direction);
+            $query->orderBy('events.' . $this->sort, $this->direction);
         }
         
         // Secondary sort to ensure deterministic order
         if ($this->sort !== 'start') {
-            $query->orderBy('start', 'desc');
+            $query->orderBy('events.start', 'desc');
         }
 
         return $query->paginate($this->qtytoshow);
@@ -515,28 +515,19 @@ class GetTimeRegisters extends Component
             return ['workedSeconds' => 0, 'pauseSeconds' => 0, 'netSeconds' => 0];
         }
 
-        // Get all events matching current filters (without pagination)
-        $query = Event::query()->with(['eventType']);
+        $query = Event::query()
+            ->leftJoin('event_types', 'events.event_type_id', '=', 'event_types.id')
+            ->whereNotNull('events.end');
+            
         $this->applyFilters($query);
 
-        $allEvents = $query->get();
+        $result = $query->selectRaw('
+            SUM(CASE WHEN event_types.is_pause_type = 1 THEN TIMESTAMPDIFF(SECOND, events.start, events.end) ELSE 0 END) as pause_seconds,
+            SUM(CASE WHEN event_types.is_pause_type = 0 OR event_types.is_pause_type IS NULL THEN TIMESTAMPDIFF(SECOND, events.start, events.end) ELSE 0 END) as worked_seconds
+        ')->first();
 
-        $workedSeconds = 0;
-        $pauseSeconds = 0;
-
-        foreach ($allEvents as $event) {
-            if (!$event->end) continue;
-
-            $start = \Carbon\Carbon::parse($event->start);
-            $end = \Carbon\Carbon::parse($event->end);
-            $duration = $start->diffInSeconds($end);
-
-            if ($event->eventType && $event->eventType->is_pause_type) {
-                $pauseSeconds += $duration;
-            } else {
-                $workedSeconds += $duration;
-            }
-        }
+        $workedSeconds = (int) $result->worked_seconds;
+        $pauseSeconds = (int) $result->pause_seconds;
 
         return [
             'workedSeconds' => $workedSeconds,
@@ -698,11 +689,11 @@ class GetTimeRegisters extends Component
     private function applyFilters($query)
     {
         if ($this->team) {
-            $query->whereIn('user_id', $this->teamUsers)
-                  ->where('team_id', $this->team->id);
+            $query->whereIn('events.user_id', $this->teamUsers)
+                  ->where('events.team_id', $this->team->id);
         } else {
             // If no team is selected, only show user's own events or nothing
-            $query->where('user_id', Auth::id());
+            $query->where('events.user_id', Auth::id());
         }
 
         $query->when($this->search, function ($q, $search) {
@@ -712,25 +703,25 @@ class GetTimeRegisters extends Component
                             ->orWhere('family_name1', 'like', '%' . $search . '%')
                             ->orWhere('family_name2', 'like', '%' . $search . '%');
                     })
-                    ->orWhere('user_id', $search)
-                    ->orWhere('description', 'like', '%' . $search . '%');
+                    ->orWhere('events.user_id', $search)
+                    ->orWhere('events.description', 'like', '%' . $search . '%');
             });
         });
 
         $query->when($this->filtered, function ($q) {
-            $q->when($this->filter->start, fn($query) => $query->whereDate('start', '>=', $this->filter->start))
-              ->when($this->filter->end, fn($query) => $query->whereDate('end', '<=', $this->filter->end))
-              ->when($this->filter->user_id, fn($query) => $query->where('user_id', $this->filter->user_id))
-              ->when($this->filter->is_open, fn($query) => $query->where('is_open', '1'))
-              ->when($this->filter->event_type_id, fn($query) => $query->where('event_type_id', $this->filter->event_type_id));
+            $q->when($this->filter->start, fn($query) => $query->whereDate('events.start', '>=', $this->filter->start))
+              ->when($this->filter->end, fn($query) => $query->whereDate('events.end', '<=', $this->filter->end))
+              ->when($this->filter->user_id, fn($query) => $query->where('events.user_id', $this->filter->user_id))
+              ->when($this->filter->is_open, fn($query) => $query->where('events.is_open', '1'))
+              ->when($this->filter->event_type_id, fn($query) => $query->where('events.event_type_id', $this->filter->event_type_id));
         });
 
         $query->when($this->confirmed, function ($q) {
-            $q->where('is_open', '=', '1');
+            $q->where('events.is_open', '=', '1');
         });
 
         $query->when($this->showOnlyMine, function ($q) {
-            $q->where('user_id', Auth::id());
+            $q->where('events.user_id', Auth::id());
         });
 
         return $query;
