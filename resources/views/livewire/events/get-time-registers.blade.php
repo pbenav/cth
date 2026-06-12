@@ -37,12 +37,12 @@
         <div class="flex flex-row flex-wrap gap-3 mb-4">
             @livewire('add-event')
             @if (!$isInspector || $isTeamAdmin)
-                <x-jet-button
+                <x-button
                     class="justify-center h-12 bg-green-600 hover:bg-green-700 focus:ring-green-500"
                     wire:click="$dispatchTo('add-event', 'add', '1')">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
                     {{ __('Add event') }}
-                </x-jet-button>
+                </x-button>
             @endif
         </div>
 
@@ -50,38 +50,38 @@
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4">
             <div class="flex flex-wrap gap-3">
                 <!-- Filter Buttons -->
-                <x-jet-button class="h-10" wire:click="openFiltersModal">
+                <x-button class="h-10" wire:click="openFiltersModal">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
                     {{ __('Set filter') }}
-                </x-jet-button>
+                </x-button>
 
-                <x-jet-button
+                <x-button
                     class="h-10 {{ $filtered ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-400' }}"
                     wire:click="unsetFilter">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     {{ __('Unset filter') }}
-                </x-jet-button>
+                </x-button>
 
-                <x-jet-button class="h-10 bg-gray-600 hover:bg-gray-700" wire:click="$refresh">
+                <x-button class="h-10 bg-gray-600 hover:bg-gray-700" wire:click="$refresh">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
                     {{ __('Refresh') }}
-                </x-jet-button>
+                </x-button>
 
                 @if ($isTeamAdmin)
-                    <x-jet-button class="h-10 {{ $showOnlyMine ? 'bg-indigo-600' : 'bg-gray-600' }}" wire:click="filterOnlyMine">
+                    <x-button class="h-10 {{ $showOnlyMine ? 'bg-indigo-600' : 'bg-gray-600' }}" wire:click="filterOnlyMine">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                         {{ $showOnlyMine ? __('All Records') : __('My Records') }}
-                    </x-jet-button>
+                    </x-button>
                 @endif
 
                 <!-- Search Input -->
                 <div class="flex-1 min-w-[200px]">
-                    <x-jet-input class="w-full h-10" placeholder="{{ __('Search') }}" type="text" wire:model.live="search" />
+                    <x-input class="w-full h-10" placeholder="{{ __('Search') }}" type="text" wire:model.live="search" />
                 </div>
 
                 <!-- Not Confirmed Checkbox -->
                 <label class="flex items-center space-x-2 px-3 py-2 bg-gray-50 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100">
-                    <x-jet-checkbox class="w-5 h-5" wire:model.live="confirmed" wire:click="$set('filtered', false)" />
+                    <x-checkbox class="w-5 h-5" wire:model.live="confirmed" wire:click="$set('filtered', false)" />
                     <span class="text-sm font-medium text-gray-700">{{ __('Not confirmed') }}</span>
                 </label>
 

@@ -1,4 +1,4 @@
-<x-jet-form-section submit="updateVacationPreferences">
+<x-form-section submit="updateVacationPreferences">
     <x-slot name="title">
         {{ __('Vacaciones') }}
     </x-slot>
@@ -10,7 +10,7 @@
     <x-slot name="form">
         <!-- Calculation Type -->
         <div class="col-span-6" x-data="{ calculationType: @entangle('state.vacation_calculation_type').live }">
-            <x-jet-label for="vacation_calculation_type" value="{{ __('Tipo de cálculo') }}" />
+            <x-label for="vacation_calculation_type" value="{{ __('Tipo de cálculo') }}" />
             
             <div class="mt-3 space-y-3">
                 <!-- Natural Days Option -->
@@ -56,12 +56,12 @@
                 </div>
             </div>
 
-            <x-jet-input-error for="state.vacation_calculation_type" class="mt-2" />
+            <x-input-error for="state.vacation_calculation_type" class="mt-2" />
         </div>
 
         <!-- Working Days Count (shown only when working days is selected) -->
         <div class="col-span-6 sm:col-span-4" x-data="{ calculationType: @entangle('state.vacation_calculation_type').live }" x-show="calculationType === 'working'" x-transition>
-            <x-jet-label for="vacation_working_days" value="{{ __('Número de días hábiles') }}" />
+            <x-label for="vacation_working_days" value="{{ __('Número de días hábiles') }}" />
             <input 
                 id="vacation_working_days" 
                 type="number" 
@@ -70,7 +70,7 @@
                 class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full" 
                 wire:model="state.vacation_working_days"
             >
-            <x-jet-input-error for="state.vacation_working_days" class="mt-2" />
+            <x-input-error for="state.vacation_working_days" class="mt-2" />
             <p class="mt-2 text-sm text-gray-600">
                 {{ __('Introduzca el número de días hábiles de vacaciones por año (por defecto 22).') }}
             </p>
@@ -78,12 +78,12 @@
     </x-slot>
 
     <x-slot name="actions">
-        <x-jet-action-message class="mr-3" on="saved">
+        <x-action-message class="mr-3" on="saved">
             {{ __('Guardado.') }}
-        </x-jet-action-message>
+        </x-action-message>
 
-        <x-jet-button>
+        <x-button>
             {{ __('Guardar') }}
-        </x-jet-button>
+        </x-button>
     </x-slot>
-</x-jet-form-section>
+</x-form-section>

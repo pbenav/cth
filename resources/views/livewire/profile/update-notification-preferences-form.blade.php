@@ -1,4 +1,4 @@
-<x-jet-form-section submit="updateNotificationPreferences">
+<x-form-section submit="updateNotificationPreferences">
     <x-slot name="title">
         {{ __('Notification Preferences') }}
     </x-slot>
@@ -10,24 +10,24 @@
     <x-slot name="form">
         <div class="col-span-6 sm:col-span-4 space-y-2">
             <label for="notify_by_internal_message" class="flex items-center">
-                <x-jet-checkbox id="notify_by_internal_message" wire:model="state.notify_by_internal_message" />
+                <x-checkbox id="notify_by_internal_message" wire:model="state.notify_by_internal_message" />
                 <span class="ml-2 text-sm text-gray-600">{{ __('Receive internal messages') }}</span>
             </label>
 
             <label for="notify_by_email" class="flex items-center">
-                <x-jet-checkbox id="notify_by_email" wire:model="state.notify_by_email" />
+                <x-checkbox id="notify_by_email" wire:model="state.notify_by_email" />
                 <span class="ml-2 text-sm text-gray-600">{{ __('Receive email notifications') }}</span>
             </label>
         </div>
     </x-slot>
 
     <x-slot name="actions">
-        <x-jet-action-message class="mr-3" on="saved">
+        <x-action-message class="mr-3" on="saved">
             {{ __('Saved.') }}
-        </x-jet-action-message>
+        </x-action-message>
 
-        <x-jet-button>
+        <x-button>
             {{ __('Save') }}
-        </x-jet-button>
+        </x-button>
     </x-slot>
-</x-jet-form-section>
+</x-form-section>

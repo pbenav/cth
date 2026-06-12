@@ -23,7 +23,7 @@
         <div class="w-auto flex flex-row flex-wrap gap-2 mb-4">
 
             <div>
-                <x-jet-label value="{{ __('Report Source') }}" />
+                <x-label value="{{ __('Report Source') }}" />
                 <select class="form-control pt-1 h-8 whitespace-nowrap" wire:model.live='report_source'>
                     @foreach ($reportSources as $sourceKey => $sourceName)
                         <option value="{{ $sourceKey }}">
@@ -35,7 +35,7 @@
 
             @if ($isTeamAdmin or $isInspector)
                 <div>
-                    <x-jet-label value="{{ __('Worker') }}" />
+                    <x-label value="{{ __('Worker') }}" />
                     <select class="form-control pt-1 h-8 whitespace-nowrap" wire:model.live='worker'>
                         <option value="%">{{ __('All') }}</option>
                         @foreach ($workers as $w)
@@ -45,26 +45,26 @@
                             </option>
                         @endforeach
                     </select>
-                    <x-jet-input-error for='worker' />
+                    <x-input-error for='worker' />
                 </div>
             @endif
 
             <div class="flex flex-nowrap">
                 <div>
-                    <x-jet-label value="{{ __('From date') }}" />
+                    <x-label value="{{ __('From date') }}" />
                     <x-datepicker class="form-control h-8 pt-2" wire:model.live='fromdate' />
-                    <x-jet-input-error for='fromdate' />
+                    <x-input-error for='fromdate' />
                 </div>
 
                 <div class="ml-2">
-                    <x-jet-label value="{{ __('To date') }}" />
+                    <x-label value="{{ __('To date') }}" />
                     <x-datepicker class="form-control h-8 pt-2" wire:model.live='todate' name="todate" id="todate" />
-                    <x-jet-input-error class="whitespace-pre-wrap" for='todate' />
+                    <x-input-error class="whitespace-pre-wrap" for='todate' />
                 </div>
             </div>
 
             <div>
-                <x-jet-label value="{{ __('Event Type') }}" />
+                <x-label value="{{ __('Event Type') }}" />
                 <select class="form-control pt-1 h-8 whitespace-nowrap" wire:model.live='event_type_id'>
                     <option value="All">{{ __('All') }}</option>
                     @foreach ($eventTypes as $eventType)
@@ -73,44 +73,44 @@
                         </option>
                     @endforeach
                 </select>
-                <x-jet-input-error for='event_type_id' />
+                <x-input-error for='event_type_id' />
             </div>
 
             <div>
-                <x-jet-label value="{{ __('Group By') }}" />
+                <x-label value="{{ __('Group By') }}" />
                 <select class="form-control pt-1 h-8 whitespace-nowrap" wire:model.live='groupBy'>
                     <option value="none">{{ __('None') }}</option>
                     <option value="date">{{ __('Date') }}</option>
                     <option value="user">{{ __('Worker') }}</option>
                 </select>
-                <x-jet-input-error for='groupBy' />
+                <x-input-error for='groupBy' />
             </div>
 
             <div>
-                <x-jet-label value="{{ __('Order By') }}" />
+                <x-label value="{{ __('Order By') }}" />
                 <select class="form-control pt-1 h-8 whitespace-nowrap" wire:model.live='orderBy'>
                     <option value="start">{{ __('Date') }}</option>
                     <option value="user_name">{{ __('Worker') }}</option>
                 </select>
-                <x-jet-input-error for='orderBy' />
+                <x-input-error for='orderBy' />
             </div>
 
             <div>
-                <x-jet-label value="{{ __('Type') }}" />
+                <x-label value="{{ __('Type') }}" />
                 <select class="form-control pt-1 h-8 whitespace-nowrap" wire:model.live='rtype'>
                     @foreach ($rtypes as $rtype_key => $rtype_val)
                         <option value="{{ $rtype_key }}">
                             {{ $rtype_key }}</option>
                     @endforeach
                 </select>
-                <x-jet-input-error for='rtype' />
+                <x-input-error for='rtype' />
             </div>
 
             <div class="h-8 pt-1 flex gap-2 ml-auto">
-                <x-jet-button class="h-8 mt-4 bg-indigo-500 hover:bg-indigo-600 justify-center"
+                <x-button class="h-8 mt-4 bg-indigo-500 hover:bg-indigo-600 justify-center"
                     wire:click='generatePreview' wire:loading.attr="disabled" onclick="showReportLoading()">
                     {{ __('Generate Report') }}
-                </x-jet-button>
+                </x-button>
 
                 @php
                     if ($rtype === 'PDF') {

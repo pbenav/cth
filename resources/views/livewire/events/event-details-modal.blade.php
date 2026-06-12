@@ -1,7 +1,7 @@
 <div>
     <!-- Event Info Modal -->
     <!-- Event Info Modal -->
-    <x-jet-dialog-modal wire:model.live="showModal" maxWidth="2xl">
+    <x-dialog-modal wire:model.live="showModal" maxWidth="2xl">
         <x-slot name="title">
             @if ($eventData)
                 <div class="flex items-center justify-between pb-3 border-b border-gray-200">
@@ -257,19 +257,19 @@
                 <div class="flex items-center justify-between w-full">
                     <div>
                         @if (!$eventData['is_open'] && $eventData['user_id'] == auth()->id())
-                            <x-jet-button onclick="Livewire.dispatch('openReopeningModal', {{ $eventData['id'] }})"
+                            <x-button onclick="Livewire.dispatch('openReopeningModal', {{ $eventData['id'] }})"
                                 class="bg-orange-600 hover:bg-orange-700">
                                 {{ __('Request Reopening') }}
-                            </x-jet-button>
+                            </x-button>
                         @endif
                     </div>
-                    <x-jet-secondary-button wire:click="closeModal" wire:loading.attr="disabled">
+                    <x-secondary-button wire:click="closeModal" wire:loading.attr="disabled">
                         {{ __('Close') }}
-                    </x-jet-secondary-button>
+                    </x-secondary-button>
                 </div>
             @endif
         </x-slot>
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 
     {{-- Reopening Request Component --}}
     @livewire('events.request-event-reopening')

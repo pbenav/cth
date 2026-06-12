@@ -1,5 +1,5 @@
 <div>
-    <x-jet-action-section>
+    <x-action-section>
         <x-slot name="title">
             {{ __('Tipos de evento') }}
         </x-slot>
@@ -168,19 +168,19 @@
 
             @if ($isTeamAdmin)
                 <div class="mt-6 flex items-center justify-end">
-                    <x-jet-button wire:click="manageEventType" class="bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-900 focus:border-indigo-900 ring-indigo-300">
+                    <x-button wire:click="manageEventType" class="bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-900 focus:border-indigo-900 ring-indigo-300">
                         <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
                         </svg>
                         {{ __('Añadir tipo de evento') }}
-                    </x-jet-button>
+                    </x-button>
                 </div>
             @endif
         </x-slot>
-    </x-jet-action-section>
+    </x-action-section>
 
     <!-- Delete Event Type Confirmation Modal -->
-    <x-jet-confirmation-modal wire:model.live="confirmingEventTypeDeletion">
+    <x-confirmation-modal wire:model.live="confirmingEventTypeDeletion">
         <x-slot name="title">
             {{ __('Eliminar tipo de evento') }}
         </x-slot>
@@ -190,18 +190,18 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$toggle('confirmingEventTypeDeletion')" wire:loading.attr="disabled">
+            <x-secondary-button wire:click="$toggle('confirmingEventTypeDeletion')" wire:loading.attr="disabled">
                 {{ __('Cancelar') }}
-            </x-jet-secondary-button>
+            </x-secondary-button>
 
-            <x-jet-danger-button class="ml-2" wire:click="deleteEventType" wire:loading.attr="disabled">
+            <x-danger-button class="ml-2" wire:click="deleteEventType" wire:loading.attr="disabled">
                 {{ __('Eliminar') }}
-            </x-jet-danger-button>
+            </x-danger-button>
         </x-slot>
-    </x-jet-confirmation-modal>
+    </x-confirmation-modal>
 
     <!-- Manage Event Type Modal -->
-    <x-jet-dialog-modal wire:model.live="managingEventType">
+    <x-dialog-modal wire:model.live="managingEventType">
         <x-slot name="title">
             <div class="flex items-center space-x-3 border-b border-gray-100 pb-4">
                 <div class="bg-indigo-100 p-2 rounded-full">
@@ -219,12 +219,12 @@
             <div class="grid grid-cols-1 gap-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <x-jet-label for="name" value="{{ __('Nombre') }}" class="font-semibold text-gray-700" />
-                        <x-jet-input id="name" type="text" class="mt-1 block w-full" wire:model="state.name" placeholder="Ej. Vacaciones" />
-                        <x-jet-input-error for="state.name" class="mt-2" />
+                        <x-label for="name" value="{{ __('Nombre') }}" class="font-semibold text-gray-700" />
+                        <x-input id="name" type="text" class="mt-1 block w-full" wire:model="state.name" placeholder="Ej. Vacaciones" />
+                        <x-input-error for="state.name" class="mt-2" />
                     </div>
                     <div>
-                        <x-jet-label for="color" value="{{ __('Color') }}" class="font-semibold text-gray-700" />
+                        <x-label for="color" value="{{ __('Color') }}" class="font-semibold text-gray-700" />
                         <div class="mt-1 flex items-center space-x-3">
                             <input id="color" type="color" 
                                    class="h-10 w-20 p-1 rounded-md border border-gray-300 cursor-pointer" 
@@ -232,24 +232,24 @@
                                    value="{{ $state['color'] ?? '#000000' }}" />
                             <span class="text-sm text-gray-500 font-mono">{{ $state['color'] ?? '' }}</span>
                         </div>
-                        <x-jet-input-error for="state.color" class="mt-2" />
+                        <x-input-error for="state.color" class="mt-2" />
                     </div>
                 </div>
 
                 <div>
-                    <x-jet-label for="observations" value="{{ __('Observaciones') }}" class="font-semibold text-gray-700" />
+                    <x-label for="observations" value="{{ __('Observaciones') }}" class="font-semibold text-gray-700" />
                     <textarea id="observations" 
                               class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm transition duration-150 ease-in-out sm:text-sm" 
                               wire:model="state.observations"
                               rows="3"
                               placeholder="Descripción opcional..."></textarea>
-                    <x-jet-input-error for="state.observations" class="mt-2" />
+                    <x-input-error for="state.observations" class="mt-2" />
                 </div>
 
                 <div class="bg-gray-50 rounded-lg p-4 space-y-4 border border-gray-100">
                     <div class="flex items-start">
                         <div class="flex items-center h-5">
-                            <x-jet-checkbox id="is_all_day" wire:model="state.is_all_day" class="text-indigo-600" />
+                            <x-checkbox id="is_all_day" wire:model="state.is_all_day" class="text-indigo-600" />
                         </div>
                         <div class="ml-3 text-sm">
                             <label for="is_all_day" class="font-medium text-gray-700">{{ __('Evento de día completo') }}</label>
@@ -259,7 +259,7 @@
 
                     <div class="flex items-start">
                         <div class="flex items-center h-5">
-                            <x-jet-checkbox id="is_workday_type" wire:model="state.is_workday_type" class="text-indigo-600" />
+                            <x-checkbox id="is_workday_type" wire:model="state.is_workday_type" class="text-indigo-600" />
                         </div>
                         <div class="ml-3 text-sm">
                             <label for="is_workday_type" class="font-medium text-gray-700">{{ __('Tipo de Jornada Principal') }}</label>
@@ -269,7 +269,7 @@
 
                     <div class="flex items-start">
                         <div class="flex items-center h-5">
-                            <x-jet-checkbox id="is_authorizable" wire:model="state.is_authorizable" class="text-indigo-600" />
+                            <x-checkbox id="is_authorizable" wire:model="state.is_authorizable" class="text-indigo-600" />
                         </div>
                         <div class="ml-3 text-sm">
                             <label for="is_authorizable" class="font-medium text-gray-700">{{ __('Autorizable') }}</label>
@@ -279,7 +279,7 @@
 
                     <div class="flex items-start">
                         <div class="flex items-center h-5">
-                            <x-jet-checkbox id="is_pause_type" wire:model="state.is_pause_type" class="text-indigo-600" />
+                            <x-checkbox id="is_pause_type" wire:model="state.is_pause_type" class="text-indigo-600" />
                         </div>
                         <div class="ml-3 text-sm">
                             <label for="is_pause_type" class="font-medium text-gray-700">{{ __('Es tipo pausa') }}</label>
@@ -291,15 +291,15 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$toggle('managingEventType')" wire:loading.attr="disabled">
+            <x-secondary-button wire:click="$toggle('managingEventType')" wire:loading.attr="disabled">
                 {{ __('Cancelar') }}
-            </x-jet-secondary-button>
+            </x-secondary-button>
 
-            <x-jet-button class="ml-2 bg-indigo-600 hover:bg-indigo-700" wire:click="saveEventType" wire:loading.attr="disabled">
+            <x-button class="ml-2 bg-indigo-600 hover:bg-indigo-700" wire:click="saveEventType" wire:loading.attr="disabled">
                 {{ __('Guardar') }}
-            </x-jet-button>
+            </x-button>
         </x-slot>
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 </div>
 
 <script>

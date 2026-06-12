@@ -1,5 +1,5 @@
 <div>
-    <x-jet-action-section>
+    <x-action-section>
         <x-slot name="title">
             {{ __('Team Announcements') }}
         </x-slot>
@@ -18,9 +18,9 @@
             <div class="space-y-4">
                 @can('create', [App\Models\TeamAnnouncement::class, $team])
                     <div class="flex justify-end">
-                        <x-jet-button wire:click="create">
+                        <x-button wire:click="create">
                             {{ __('Create Announcement') }}
-                        </x-jet-button>
+                        </x-button>
                     </div>
                 @endcan
 
@@ -101,10 +101,10 @@
                 @endif
             </div>
         </x-slot>
-    </x-jet-action-section>
+    </x-action-section>
 
     <!-- Modal -->
-    <x-jet-dialog-modal wire:model.live="showModal">
+    <x-dialog-modal wire:model.live="showModal">
         <x-slot name="title">
             {{ $editingId ? __('Edit Announcement') : __('Create Announcement') }}
         </x-slot>
@@ -112,9 +112,9 @@
         <x-slot name="content">
             <div class="space-y-4">
                 <div>
-                    <x-jet-label for="title" value="{{ __('Title') }}" />
-                    <x-jet-input id="title" type="text" class="mt-1 block w-full" wire:model="title" />
-                    <x-jet-input-error for="title" class="mt-2" />
+                    <x-label for="title" value="{{ __('Title') }}" />
+                    <x-input id="title" type="text" class="mt-1 block w-full" wire:model="title" />
+                    <x-input-error for="title" class="mt-2" />
                 </div>
 
                 <div x-data="quillEditor()"
@@ -145,13 +145,13 @@
                     
                     <!-- Errores de formato -->
                     <div x-show="!format">
-                        <x-jet-input-error for="format" class="mt-2" />
+                        <x-input-error for="format" class="mt-2" />
                     </div>
 
                     <!-- Editor Container -->
                     <div x-show="format">
                         <div class="flex justify-between items-center mb-2">
-                            <x-jet-label for="content" value="{{ __('Content') }}" />
+                            <x-label for="content" value="{{ __('Content') }}" />
                             <div class="flex items-center gap-2">
                                 <span class="text-xs font-medium px-2 py-1 bg-gray-100 rounded text-gray-600 uppercase" x-text="format"></span>
                                 <!-- Toggle View Mode Button -->
@@ -207,21 +207,21 @@
                             </div>
                         </div>
                         
-                        <x-jet-input-error for="content" class="mt-2" />
+                        <x-input-error for="content" class="mt-2" />
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <x-jet-label for="start_date" value="{{ __('Start Date') }} ({{ __('Optional') }})" />
-                        <x-jet-input id="start_date" type="date" class="mt-1 block w-full" wire:model="start_date" />
-                        <x-jet-input-error for="start_date" class="mt-2" />
+                        <x-label for="start_date" value="{{ __('Start Date') }} ({{ __('Optional') }})" />
+                        <x-input id="start_date" type="date" class="mt-1 block w-full" wire:model="start_date" />
+                        <x-input-error for="start_date" class="mt-2" />
                     </div>
 
                     <div>
-                        <x-jet-label for="end_date" value="{{ __('End Date') }} ({{ __('Optional') }})" />
-                        <x-jet-input id="end_date" type="date" class="mt-1 block w-full" wire:model="end_date" />
-                        <x-jet-input-error for="end_date" class="mt-2" />
+                        <x-label for="end_date" value="{{ __('End Date') }} ({{ __('Optional') }})" />
+                        <x-input id="end_date" type="date" class="mt-1 block w-full" wire:model="end_date" />
+                        <x-input-error for="end_date" class="mt-2" />
                     </div>
                 </div>
 
@@ -238,16 +238,16 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="closeModal">
+            <x-secondary-button wire:click="closeModal">
                 {{ __('Cancel') }}
-            </x-jet-secondary-button>
+            </x-secondary-button>
 
-            <x-jet-button class="ml-3 bg-indigo-600 hover:bg-indigo-700" 
+            <x-button class="ml-3 bg-indigo-600 hover:bg-indigo-700" 
                           @click="window.dispatchEvent(new CustomEvent('sync-content-before-save')); setTimeout(() => $wire.call('save'), 100)">
                 {{ __('Save') }}
-            </x-jet-button>
+            </x-button>
         </x-slot>
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 </div>
 
 @push('styles')

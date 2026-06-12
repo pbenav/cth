@@ -1,6 +1,6 @@
 <div>
     <div class="space-y-6">
-        <x-jet-action-section>
+        <x-action-section>
             <x-slot name="title">
                 {{ __('Work Centers') }}
             </x-slot>
@@ -123,31 +123,31 @@
             </div>
             @if (auth()->user()->ownsTeam($team) || auth()->user()->hasTeamRole($team, 'admin'))
                 <div class="mt-6 flex items-center justify-end">
-                    <x-jet-button wire:click="confirmWorkCenterCreation" class="bg-indigo-600 hover:bg-indigo-700">
+                    <x-button wire:click="confirmWorkCenterCreation" class="bg-indigo-600 hover:bg-indigo-700">
                         {{ __('Create Work Center') }}
-                    </x-jet-button>
+                    </x-button>
                 </div>
             @endif
         </x-slot>
-    </x-jet-action-section>
+    </x-action-section>
 
     <!-- Unified Work Center Management Modal -->
-    <x-jet-dialog-modal wire:model.live="confirmingWorkCenterManagement">
+    <x-dialog-modal wire:model.live="confirmingWorkCenterManagement">
         <x-slot name="title">
             {{ $workCenterBeingUpdatedId ? __('Edit Work Center') : __('Create Work Center') }}
         </x-slot>
 
         <x-slot name="content">
             <div class="col-span-6 sm:col-span-4">
-                <x-jet-label for="name" value="{{ __('Name') }}" />
-                <x-jet-input id="name" type="text" class="mt-1 block w-full" wire:model="state.name" />
-                <x-jet-input-error for="name" class="mt-2" />
+                <x-label for="name" value="{{ __('Name') }}" />
+                <x-input id="name" type="text" class="mt-1 block w-full" wire:model="state.name" />
+                <x-input-error for="name" class="mt-2" />
             </div>
 
             <div class="col-span-6 sm:col-span-4 mt-4">
-                <x-jet-label for="code" value="{{ __('Code') }}" />
-                <x-jet-input id="code" type="text" class="mt-1 block w-full" wire:model="state.code" />
-                <x-jet-input-error for="code" class="mt-2" />
+                <x-label for="code" value="{{ __('Code') }}" />
+                <x-input id="code" type="text" class="mt-1 block w-full" wire:model="state.code" />
+                <x-input-error for="code" class="mt-2" />
             </div>
 
             <!-- NFC Configuration Section -->
@@ -165,11 +165,11 @@
                         </div>
                         
                         <div wire:show="state.enable_nfc">
-                            <x-jet-label for="nfc_tag_description" value="{{ __('NFC Tag Description') }}" />
+                            <x-label for="nfc_tag_description" value="{{ __('NFC Tag Description') }}" />
                             <textarea id="nfc_tag_description" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full" 
                                      wire:model="state.nfc_tag_description" rows="2"
                                      placeholder="{{ __('e.g., Blue NFC sticker on main entrance door') }}"></textarea>
-                            <x-jet-input-error for="nfc_tag_description" class="mt-2" />
+                            <x-input-error for="nfc_tag_description" class="mt-2" />
                             <p class="mt-1 text-xs text-gray-500">{{ __('Physical description to help locate the NFC tag (optional)') }}</p>
                         </div>
                         
@@ -277,49 +277,49 @@
             </div>
 
             <div class="col-span-6 sm:col-span-4 mt-4">
-                <x-jet-label for="address" value="{{ __('Address') }}" />
-                <x-jet-input id="address" type="text" class="mt-1 block w-full" wire:model="state.address" />
-                <x-jet-input-error for="address" class="mt-2" />
+                <x-label for="address" value="{{ __('Address') }}" />
+                <x-input id="address" type="text" class="mt-1 block w-full" wire:model="state.address" />
+                <x-input-error for="address" class="mt-2" />
             </div>
 
             <div class="col-span-6 sm:col-span-4 mt-4">
-                <x-jet-label for="city" value="{{ __('City') }}" />
-                <x-jet-input id="city" type="text" class="mt-1 block w-full" wire:model="state.city" />
-                <x-jet-input-error for="city" class="mt-2" />
+                <x-label for="city" value="{{ __('City') }}" />
+                <x-input id="city" type="text" class="mt-1 block w-full" wire:model="state.city" />
+                <x-input-error for="city" class="mt-2" />
             </div>
 
             <div class="col-span-6 sm:col-span-4 mt-4">
-                <x-jet-label for="postal_code" value="{{ __('Postal Code') }}" />
-                <x-jet-input id="postal_code" type="text" class="mt-1 block w-full" wire:model="state.postal_code" />
-                <x-jet-input-error for="postal_code" class="mt-2" />
+                <x-label for="postal_code" value="{{ __('Postal Code') }}" />
+                <x-input id="postal_code" type="text" class="mt-1 block w-full" wire:model="state.postal_code" />
+                <x-input-error for="postal_code" class="mt-2" />
             </div>
 
             <div class="col-span-6 sm:col-span-4 mt-4">
-                <x-jet-label for="state" value="{{ __('State') }}" />
-                <x-jet-input id="state" type="text" class="mt-1 block w-full" wire:model="state.state" />
-                <x-jet-input-error for="state" class="mt-2" />
+                <x-label for="state" value="{{ __('State') }}" />
+                <x-input id="state" type="text" class="mt-1 block w-full" wire:model="state.state" />
+                <x-input-error for="state" class="mt-2" />
             </div>
 
             <div class="col-span-6 sm:col-span-4 mt-4">
-                <x-jet-label for="country" value="{{ __('Country') }}" />
-                <x-jet-input id="country" type="text" class="mt-1 block w-full" wire:model="state.country" />
-                <x-jet-input-error for="country" class="mt-2" />
+                <x-label for="country" value="{{ __('Country') }}" />
+                <x-input id="country" type="text" class="mt-1 block w-full" wire:model="state.country" />
+                <x-input-error for="country" class="mt-2" />
             </div>
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$toggle('confirmingWorkCenterManagement')" wire:loading.attr="disabled">
+            <x-secondary-button wire:click="$toggle('confirmingWorkCenterManagement')" wire:loading.attr="disabled">
                 {{ __('Cancel') }}
-            </x-jet-secondary-button>
+            </x-secondary-button>
 
-            <x-jet-button class="ml-2 bg-indigo-600 hover:bg-indigo-700" wire:click="{{ $workCenterBeingUpdatedId ? 'updateWorkCenter' : 'createWorkCenter' }}" wire:loading.attr="disabled">
+            <x-button class="ml-2 bg-indigo-600 hover:bg-indigo-700" wire:click="{{ $workCenterBeingUpdatedId ? 'updateWorkCenter' : 'createWorkCenter' }}" wire:loading.attr="disabled">
                 {{ $workCenterBeingUpdatedId ? __('Actualizar') : __('Crear') }}
-            </x-jet-button>
+            </x-button>
         </x-slot>
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 
     <!-- Remove Work Center Confirmation Modal -->
-    <x-jet-confirmation-modal wire:model.live="confirmingWorkCenterRemoval">
+    <x-confirmation-modal wire:model.live="confirmingWorkCenterRemoval">
         <x-slot name="title">
             {{ __('Remove Work Center') }}
         </x-slot>
@@ -329,15 +329,15 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$toggle('confirmingWorkCenterRemoval')" wire:loading.attr="disabled">
+            <x-secondary-button wire:click="$toggle('confirmingWorkCenterRemoval')" wire:loading.attr="disabled">
                 {{ __('Cancel') }}
-            </x-jet-secondary-button>
+            </x-secondary-button>
 
-            <x-jet-danger-button class="ml-2" wire:click="removeWorkCenter" wire:loading.attr="disabled">
+            <x-danger-button class="ml-2" wire:click="removeWorkCenter" wire:loading.attr="disabled">
                 {{ __('Remove') }}
-            </x-jet-danger-button>
+            </x-danger-button>
         </x-slot>
-    </x-jet-confirmation-modal>
+    </x-confirmation-modal>
 
 
     <script>

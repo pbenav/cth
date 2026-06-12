@@ -242,9 +242,9 @@
             <!-- End of path detection section -->
 
             <div class="mt-4">
-                <x-jet-button class="bg-indigo-600 hover:bg-indigo-700">
+                <x-button class="bg-indigo-600 hover:bg-indigo-700">
                     {{ __("Guardar Preferencia") }}
-                </x-jet-button>
+                </x-button>
             </div>
         </form>
     </div>
@@ -284,9 +284,9 @@
             </div>
 
             <div class="mt-4">
-                <x-jet-button class="bg-indigo-600 hover:bg-indigo-700">
+                <x-button class="bg-indigo-600 hover:bg-indigo-700">
                     {{ __('Guardar Preferencia') }}
-                </x-jet-button>
+                </x-button>
             </div>
         </form>
     </div>
@@ -339,9 +339,9 @@
 
     <form method="POST" action="{{ route('team.preferences.install') }}" class="mt-4" onsubmit="showModal(); return false;">
         @csrf
-        <x-jet-button class="bg-indigo-600 hover:bg-indigo-700">
+        <x-button class="bg-indigo-600 hover:bg-indigo-700">
             {{ __("Instalar Puppeteer y Browsershot") }}
-        </x-jet-button>
+        </x-button>
     </form>
     @endif
 </div>

@@ -34,9 +34,6 @@ class AppServiceProvider extends ServiceProvider
         // Register custom Blade directives for permissions
         $this->registerPermissionDirectives();
 
-        // Restore x-jet- prefix for Jetstream components (Jetstream 3+ upgrade)
-        \Illuminate\Support\Facades\Blade::anonymousComponentPath(resource_path('views/vendor/jetstream/components'), 'jet');
-
         // Override Jetstream's UpdateTeamNameForm with our custom one
         \Livewire\Livewire::component('teams.update-team-name-form', \App\Livewire\Teams\UpdateTeamNameForm::class);
 

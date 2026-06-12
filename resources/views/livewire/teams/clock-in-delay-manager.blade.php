@@ -1,5 +1,5 @@
 <div>
-    <x-jet-form-section submit="updateClockInDelaySettings">
+    <x-form-section submit="updateClockInDelaySettings">
         <x-slot name="title">
             {{ __('Fichaje con Demora Forzada') }}
         </x-slot>
@@ -13,9 +13,9 @@
             <div class="col-span-6 sm:col-span-4">
                 <label for="force_clock_in_delay" class="flex items-center">
                     @if(\Illuminate\Support\Facades\Gate::check('update', $team))
-                        <x-jet-checkbox id="force_clock_in_delay" wire:model="state.force_clock_in_delay" />
+                        <x-checkbox id="force_clock_in_delay" wire:model="state.force_clock_in_delay" />
                     @else
-                        <x-jet-checkbox id="force_clock_in_delay" wire:model="state.force_clock_in_delay" disabled />
+                        <x-checkbox id="force_clock_in_delay" wire:model="state.force_clock_in_delay" disabled />
                     @endif
                     <span class="ml-2 text-sm text-gray-600">{{ __('Activar Fichaje con Demora Forzada') }}</span>
                 </label>
@@ -24,9 +24,9 @@
             @if (isset($state['force_clock_in_delay']) && $state['force_clock_in_delay'])
                 <!-- Clock-in Delay Minutes -->
                 <div class="col-span-6 sm:col-span-4">
-                    <x-jet-label for="clock_in_delay_minutes" value="{{ __('Margen de Minutos para Fichar') }}" />
-                    <x-jet-input id="clock_in_delay_minutes" type="number" class="mt-1 block w-full" wire:model="state.clock_in_delay_minutes" />
-                    <x-jet-input-error for="clock_in_delay_minutes" class="mt-2" />
+                    <x-label for="clock_in_delay_minutes" value="{{ __('Margen de Minutos para Fichar') }}" />
+                    <x-input id="clock_in_delay_minutes" type="number" class="mt-1 block w-full" wire:model="state.clock_in_delay_minutes" />
+                    <x-input-error for="clock_in_delay_minutes" class="mt-2" />
                     <span class="mt-1 text-xs text-gray-500">
                         {{ __('Número de minutos antes y después de la hora de inicio/fin programada que el usuario tiene permitido fichar. Por ejemplo, si el margen es de 15 minutos, un usuario programado para empezar a las 08:00 podrá fichar entre las 07:45 y las 08:15.') }}
                     </span>
@@ -34,9 +34,9 @@
 
                 <!-- Clock-in Grace Period Minutes -->
                 <div class="col-span-6 sm:col-span-4">
-                    <x-jet-label for="clock_in_grace_period_minutes" value="{{ __('Periodo de Gracia para Fichaje Excepcional (Minutos)') }}" />
-                    <x-jet-input id="clock_in_grace_period_minutes" type="number" class="mt-1 block w-full" wire:model="state.clock_in_grace_period_minutes" />
-                    <x-jet-input-error for="clock_in_grace_period_minutes" class="mt-2" />
+                    <x-label for="clock_in_grace_period_minutes" value="{{ __('Periodo de Gracia para Fichaje Excepcional (Minutos)') }}" />
+                    <x-input id="clock_in_grace_period_minutes" type="number" class="mt-1 block w-full" wire:model="state.clock_in_grace_period_minutes" />
+                    <x-input-error for="clock_in_grace_period_minutes" class="mt-2" />
                     <span class="mt-1 text-xs text-gray-500">
                         {{ __('Si un usuario supera el margen, se le enviará un enlace para fichar. Este enlace será válido durante el número de minutos que definas aquí.') }}
                     </span>
@@ -46,16 +46,16 @@
 
         @if (Gate::check('update', $team))
             <x-slot name="actions">
-                <x-jet-button class="bg-indigo-600 hover:bg-indigo-700">
+                <x-button class="bg-indigo-600 hover:bg-indigo-700">
                     {{ __('Guardar') }}
-                </x-jet-button>
+                </x-button>
             </x-slot>
         @endif
-    </x-jet-form-section>
+    </x-form-section>
 
-    <x-jet-section-border />
+    <x-section-border />
 
-    <x-jet-form-section submit="updateClockInDelaySettings">
+    <x-form-section submit="updateClockInDelaySettings">
         <x-slot name="title">
             {{ __('Tiempo Máximo de Jornada') }}
         </x-slot>
@@ -69,9 +69,9 @@
             <div class="col-span-6 sm:col-span-4">
                 <label for="force_max_workday_duration" class="flex items-center">
                     @if(\Illuminate\Support\Facades\Gate::check('update', $team))
-                        <x-jet-checkbox id="force_max_workday_duration" wire:model="state.force_max_workday_duration" />
+                        <x-checkbox id="force_max_workday_duration" wire:model="state.force_max_workday_duration" />
                     @else
-                        <x-jet-checkbox id="force_max_workday_duration" wire:model="state.force_max_workday_duration" disabled />
+                        <x-checkbox id="force_max_workday_duration" wire:model="state.force_max_workday_duration" disabled />
                     @endif
                     <span class="ml-2 text-sm text-gray-600">{{ __('Forzar Tiempo Máximo de Jornada') }}</span>
                 </label>
@@ -79,9 +79,9 @@
 
             @if (isset($state['force_max_workday_duration']) && $state['force_max_workday_duration'])
                 <div class="col-span-6 sm:col-span-4">
-                    <x-jet-label for="max_workday_duration_minutes" value="{{ __('Tiempo Máximo de Jornada (Minutos)') }}" />
-                    <x-jet-input id="max_workday_duration_minutes" type="number" class="mt-1 block w-full" wire:model="state.max_workday_duration_minutes" />
-                    <x-jet-input-error for="max_workday_duration_minutes" class="mt-2" />
+                    <x-label for="max_workday_duration_minutes" value="{{ __('Tiempo Máximo de Jornada (Minutos)') }}" />
+                    <x-input id="max_workday_duration_minutes" type="number" class="mt-1 block w-full" wire:model="state.max_workday_duration_minutes" />
+                    <x-input-error for="max_workday_duration_minutes" class="mt-2" />
                     <span class="mt-1 text-xs text-gray-500">
                         {{ __('Define el número máximo de minutos que un trabajador puede fichar en un día. Si se supera, se le pedirá ajustar el fichaje.') }}
                     </span>
@@ -91,16 +91,16 @@
 
         @if (Gate::check('update', $team))
             <x-slot name="actions">
-                <x-jet-button class="bg-indigo-600 hover:bg-indigo-700">
+                <x-button class="bg-indigo-600 hover:bg-indigo-700">
                     {{ __('Guardar') }}
-                </x-jet-button>
+                </x-button>
             </x-slot>
         @endif
-    </x-jet-form-section>
+    </x-form-section>
 
-    <x-jet-section-border />
+    <x-section-border />
 
-    <x-jet-form-section submit="updateEventExpirationSettings">
+    <x-form-section submit="updateEventExpirationSettings">
         <x-slot name="title">
             {{ __('Cierre Automático de Eventos no Confirmados') }}
         </x-slot>
@@ -111,20 +111,20 @@
 
         <x-slot name="form">
             <div class="col-span-6 sm:col-span-4">
-                <x-jet-label for="event_expiration_days" value="{{ __('Días de Expiración de Eventos') }}" />
-                <x-jet-input id="event_expiration_days" type="number" class="mt-1 block w-full" wire:model="state.event_expiration_days" />
-                <x-jet-input-error for="event_expiration_days" class="mt-2" />
+                <x-label for="event_expiration_days" value="{{ __('Días de Expiración de Eventos') }}" />
+                <x-input id="event_expiration_days" type="number" class="mt-1 block w-full" wire:model="state.event_expiration_days" />
+                <x-input-error for="event_expiration_days" class="mt-2" />
             </div>
         </x-slot>
 
         @if (Gate::check('update', $team))
             <x-slot name="actions">
-                <x-jet-button class="bg-indigo-600 hover:bg-indigo-700">
+                <x-button class="bg-indigo-600 hover:bg-indigo-700">
                     {{ __('Guardar') }}
-                </x-jet-button>
+                </x-button>
             </x-slot>
         @endif
-    </x-jet-form-section>
+    </x-form-section>
 </div>
 
 <script>

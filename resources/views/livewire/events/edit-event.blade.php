@@ -1,6 +1,6 @@
 <div>
     <!-- Event Edit Modal -->
-    <x-jet-dialog-modal wire:model.live="showModalEditEvent" maxWidth="2xl">
+    <x-dialog-modal wire:model.live="showModalEditEvent" maxWidth="2xl">
         <x-slot name='title'>
             <div class="flex items-center justify-between pb-3 border-b border-gray-200">
                 <div class="flex items-center gap-3">
@@ -55,7 +55,7 @@
                                            value="{{ $start_date }}"
                                            wire:change="$set('start_date', $event.target.value)"
                                            {{ $canBeModified ? '' : 'disabled' }} />
-                                    <x-jet-input-error for="start_date" class="mt-1" />
+                                    <x-input-error for="start_date" class="mt-1" />
                                 </div>
                                 <div>
                                     <label class="text-xs text-gray-600 block mb-1">{{ __('End date') }}</label>
@@ -64,7 +64,7 @@
                                            value="{{ $end_date }}"
                                            wire:change="$set('end_date', $event.target.value)"
                                            {{ $canBeModified ? '' : 'disabled' }} />
-                                    <x-jet-input-error for="end_date" class="mt-1" />
+                                    <x-input-error for="end_date" class="mt-1" />
                                 </div>
                             </div>
                         @else
@@ -85,8 +85,8 @@
                                                {{ $canBeModified ? '' : 'disabled' }}
                                                step="300" />
                                     </div>
-                                    <x-jet-input-error for="start_date" class="mt-1" />
-                                    <x-jet-input-error for="start_time" class="mt-1" />
+                                    <x-input-error for="start_date" class="mt-1" />
+                                    <x-input-error for="start_time" class="mt-1" />
                                 </div>
 
                                 <div>
@@ -104,8 +104,8 @@
                                                {{ $canBeModified ? '' : 'disabled' }}
                                                step="300" />
                                     </div>
-                                    <x-jet-input-error for="end_date" class="mt-1" />
-                                    <x-jet-input-error for="end_time" class="mt-1" />
+                                    <x-input-error for="end_date" class="mt-1" />
+                                    <x-input-error for="end_time" class="mt-1" />
                                 </div>
                             </div>
                         @endif
@@ -116,12 +116,12 @@
                 <div class="space-y-4">
                     <div>
                         <label class="text-xs text-gray-600 block mb-1">{{ __('Description') }}</label>
-                        <x-jet-input class="block w-full text-sm" 
+                        <x-input class="block w-full text-sm" 
                                      wire:model="event.description"
                                      placeholder="{{ __('Add a description') }}"
                                      maxlength="255"
                                      {{ $canBeModified ? '' : 'disabled' }} />
-                        <x-jet-input-error for='event.description' class="mt-1" />
+                        <x-input-error for='event.description' class="mt-1" />
                         <p class="mt-1 text-xs text-gray-400">{{ __('If empty, event type name will be used') }}</p>
                     </div>
 
@@ -133,7 +133,7 @@
                                   placeholder="{{ __('event.observations.placeholder') }}"
                                   maxlength="255"
                                   {{ $canBeModified ? '' : 'disabled' }}></textarea>
-                        <x-jet-input-error for='event.observations' class="mt-1" />
+                        <x-input-error for='event.observations' class="mt-1" />
                     </div>
                 </div>
             </div>
@@ -187,31 +187,31 @@
             <div class="flex items-center justify-between w-full">
                 <div>
                     @if($canBeModified && $event->id)
-                        <x-jet-danger-button onclick="confirmDelete({{ $event->id }})">
+                        <x-danger-button onclick="confirmDelete({{ $event->id }})">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                             {{ __('Delete Event') }}
-                        </x-jet-danger-button>
+                        </x-danger-button>
                     @endif
                 </div>
                 
                 <div class="flex gap-3">
-                    <x-jet-secondary-button wire:click="$set('showModalEditEvent', false)" wire:target="GetTimeRegisters">
+                    <x-secondary-button wire:click="$set('showModalEditEvent', false)" wire:target="GetTimeRegisters">
                         {{ __('Cancel') }}
-                    </x-jet-secondary-button>
+                    </x-secondary-button>
     
                     @if($canBeModified)
-                        <x-jet-button wire:click="update" wire:loading.attr="disabled"
+                        <x-button wire:click="update" wire:loading.attr="disabled"
                             class="bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500">
                             {{ __('Update event') }}
-                        </x-jet-button>
+                        </x-button>
                     @endif
                 </div>
             </div>
         </x-slot>
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 
     <!-- Adjustment Modal -->
-    <x-jet-dialog-modal wire:model.live="showAdjustmentModal" maxWidth="md">
+    <x-dialog-modal wire:model.live="showAdjustmentModal" maxWidth="md">
         <x-slot name="title">
             <div class="flex items-center text-blue-600">
                 <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -259,11 +259,11 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$set('showAdjustmentModal', false)" wire:loading.attr="disabled">
+            <x-secondary-button wire:click="$set('showAdjustmentModal', false)" wire:loading.attr="disabled">
                 {{ __('Cancel') }}
-            </x-jet-secondary-button>
+            </x-secondary-button>
         </x-slot>
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 </div>
 
 @push('scripts')

@@ -1,9 +1,9 @@
 <div>
-    <x-jet-button wire:click="$set('showModal', true)">
+    <x-button wire:click="$set('showModal', true)">
         {{ __('Move') }}
-    </x-jet-button>
+    </x-button>
 
-    <x-jet-dialog-modal wire:model.live="showModal">
+    <x-dialog-modal wire:model.live="showModal">
         <x-slot name="title">
             {{ __('Move User') }}
         </x-slot>
@@ -12,7 +12,7 @@
             <p>{{ __('Select a destination team for') }} {{ $user->name }}.</p>
 
             <div class="mt-4">
-                <x-jet-label for="destination_team" value="{{ __('Destination Team') }}" />
+                <x-label for="destination_team" value="{{ __('Destination Team') }}" />
                 <select id="destination_team" class="form-select block w-full mt-1" wire:model.live="destinationTeamId">
                     <option value="">{{ __('Select a team') }}</option>
                     @foreach($eligibleTeams as $team)
@@ -23,7 +23,7 @@
 
             <div class="mt-4">
                 <label for="transfer_events" class="flex items-center">
-                    <x-jet-checkbox id="transfer_events" wire:model.live="transferEvents" />
+                    <x-checkbox id="transfer_events" wire:model.live="transferEvents" />
                     <span class="ml-2 text-sm text-gray-600">{{ __('Transfer all user event records to the new team') }}</span>
                 </label>
                 <p class="mt-1 text-xs text-gray-500 ml-6">
@@ -33,13 +33,13 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$set('showModal', false)">
+            <x-secondary-button wire:click="$set('showModal', false)">
                 {{ __('Cancel') }}
-            </x-jet-secondary-button>
+            </x-secondary-button>
 
-            <x-jet-button class="ml-2" wire:click="moveUser" wire:loading.attr="disabled">
+            <x-button class="ml-2" wire:click="moveUser" wire:loading.attr="disabled">
                 {{ __('Move User') }}
-            </x-jet-button>
+            </x-button>
         </x-slot>
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 </div>

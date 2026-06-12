@@ -1,6 +1,6 @@
 @props(['isteamadmin', 'isinspector', 'eventTypes', 'teamUserList'])
 <div>
-    <x-jet-dialog-modal wire:model.live="showFiltersModal">
+    <x-dialog-modal wire:model.live="showFiltersModal">
 
         <x-slot name="title">
             {{ __('Set filters to get time register') }}
@@ -8,19 +8,19 @@
 
         <x-slot name="content">
             <div class="mb-4">
-                <x-jet-label value="{{ __('Start date') }}" class="mt-3 mr-2 required" />
-                <x-jet-input type="date" class="mr-2" wire:model='filter.start' />
-                <x-jet-input-error for='filter.start' />
+                <x-label value="{{ __('Start date') }}" class="mt-3 mr-2 required" />
+                <x-input type="date" class="mr-2" wire:model='filter.start' />
+                <x-input-error for='filter.start' />
 
-                <x-jet-label value="{{ __('End date') }}" class="mt-3 mr-2 required" />
-                <x-jet-input type="date" class="mr-2" wire:model='filter.end' />
-                <x-jet-input-error for='filter.end' />
+                <x-label value="{{ __('End date') }}" class="mt-3 mr-2 required" />
+                <x-input type="date" class="mr-2" wire:model='filter.end' />
+                <x-input-error for='filter.end' />
             </div>
 
             <div class="mb-4 flex flex-row flex-wrap gap-2">
                 @if ($isteamadmin || $isinspector)
                     <div class="mb-4">
-                        <x-jet-label value="{{ __('User') }}" />
+                        <x-label value="{{ __('User') }}" />
                         <select class="sl-select" wire:model='filter.user_id'>
                             <option value="">{{ __('All') }}</option>
                             @if (isset($teamUserList))
@@ -29,20 +29,20 @@
                                 @endforeach
                             @endif
                         </select>
-                        <x-jet-input-error for='filter.user_id' />
+                        <x-input-error for='filter.user_id' />
                     </div>
                 @endif
                 <div class="mb-4 text-left sm:text-center">
-                    <x-jet-label class="whitespace-nowrap" value="{{ __('Not confirmed') }}" />
+                    <x-label class="whitespace-nowrap" value="{{ __('Not confirmed') }}" />
 
-                    <x-jet-checkbox class="h-6 w-6 text-gray-600 checked:text-green-600"
+                    <x-checkbox class="h-6 w-6 text-gray-600 checked:text-green-600"
                         wire:model='filter.is_open' />
-                    <x-jet-input-error for='filter.is_open' />
+                    <x-input-error for='filter.is_open' />
                 </div>
             </div>
 
             <div class="mb-4">
-                <x-jet-label value="{{ __('Event Type') }}" />
+                <x-label value="{{ __('Event Type') }}" />
                 <select class="sl-select" wire:model='filter.event_type_id'>
                     <option value="">{{ __('All') }}</option>
                     @if (isset($eventTypes))
@@ -51,20 +51,20 @@
                         @endforeach
                     @endif
                 </select>
-                <x-jet-input-error for='filter.event_type_id' />
+                <x-input-error for='filter.event_type_id' />
             </div>
 
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="closeFiltersModal">
+            <x-secondary-button wire:click="closeFiltersModal">
                 {{ __('Cancel') }}
-            </x-jet-secondary-button>
+            </x-secondary-button>
 
-            <x-jet-danger-button wire:click="applyFiltersFromModal" wire:loading.attr="disabled"
+            <x-danger-button wire:click="applyFiltersFromModal" wire:loading.attr="disabled"
                 class="ml-2 disabled:bg-blue-500">
                 {{ __('Apply filters') }}
-            </x-jet-danger-button>
+            </x-danger-button>
         </x-slot>
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 </div>

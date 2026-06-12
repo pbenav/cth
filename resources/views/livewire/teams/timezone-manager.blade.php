@@ -1,4 +1,4 @@
-<x-jet-form-section submit="updateTimezone">
+<x-form-section submit="updateTimezone">
     <x-slot name="title">
         {{ __('Zona Horaria del Equipo') }}
     </x-slot>
@@ -9,7 +9,7 @@
 
     <x-slot name="form">
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="timezone" value="{{ __('Zona Horaria') }}" />
+            <x-label for="timezone" value="{{ __('Zona Horaria') }}" />
             
             @if($isTeamAdmin)
                 <select id="timezone" class="mt-1 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" wire:model="state.timezone">
@@ -24,18 +24,18 @@
                 </div>
             @endif
             
-            <x-jet-input-error for="timezone" class="mt-2" />
+            <x-input-error for="timezone" class="mt-2" />
         </div>
     </x-slot>
 
     @if (Gate::check('update', $team))
         <x-slot name="actions">
-            <x-jet-button class="bg-indigo-600 hover:bg-indigo-700">
+            <x-button class="bg-indigo-600 hover:bg-indigo-700">
                 {{ __('Guardar') }}
-            </x-jet-button>
+            </x-button>
         </x-slot>
     @endif
-</x-jet-form-section>
+</x-form-section>
 
 <script>
     document.addEventListener('livewire:init', function () {

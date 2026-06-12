@@ -24,9 +24,9 @@
                     @csrf
                     <div class="flex items-center justify-between">
                         <span>{{ __('Instalar Puppeteer y Browsershot') }}</span>
-                        <x-jet-button>
+                        <x-button>
                             {{ __('Ejecutar') }}
-                        </x-jet-button>
+                        </x-button>
                     </div>
                 </form>
             </div>

@@ -49,7 +49,7 @@
 </head>
 
 <body class="font-sans antialiased">
-    <x-jet-banner />
+    <x-banner />
 
     {{-- Impersonation Banner --}}
     @if (session()->has('impersonator_id'))

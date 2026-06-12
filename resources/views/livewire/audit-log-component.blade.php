@@ -12,11 +12,11 @@
                 <!-- Filters -->
                 <div class="flex flex-col md:flex-row gap-4 mb-6">
                     <div class="w-full md:w-1/3">
-                        <x-jet-input type="text" class="w-full" placeholder="{{ __('Buscar...') }}" wire:model.live.debounce.300ms="search" />
+                        <x-input type="text" class="w-full" placeholder="{{ __('Buscar...') }}" wire:model.live.debounce.300ms="search" />
                     </div>
                     <div class="w-full md:w-1/3 flex gap-2">
-                        <x-jet-input type="date" class="w-1/2" wire:model.live="dateFrom" />
-                        <x-jet-input type="date" class="w-1/2" wire:model.live="dateTo" />
+                        <x-input type="date" class="w-1/2" wire:model.live="dateFrom" />
+                        <x-input type="date" class="w-1/2" wire:model.live="dateTo" />
                     </div>
                 </div>
 
@@ -98,7 +98,7 @@
     </div>
 
     <!-- Modal -->
-    <x-jet-dialog-modal wire:model.live="confirmingLogView" maxWidth="6xl">
+    <x-dialog-modal wire:model.live="confirmingLogView" maxWidth="6xl">
         <x-slot name="title">
             {{ __('Detalles de Auditoría') }}
         </x-slot>
@@ -204,9 +204,9 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$set('confirmingLogView', false)" wire:loading.attr="disabled">
+            <x-secondary-button wire:click="$set('confirmingLogView', false)" wire:loading.attr="disabled">
                 {{ __('Cerrar') }}
-            </x-jet-secondary-button>
+            </x-secondary-button>
         </x-slot>
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 </div>

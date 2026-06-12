@@ -80,21 +80,21 @@
                 <div x-show="tab === 'account'">
                     @if (Laravel\Fortify\Features::canUpdateProfileInformation())
                         @livewire('profile.update-profile-information-form')
-                        <x-jet-section-border />
+                        <x-section-border />
                     @endif
 
                     @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
                         <div class="mt-10 sm:mt-0">
                             @livewire('profile.update-password-form')
                         </div>
-                        <x-jet-section-border />
+                        <x-section-border />
                     @endif
 
                     @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
                         <div class="mt-10 sm:mt-0">
                             @livewire('profile.two-factor-authentication-form')
                         </div>
-                        <x-jet-section-border />
+                        <x-section-border />
                     @endif
 
                     <div class="mt-10 sm:mt-0">
@@ -102,7 +102,7 @@
                     </div>
 
                     @if (Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())
-                        <x-jet-section-border />
+                        <x-section-border />
                         <div class="mt-10 sm:mt-0">
                             @livewire('profile.delete-user-form')
                         </div>
@@ -115,31 +115,31 @@
                         @livewire('profile.update-calendar-preferences-form')
                     </div>
 
-                    <x-jet-section-border />
+                    <x-section-border />
 
                     <div class="mt-10 sm:mt-0">
                         @livewire('update-default-work-center-form')
                     </div>
 
-                    <x-jet-section-border />
+                    <x-section-border />
 
                     <div class="mt-10 sm:mt-0">
                         @livewire('profile.user-work-schedule-form', ['user' => Auth::user()])
                     </div>
 
-                    <x-jet-section-border />
+                    <x-section-border />
 
                     <div class="mt-10 sm:mt-0">
                         @livewire('profile.update-notification-preferences-form')
                     </div>
 
-                    <x-jet-section-border />
+                    <x-section-border />
 
                     <div class="mt-10 sm:mt-0">
                         @livewire('profile.update-geolocation-preferences-form')
                     </div>
 
-                    <x-jet-section-border />
+                    <x-section-border />
 
                     <div class="mt-10 sm:mt-0">
                         @livewire('profile.update-vacation-preferences-form')

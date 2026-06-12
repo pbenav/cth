@@ -1,4 +1,4 @@
-<x-jet-action-section>
+<x-action-section>
     <x-slot name="title">
         {{ __('Team Information') }}
     </x-slot>
@@ -11,7 +11,7 @@
         <div class="space-y-6">
             <!-- Team Creation Date -->
             <div>
-                <x-jet-label value="{{ __('Created') }}" />
+                <x-label value="{{ __('Created') }}" />
                 <div class="mt-1 text-sm text-gray-600">
                     {{ $team->created_at->isoFormat('LL') }}
                     ({{ $team->created_at->diffForHumans() }})
@@ -20,7 +20,7 @@
 
             <!-- Team Members Count -->
             <div>
-                <x-jet-label value="{{ __('Team Members') }}" />
+                <x-label value="{{ __('Team Members') }}" />
                 <div class="mt-1 text-sm text-gray-600">
                     {{ $team->allUsers()->count() }} {{ __('members') }}
                 </div>
@@ -28,7 +28,7 @@
 
             <!-- Current User Role -->
             <div>
-                <x-jet-label value="{{ __('Your Role') }}" />
+                <x-label value="{{ __('Your Role') }}" />
                 <div class="mt-1 text-sm text-gray-600">
                     @if ($team->owner->id === auth()->id())
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
@@ -50,7 +50,7 @@
 
             <!-- User Permissions -->
             <div>
-                <x-jet-label value="{{ __('Your Permissions') }}" />
+                <x-label value="{{ __('Your Permissions') }}" />
                 <div class="mt-2 space-y-2">
                     <div class="flex items-center text-sm">
                         @if (Gate::check('update', $team))
@@ -113,7 +113,7 @@
             <!-- Team Type -->
             @if ($team->personal_team)
             <div>
-                <x-jet-label value="{{ __('Team Type') }}" />
+                <x-label value="{{ __('Team Type') }}" />
                 <div class="mt-1">
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                         {{ __('Personal Team') }}
@@ -123,4 +123,4 @@
             @endif
         </div>
     </x-slot>
-</x-jet-action-section>
+</x-action-section>

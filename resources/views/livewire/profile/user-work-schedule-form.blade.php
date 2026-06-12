@@ -1,5 +1,5 @@
 <div id="work-schedule-section">
-    <x-jet-form-section submit="save">
+    <x-form-section submit="save">
         <x-slot name="title">
             {{ __('Horario Laboral') }}
         </x-slot>
@@ -19,21 +19,21 @@
 
         @foreach ($schedule as $index => $item)
             <div class="col-span-6 sm:col-span-2">
-                <x-jet-label for="start_time_{{ $index }}" value="{{ __('Hora de inicio') }}" />
-                <x-jet-input id="start_time_{{ $index }}" type="time" class="mt-1 block w-full"
+                <x-label for="start_time_{{ $index }}" value="{{ __('Hora de inicio') }}" />
+                <x-input id="start_time_{{ $index }}" type="time" class="mt-1 block w-full"
                     wire:model="schedule.{{ $index }}.start" />
-                <x-jet-input-error for="schedule.{{ $index }}.start" class="mt-2" />
+                <x-input-error for="schedule.{{ $index }}.start" class="mt-2" />
             </div>
             <div class="col-span-6 sm:col-span-2">
-                <x-jet-label for="end_time_{{ $index }}" value="{{ __('Hora de fin') }}" />
-                <x-jet-input id="end_time_{{ $index }}" type="time" class="mt-1 block w-full"
+                <x-label for="end_time_{{ $index }}" value="{{ __('Hora de fin') }}" />
+                <x-input id="end_time_{{ $index }}" type="time" class="mt-1 block w-full"
                     wire:model="schedule.{{ $index }}.end" />
-                <x-jet-input-error for="schedule.{{ $index }}.end" class="mt-2" />
+                <x-input-error for="schedule.{{ $index }}.end" class="mt-2" />
             </div>
             <div class="col-span-6 sm:w-full">
                 <div class="flex flex-col">
                     <div>
-                        <x-jet-label value="{{ __('Días') }}" />
+                        <x-label value="{{ __('Días') }}" />
                         <div class="mt-2 flex flex-wrap space-x-4">
                             @php
                                 $daysISO = [
@@ -56,9 +56,9 @@
                         </div>
                     </div>
                     <div class="mt-2 flex justify-end">
-                        <x-jet-danger-button type="button" wire:click="removeScheduleRow({{ $index }})">
+                        <x-danger-button type="button" wire:click="removeScheduleRow({{ $index }})">
                             {{ __('Eliminar') }}
-                        </x-jet-danger-button>
+                        </x-danger-button>
                     </div>
                 </div>
             </div>
@@ -69,17 +69,17 @@
     </x-slot>
 
     <x-slot name="actions">
-        <x-jet-action-message class="mr-3" on="saved">
+        <x-action-message class="mr-3" on="saved">
             {{ __('Guardado.') }}
-        </x-jet-action-message>
+        </x-action-message>
 
-        <x-jet-secondary-button type="button" wire:click="addScheduleRow" class="mr-3">
+        <x-secondary-button type="button" wire:click="addScheduleRow" class="mr-3">
             {{ __('Añadir tramo') }}
-        </x-jet-secondary-button>
+        </x-secondary-button>
 
-        <x-jet-button>
+        <x-button>
             {{ __('Guardar') }}
-        </x-jet-button>
+        </x-button>
     </x-slot>
-</x-jet-form-section>
+</x-form-section>
 </div>

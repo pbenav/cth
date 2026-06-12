@@ -1,5 +1,5 @@
 <div>
-    <x-jet-form-section submit="updateMailSettings">
+    <x-form-section submit="updateMailSettings">
         <x-slot name="title">
             {{ __('Mail Server Configuration') }}
         </x-slot>
@@ -45,7 +45,7 @@
 
             <!-- Mail Mailer -->
             <div class="col-span-6 sm:col-span-4">
-                <x-jet-label for="mail_mailer" value="{{ __('Mail Driver') }}" />
+                <x-label for="mail_mailer" value="{{ __('Mail Driver') }}" />
                 <select id="mail_mailer" wire:model.live="state.MAIL_MAILER" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full">
                     <option value="smtp">SMTP</option>
                     <option value="sendmail">Sendmail</option>
@@ -53,80 +53,80 @@
                     <option value="ses">Amazon SES</option>
                     <option value="log">Log (Solo desarrollo)</option>
                 </select>
-                <x-jet-input-error for="state.MAIL_MAILER" class="mt-2" />
+                <x-input-error for="state.MAIL_MAILER" class="mt-2" />
             </div>
 
             <!-- Mail Host -->
             <div class="col-span-6 sm:col-span-4">
-                <x-jet-label for="mail_host" value="{{ __('SMTP Host') }}" />
-                <x-jet-input id="mail_host" type="text" class="mt-1 block w-full" wire:model="state.MAIL_HOST" />
-                <x-jet-input-error for="state.MAIL_HOST" class="mt-2" />
+                <x-label for="mail_host" value="{{ __('SMTP Host') }}" />
+                <x-input id="mail_host" type="text" class="mt-1 block w-full" wire:model="state.MAIL_HOST" />
+                <x-input-error for="state.MAIL_HOST" class="mt-2" />
                 <p class="mt-1 text-sm text-gray-500">{{ __('Example: smtp.gmail.com, smtp.office365.com, sandbox.smtp.mailtrap.io') }}</p>
             </div>
 
             <!-- Mail Port -->
             <div class="col-span-6 sm:col-span-4">
-                <x-jet-label for="mail_port" value="{{ __('SMTP Port') }}" />
-                <x-jet-input id="mail_port" type="number" class="mt-1 block w-full" wire:model="state.MAIL_PORT" />
-                <x-jet-input-error for="state.MAIL_PORT" class="mt-2" />
+                <x-label for="mail_port" value="{{ __('SMTP Port') }}" />
+                <x-input id="mail_port" type="number" class="mt-1 block w-full" wire:model="state.MAIL_PORT" />
+                <x-input-error for="state.MAIL_PORT" class="mt-2" />
                 <p class="mt-1 text-sm text-gray-500">{{ __('Common ports: 587 (TLS), 465 (SSL), 25 (default), 2525 (alternative)') }}</p>
             </div>
 
             <!-- Mail Username -->
             <div class="col-span-6 sm:col-span-4">
-                <x-jet-label for="mail_username" value="{{ __('SMTP Username') }}" />
-                <x-jet-input id="mail_username" type="text" class="mt-1 block w-full" wire:model="state.MAIL_USERNAME" />
-                <x-jet-input-error for="state.MAIL_USERNAME" class="mt-2" />
+                <x-label for="mail_username" value="{{ __('SMTP Username') }}" />
+                <x-input id="mail_username" type="text" class="mt-1 block w-full" wire:model="state.MAIL_USERNAME" />
+                <x-input-error for="state.MAIL_USERNAME" class="mt-2" />
             </div>
 
             <!-- Mail Password -->
             <div class="col-span-6 sm:col-span-4">
-                <x-jet-label for="mail_password" value="{{ __('SMTP Password') }}" />
-                <x-jet-input id="mail_password" type="password" class="mt-1 block w-full" wire:model="state.MAIL_PASSWORD" />
-                <x-jet-input-error for="state.MAIL_PASSWORD" class="mt-2" />
+                <x-label for="mail_password" value="{{ __('SMTP Password') }}" />
+                <x-input id="mail_password" type="password" class="mt-1 block w-full" wire:model="state.MAIL_PASSWORD" />
+                <x-input-error for="state.MAIL_PASSWORD" class="mt-2" />
             </div>
 
             <!-- Mail Encryption -->
             <div class="col-span-6 sm:col-span-4">
-                <x-jet-label for="mail_encryption" value="{{ __('Encryption') }}" />
+                <x-label for="mail_encryption" value="{{ __('Encryption') }}" />
                 <select id="mail_encryption" wire:model.live="state.MAIL_ENCRYPTION" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full">
                     <option value="">{{ __('None') }}</option>
                     <option value="tls">TLS</option>
                     <option value="ssl">SSL</option>
                 </select>
-                <x-jet-input-error for="state.MAIL_ENCRYPTION" class="mt-2" />
+                <x-input-error for="state.MAIL_ENCRYPTION" class="mt-2" />
             </div>
 
             <!-- Mail From Address -->
             <div class="col-span-6 sm:col-span-4">
-                <x-jet-label for="mail_from_address" value="{{ __('From Email Address') }}" />
-                <x-jet-input id="mail_from_address" type="email" class="mt-1 block w-full" wire:model="state.MAIL_FROM_ADDRESS" />
-                <x-jet-input-error for="state.MAIL_FROM_ADDRESS" class="mt-2" />
+                <x-label for="mail_from_address" value="{{ __('From Email Address') }}" />
+                <x-input id="mail_from_address" type="email" class="mt-1 block w-full" wire:model="state.MAIL_FROM_ADDRESS" />
+                <x-input-error for="state.MAIL_FROM_ADDRESS" class="mt-2" />
             </div>
 
             <!-- Mail From Name -->
             <div class="col-span-6 sm:col-span-4">
-                <x-jet-label for="mail_from_name" value="{{ __('From Name') }}" />
-                <x-jet-input id="mail_from_name" type="text" class="mt-1 block w-full" wire:model="state.MAIL_FROM_NAME" />
-                <x-jet-input-error for="state.MAIL_FROM_NAME" class="mt-2" />
+                <x-label for="mail_from_name" value="{{ __('From Name') }}" />
+                <x-input id="mail_from_name" type="text" class="mt-1 block w-full" wire:model="state.MAIL_FROM_NAME" />
+                <x-input-error for="state.MAIL_FROM_NAME" class="mt-2" />
             </div>
         </x-slot>
 
         <x-slot name="actions">
-            <x-jet-action-message class="mr-3" on="saved">
+            <x-action-message class="mr-3" on="saved">
                 {{ __('Saved.') }}
-            </x-jet-action-message>
+            </x-action-message>
 
-            <x-jet-button wire:loading.attr="disabled">
+            <x-button wire:loading.attr="disabled">
                 {{ __('Save Configuration') }}
-            </x-jet-button>
+            </x-button>
         </x-slot>
-    </x-jet-form-section>
+    </x-form-section>
 
     <!-- Test Email Section -->
-    <x-jet-section-border />
+    <x-section-border />
 
-    <x-jet-action-section>
+    <x-action-section>
         <x-slot name="title">
             {{ __('Test Email Connection') }}
         </x-slot>
@@ -148,17 +148,17 @@
             </div>
 
             <div class="mt-4 max-w-xl">
-                <x-jet-label for="test_email" value="{{ __('Test Email Address') }}" />
-                <x-jet-input id="test_email" type="email" class="mt-1 block w-full" wire:model="testEmail" placeholder="test@example.com" />
-                <x-jet-input-error for="testEmail" class="mt-2" />
+                <x-label for="test_email" value="{{ __('Test Email Address') }}" />
+                <x-input id="test_email" type="email" class="mt-1 block w-full" wire:model="testEmail" placeholder="test@example.com" />
+                <x-input-error for="testEmail" class="mt-2" />
             </div>
 
             <div class="mt-4">
-                <x-jet-button wire:click="testConnection" wire:loading.attr="disabled">
+                <x-button wire:click="testConnection" wire:loading.attr="disabled">
                     <span wire:loading.remove wire:target="testConnection">{{ __('Send Test Email') }}</span>
                     <span wire:loading wire:target="testConnection">{{ __('Sending...') }}</span>
-                </x-jet-button>
+                </x-button>
             </div>
         </x-slot>
-    </x-jet-action-section>
+    </x-action-section>
 </div>

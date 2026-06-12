@@ -22,7 +22,7 @@
 
             @if ($isTeamAdmin or $isInspector)
                 <div>
-                    <x-jet-label value="{{ __('Worker') }}" />
+                    <x-label value="{{ __('Worker') }}" />
                     <select class="pt-1 h-8 whitespace-nowrap form-control" wire:model.live="browsedUser">
                         @foreach ($workers as $w)
                             <option value="{{ data_get($w, 'id', '') }}">
@@ -30,13 +30,13 @@
                             </option>
                         @endforeach
                     </select>
-                    <x-jet-input-error for='worker' />
+                    <x-input-error for='worker' />
                 </div>
             @endif
 
             <div class="flex flex-row gap-2">
                 <div>
-                    <x-jet-label value="{{ __('Month') }}" />
+                    <x-label value="{{ __('Month') }}" />
                     <select class="pt-1 h-8 whitespace-nowrap form-control" wire:model.live="selectedMonth"
                         wire:change="getData">
                         <option {{ $selectedMonth == 1 ? "selected value=$selectedMonth" : '' }} value="1">
@@ -76,28 +76,28 @@
                             {{ __('December') }}
                         </option>
                     </select>
-                    <x-jet-input-error for='month' />
+                    <x-input-error for='month' />
                 </div>
                 <div>
-                    <x-jet-label value="{{ __('Year') }}" />
+                    <x-label value="{{ __('Year') }}" />
                     <select class="pt-1 h-8 whitespace-nowrap form-control" wire:model.live="selectedYear">
                         @foreach (range(2022, date('Y') + 1) as $year)
                             <option value="{{ $year }}">{{ $year }}</option>
                         @endforeach
                     </select>
-                    <x-jet-input-error for='year' />
+                    <x-input-error for='year' />
                 </div>
             </div>
 
             <div class="">
-                <x-jet-label value="{{ __('Event Type') }}" />
+                <x-label value="{{ __('Event Type') }}" />
                 <select class="pt-1 h-8 whitespace-nowrap form-control" wire:model.live="eventTypeId">
                     <option value="">{{ __('All') }}</option>
                     @foreach ($eventTypes as $eventType)
                         <option value="{{ $eventType->id }}">{{ $eventType->name }}</option>
                     @endforeach
                 </select>
-                <x-jet-input-error for='eventTypeId' />
+                <x-input-error for='eventTypeId' />
             </div>
         </div>
 

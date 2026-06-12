@@ -1,4 +1,4 @@
-<x-jet-form-section submit="updateTeamName">
+<x-form-section submit="updateTeamName">
     <x-slot name="title">
         {{ __('Team Name') }}
     </x-slot>
@@ -15,7 +15,7 @@
 
         <!-- Team Owner Information -->
         <div class="col-span-6">
-            <x-jet-label value="{{ __('Team Owner') }}" />
+            <x-label value="{{ __('Team Owner') }}" />
 
             <div class="flex items-center mt-2">
                 <img class="w-12 h-12 rounded-full object-cover" src="{{ $team->owner->profile_photo_url }}" alt="{{ $team->owner->name }}">
@@ -29,28 +29,28 @@
 
         <!-- Team Name -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="name" value="{{ __('Team Name') }}" />
+            <x-label for="name" value="{{ __('Team Name') }}" />
 
-            <x-jet-input id="name"
+            <x-input id="name"
                         type="text"
                         class="mt-1 block w-full"
                         wire:model="state.name"
                         :disabled="! Gate::check('update', $team)" />
 
-            <x-jet-input-error for="name" class="mt-2" />
+            <x-input-error for="name" class="mt-2" />
         </div>
 
         <!-- Max Member Teams -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="max_member_teams" value="{{ __('Límite de equipos para miembros') }}" />
+            <x-label for="max_member_teams" value="{{ __('Límite de equipos para miembros') }}" />
             
-            <x-jet-input id="max_member_teams"
+            <x-input id="max_member_teams"
                         type="number"
                         class="mt-1 block w-full {{ !$canManageTeamLimit ? 'bg-gray-100' : '' }}"
                         wire:model="state.max_member_teams"
                         :disabled="!$canManageTeamLimit" />
 
-            <x-jet-input-error for="max_member_teams" class="mt-2" />
+            <x-input-error for="max_member_teams" class="mt-2" />
             
             <p class="text-sm text-gray-600 mt-2">
                 {{ __('Define cuántos equipos pueden crear los miembros de este equipo (que tengan permiso para ello).') }}
@@ -63,12 +63,12 @@
 
     @if (Gate::check('update', $team))
         <x-slot name="actions">
-            <x-jet-button class="bg-indigo-600 hover:bg-indigo-700">
+            <x-button class="bg-indigo-600 hover:bg-indigo-700">
                 {{ __('Save') }}
-            </x-jet-button>
+            </x-button>
         </x-slot>
     @endif
-</x-jet-form-section>
+</x-form-section>
 
 <script>
     document.addEventListener('livewire:init', function () {

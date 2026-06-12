@@ -1,5 +1,5 @@
 <div wire:poll.5s>
-    <x-jet-action-section>
+    <x-action-section>
         <x-slot name="title">
             {{ __('IPs Bloqueadas') }}
         </x-slot>
@@ -62,5 +62,5 @@
                 </div>
             </div>
         </x-slot>
-    </x-jet-action-section>
+    </x-action-section>
 </div>

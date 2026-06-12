@@ -1,5 +1,5 @@
 <div>
-<x-jet-form-section submit="updateGeolocationPreferences">
+<x-form-section submit="updateGeolocationPreferences">
     <x-slot name="title">
         {{ __('Geolocation Preferences') }}
     </x-slot>
@@ -11,7 +11,7 @@
     <x-slot name="form">
         <div class="col-span-6 sm:col-span-4 space-y-2">
             <label for="geolocation_enabled" class="flex items-center">
-                <x-jet-checkbox 
+                <x-checkbox 
                     id="geolocation_enabled" 
                     wire:model="state.geolocation_enabled"
                     x-on:change="handleGeolocationToggle($event)" />
@@ -25,15 +25,15 @@
     </x-slot>
 
     <x-slot name="actions">
-        <x-jet-action-message class="mr-3" on="saved">
+        <x-action-message class="mr-3" on="saved">
             {{ __('Saved.') }}
-        </x-jet-action-message>
+        </x-action-message>
 
-        <x-jet-button>
+        <x-button>
             {{ __('Save') }}
-        </x-jet-button>
+        </x-button>
     </x-slot>
-</x-jet-form-section>
+</x-form-section>
 
 <script>
 function handleGeolocationToggle(event) {

@@ -2,7 +2,7 @@
     @livewire('teams.event-type-manager', ['team' => $team])
 @endif
 
-<x-jet-section-border />
+<x-section-border />
 
 @if(auth()->user()->belongsToTeam($team) || auth()->user()->is_admin)
     <div class="mt-10 sm:mt-0">
@@ -10,7 +10,7 @@
     </div>
 @endif
 
-<x-jet-section-border />
+<x-section-border />
 
 @if(auth()->user()->belongsToTeam($team) || auth()->user()->is_admin)
     <div class="mt-10 sm:mt-0">
@@ -18,7 +18,7 @@
     </div>
 @endif
 
-<x-jet-section-border />
+<x-section-border />
 
 @if(auth()->user()->belongsToTeam($team) || auth()->user()->is_admin)
     <div class="mt-10 sm:mt-0">

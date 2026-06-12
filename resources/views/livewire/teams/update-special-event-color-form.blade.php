@@ -1,4 +1,4 @@
-<x-jet-form-section submit="updateSpecialEventColor">
+<x-form-section submit="updateSpecialEventColor">
     <x-slot name="title">
         {{ __('Special Event Color') }}
     </x-slot>
@@ -9,11 +9,11 @@
 
     <x-slot name="form">
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="special_event_color" value="{{ __('Color') }}" />
+            <x-label for="special_event_color" value="{{ __('Color') }}" />
             @if(Gate::check('update', $team))
                 <div class="mt-1 flex items-center space-x-3">
                     <div class="relative">
-                        <x-jet-input id="special_event_color" type="color" class="h-10 w-20 p-1 rounded-md border border-gray-300 cursor-pointer" wire:model="state.special_event_color" />
+                        <x-input id="special_event_color" type="color" class="h-10 w-20 p-1 rounded-md border border-gray-300 cursor-pointer" wire:model="state.special_event_color" />
                     </div>
                     <div class="text-sm text-gray-500 font-mono bg-gray-50 px-2 py-1 rounded border border-gray-200">
                         {{ $state['special_event_color'] ?? '#000000' }}
@@ -30,18 +30,18 @@
                     </div>
                 </div>
             @endif
-            <x-jet-input-error for="special_event_color" class="mt-2" />
+            <x-input-error for="special_event_color" class="mt-2" />
         </div>
     </x-slot>
 
     @if(Gate::check('update', $team))
         <x-slot name="actions">
-            <x-jet-button class="bg-indigo-600 hover:bg-indigo-700">
+            <x-button class="bg-indigo-600 hover:bg-indigo-700">
                 {{ __('Save') }}
-            </x-jet-button>
+            </x-button>
         </x-slot>
     @endif
-</x-jet-form-section>
+</x-form-section>
 
 <script>
     document.addEventListener('livewire:init', function () {

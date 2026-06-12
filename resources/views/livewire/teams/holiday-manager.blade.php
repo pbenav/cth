@@ -1,5 +1,5 @@
 <div class="mt-10 sm:mt-0">
-    <x-jet-action-section>
+    <x-action-section>
         <x-slot name="title">
             {{ __('Holidays') }}
         </x-slot>
@@ -35,42 +35,42 @@
 
             @if($isTeamAdmin)
                 <div class="mt-4 flex gap-2">
-                    <x-jet-button wire:click="$set('managingHoliday', true)">
+                    <x-button wire:click="$set('managingHoliday', true)">
                         {{ __('Add Holiday') }}
-                    </x-jet-button>
+                    </x-button>
                     
-                    <x-jet-secondary-button wire:click="openImportHolidays">
+                    <x-secondary-button wire:click="openImportHolidays">
                         <i class="fas fa-download mr-2"></i>
                         {{ __('Import Holidays') }}
-                    </x-jet-secondary-button>
+                    </x-secondary-button>
                 </div>
             @endif
         </x-slot>
-    </x-jet-action-section>
+    </x-action-section>
 
     <!-- Add Holiday Modal -->
-    <x-jet-dialog-modal wire:model.live="managingHoliday">
+    <x-dialog-modal wire:model.live="managingHoliday">
         <x-slot name="title">
             {{ $holidayId ? __('Edit Holiday') : __('Add Holiday') }}
         </x-slot>
 
         <x-slot name="content">
             <div class="col-span-6 sm:col-span-4">
-                <x-jet-label for="name" value="{{ __('Name') }}" />
-                <x-jet-input id="name" type="text" class="mt-1 block w-full"
+                <x-label for="name" value="{{ __('Name') }}" />
+                <x-input id="name" type="text" class="mt-1 block w-full"
                     wire:model="holidayForm.name" />
-                <x-jet-input-error for="holidayForm.name" class="mt-2" />
+                <x-input-error for="holidayForm.name" class="mt-2" />
             </div>
 
             <div class="col-span-6 sm:col-span-4 mt-4">
-                <x-jet-label for="date" value="{{ __('Date') }}" />
-                <x-jet-input id="date" type="date" class="mt-1 block w-full"
+                <x-label for="date" value="{{ __('Date') }}" />
+                <x-input id="date" type="date" class="mt-1 block w-full"
                     wire:model="holidayForm.date" />
-                <x-jet-input-error for="holidayForm.date" class="mt-2" />
+                <x-input-error for="holidayForm.date" class="mt-2" />
             </div>
 
             <div class="col-span-6 sm:col-span-4">
-                <x-jet-label for="type" value="{{ __('Type') }}" />
+                <x-label for="type" value="{{ __('Type') }}" />
                 <select id="type" class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
                     wire:model="holidayForm.type">
                     <option value="">{{ __('Select type...') }}</option>
@@ -79,23 +79,23 @@
                     <option value="Local">{{ __('Local') }}</option>
                     <option value="Otros">{{ __('Otros') }}</option>
                 </select>
-                <x-jet-input-error for="holidayForm.type" class="mt-2" />
+                <x-input-error for="holidayForm.type" class="mt-2" />
             </div>
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="managingHoliday(false)" wire:loading.attr="disabled">
+            <x-secondary-button wire:click="managingHoliday(false)" wire:loading.attr="disabled">
                 {{ __('Cancel') }}
-            </x-jet-secondary-button>
+            </x-secondary-button>
 
-            <x-jet-button class="ml-2" wire:click="saveHoliday" wire:loading.attr="disabled">
+            <x-button class="ml-2" wire:click="saveHoliday" wire:loading.attr="disabled">
                 {{ __('Save') }}
-            </x-jet-button>
+            </x-button>
         </x-slot>
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 
     <!-- Delete Holiday Confirmation Modal -->
-    <x-jet-confirmation-modal wire:model.live="confirmingHolidayDeletion">
+    <x-confirmation-modal wire:model.live="confirmingHolidayDeletion">
         <x-slot name="title">
             {{ __('Delete Holiday') }}
         </x-slot>
@@ -105,18 +105,18 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$toggle('confirmingHolidayDeletion')" wire:loading.attr="disabled">
+            <x-secondary-button wire:click="$toggle('confirmingHolidayDeletion')" wire:loading.attr="disabled">
                 {{ __('Cancel') }}
-            </x-jet-secondary-button>
+            </x-secondary-button>
 
-            <x-jet-danger-button class="ml-2" wire:click="deleteHoliday" wire:loading.attr="disabled">
+            <x-danger-button class="ml-2" wire:click="deleteHoliday" wire:loading.attr="disabled">
                 {{ __('Delete') }}
-            </x-jet-danger-button>
+            </x-danger-button>
         </x-slot>
-    </x-jet-confirmation-modal>
+    </x-confirmation-modal>
 
     <!-- Import Holidays Modal -->
-    <x-jet-dialog-modal wire:model.live="importingHolidays" max-width="2xl">
+    <x-dialog-modal wire:model.live="importingHolidays" max-width="2xl">
         <x-slot name="title">
             {{ __('Import Holidays') }}
         </x-slot>
@@ -125,7 +125,7 @@
             <div class="space-y-4">
                 <div class="flex items-center gap-4">
                     <div>
-                        <x-jet-label for="importYear" value="{{ __('Year') }}" />
+                        <x-label for="importYear" value="{{ __('Year') }}" />
                         <select id="importYear" class="mt-1 block border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
                             wire:model.live="importYear">
                             @for($year = now()->year - 1; $year <= now()->year + 2; $year++)
@@ -209,24 +209,24 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$set('importingHolidays', false)" wire:loading.attr="disabled">
+            <x-secondary-button wire:click="$set('importingHolidays', false)" wire:loading.attr="disabled">
                 {{ __('Cancel') }}
-            </x-jet-secondary-button>
+            </x-secondary-button>
 
             @if(count($availableHolidays) > 0)
                 <div class="flex gap-2 ml-2">
-                    <x-jet-secondary-button wire:click="importAllHolidays" wire:loading.attr="disabled">
+                    <x-secondary-button wire:click="importAllHolidays" wire:loading.attr="disabled">
                         <i class="fas fa-calendar-plus mr-2"></i>
                         {{ __('Import All') }} ({{ count($availableHolidays) }})
-                    </x-jet-secondary-button>
+                    </x-secondary-button>
                     
-                    <x-jet-button wire:click="importSelectedHolidays" wire:loading.attr="disabled" 
+                    <x-button wire:click="importSelectedHolidays" wire:loading.attr="disabled" 
                                   class="{{ count($selectedHolidays) === 0 ? 'opacity-50 cursor-not-allowed' : '' }}">
                         <i class="fas fa-download mr-2"></i>
                         {{ __('Import Selected') }} ({{ count($selectedHolidays) }})
-                    </x-jet-button>
+                    </x-button>
                 </div>
             @endif
         </x-slot>
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 </div>

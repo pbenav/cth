@@ -1,5 +1,5 @@
 <div>
-    <x-jet-dialog-modal wire:model.live="showAddEventModal" maxWidth="2xl">
+    <x-dialog-modal wire:model.live="showAddEventModal" maxWidth="2xl">
 
         <x-slot name="title">
             <div class="flex items-center space-x-3">
@@ -87,7 +87,7 @@
 
             <!-- Event Type Selection (Full Width) -->
             <div class="mb-6">
-                <x-jet-label for="event_type_id" value="{{ __('Event Type') }}"
+                <x-label for="event_type_id" value="{{ __('Event Type') }}"
                     class="required font-medium text-gray-700" />
                 <select id="event_type_id"
                     class="mt-1 block w-full border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm"
@@ -97,7 +97,7 @@
                         <option value="{{ $eventType->id }}">{{ $eventType->name }}</option>
                     @endforeach
                 </select>
-                <x-jet-input-error for='event_type_id' class="mt-1" />
+                <x-input-error for='event_type_id' class="mt-1" />
             </div>
 
             <!-- Main Form Grid (2 columns) -->
@@ -112,34 +112,34 @@
                             <!-- All-day event: Date Range -->
                             <div class="space-y-4">
                                 <div>
-                                    <x-jet-label for="start_date" value="{{ __('Start date') }}"
+                                    <x-label for="start_date" value="{{ __('Start date') }}"
                                         class="font-medium text-gray-700" />
-                                    <x-jet-input id="start_date" type="date" wire:model="start_date"
+                                    <x-input id="start_date" type="date" wire:model="start_date"
                                         class="mt-1 block w-full" required />
-                                    <x-jet-input-error for="start_date" class="mt-1" />
+                                    <x-input-error for="start_date" class="mt-1" />
                                 </div>
                                 <div>
-                                    <x-jet-label for="end_date" value="{{ __('End date') }}"
+                                    <x-label for="end_date" value="{{ __('End date') }}"
                                         class="font-medium text-gray-700" />
-                                    <x-jet-input id="end_date" type="date" wire:model="end_date"
+                                    <x-input id="end_date" type="date" wire:model="end_date"
                                         class="mt-1 block w-full" required />
-                                    <x-jet-input-error for="end_date" class="mt-1" />
+                                    <x-input-error for="end_date" class="mt-1" />
                                 </div>
                             </div>
                         @else
                             <!-- Regular event: Date and Time (only start) -->
                             <div>
-                                <x-jet-label value="{{ __('Start') }}" class="font-medium text-gray-700 mb-1" />
+                                <x-label value="{{ __('Start') }}" class="font-medium text-gray-700 mb-1" />
                                 <div class="grid grid-cols-2 gap-2">
                                     <div>
-                                        <x-jet-input type="date" wire:model="start_date"
+                                        <x-input type="date" wire:model="start_date"
                                             class="block w-full text-sm" required />
-                                        <x-jet-input-error for="start_date" class="mt-1" />
+                                        <x-input-error for="start_date" class="mt-1" />
                                     </div>
                                     <div>
-                                        <x-jet-input type="time" wire:model="start_time"
+                                        <x-input type="time" wire:model="start_time"
                                             class="block w-full text-sm" required step="300" />
-                                        <x-jet-input-error for="start_time" class="mt-1" />
+                                        <x-input-error for="start_time" class="mt-1" />
                                     </div>
                                 </div>
                             </div>
@@ -150,22 +150,22 @@
                 <!-- Right Column: Description & Observations -->
                 <div class="space-y-6">
                     <div>
-                        <x-jet-label for="description" value="{{ __('Description') }}"
+                        <x-label for="description" value="{{ __('Description') }}"
                             class="font-medium text-gray-700" />
-                        <x-jet-input id="description" class="mt-1 block w-full" wire:model="description"
+                        <x-input id="description" class="mt-1 block w-full" wire:model="description"
                             placeholder="{{ __('Add a description') }}" maxlength="255" />
-                        <x-jet-input-error for='description' class="mt-1" />
+                        <x-input-error for='description' class="mt-1" />
                         <p class="mt-1 text-xs text-gray-500">{{ __('If empty, event type name will be used') }}</p>
                     </div>
 
                     <div>
-                        <x-jet-label for="observations" value="{{ __('Observations') }}"
+                        <x-label for="observations" value="{{ __('Observations') }}"
                             class="font-medium text-gray-700" />
                         <textarea id="observations"
                             class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm sm:text-sm"
                             wire:model="observations" rows="4" placeholder="{{ __('event.observations.placeholder') }}"
                             maxlength="255"></textarea>
-                        <x-jet-input-error for='observations' class="mt-1" />
+                        <x-input-error for='observations' class="mt-1" />
                     </div>
                 </div>
             </div>
@@ -174,22 +174,22 @@
 
         <x-slot name="footer">
             <div class="flex flex-col xs:flex-row xs:justify-end gap-3">
-                <x-jet-secondary-button wire:click="$set('showAddEventModal', false)" wire:loading.attr="disabled"
+                <x-secondary-button wire:click="$set('showAddEventModal', false)" wire:loading.attr="disabled"
                     class="justify-center">
                     {{ __('Cancel') }}
-                </x-jet-secondary-button>
+                </x-secondary-button>
 
-                <x-jet-button id="save-event-btn" wire:loading.attr="disabled"
+                <x-button id="save-event-btn" wire:loading.attr="disabled"
                     class="bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 justify-center">
                     {{ __('Guardar evento') }}
-                </x-jet-button>
+                </x-button>
             </div>
         </x-slot>
 
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 
     <!-- Adjustment Modal -->
-    <x-jet-dialog-modal wire:model.live="showAdjustmentModal" maxWidth="md">
+    <x-dialog-modal wire:model.live="showAdjustmentModal" maxWidth="md">
         <x-slot name="title">
             <div class="flex items-center text-blue-600">
                 <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -257,11 +257,11 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$set('showAdjustmentModal', false)" wire:loading.attr="disabled">
+            <x-secondary-button wire:click="$set('showAdjustmentModal', false)" wire:loading.attr="disabled">
                 {{ __('Cancel') }}
-            </x-jet-secondary-button>
+            </x-secondary-button>
         </x-slot>
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 </div>
 
 @push('scripts')

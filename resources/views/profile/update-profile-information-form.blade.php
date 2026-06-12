@@ -1,4 +1,4 @@
-<x-jet-form-section submit="updateProfileInformation">
+<x-form-section submit="updateProfileInformation">
     <x-slot name="title">
         {{ __('Profile Information') }}
     </x-slot>
@@ -22,7 +22,7 @@
                                     reader.readAsDataURL($refs.photo.files[0]);
                             " />
 
-                <x-jet-label for="photo" value="{{ __('Photo') }}" />
+                <x-label for="photo" value="{{ __('Photo') }}" />
 
                 <!-- Current Profile Photo -->
                 <div class="mt-2" x-show="! photoPreview">
@@ -38,64 +38,64 @@
                     </span>
                 </div>
 
-                <x-jet-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
+                <x-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
                     {{ __('Select A New Photo') }}
-                </x-jet-secondary-button>
+                </x-secondary-button>
 
                 @if ($this->user->profile_photo_path)
-                    <x-jet-secondary-button type="button" class="mt-2" wire:click="deleteProfilePhoto">
+                    <x-secondary-button type="button" class="mt-2" wire:click="deleteProfilePhoto">
                         {{ __('Remove Photo') }}
-                    </x-jet-secondary-button>
+                    </x-secondary-button>
                 @endif
 
-                <x-jet-input-error for="photo" class="mt-2" />
+                <x-input-error for="photo" class="mt-2" />
             </div>
         @endif
 
         <!-- Name -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="name" value="{{ __('Name') }}" class="required" />
-            <x-jet-input id="name" type="text" class="mt-1 block w-full" wire:model="state.name"
+            <x-label for="name" value="{{ __('Name') }}" class="required" />
+            <x-input id="name" type="text" class="mt-1 block w-full" wire:model="state.name"
                 autocomplete="name" />
-            <x-jet-input-error for="name" class="mt-2" />
+            <x-input-error for="name" class="mt-2" />
         </div>
 
         <!-- Familyname 1 -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="family_name1" value="{{ __('Family Name 1') }}" class="required" />
-            <x-jet-input id="family_name1" type="text" class="mt-1 block w-full"
+            <x-label for="family_name1" value="{{ __('Family Name 1') }}" class="required" />
+            <x-input id="family_name1" type="text" class="mt-1 block w-full"
                 wire:model="state.family_name1" autocomplete="family_name1" />
-            <x-jet-input-error for="family_name1" class="mt-2" />
+            <x-input-error for="family_name1" class="mt-2" />
         </div>
 
         <!-- Familyname 2 -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="family_name2" value="{{ __('Family Name 2') }}" />
-            <x-jet-input id="family_name2" type="text" class="mt-1 block w-full"
+            <x-label for="family_name2" value="{{ __('Family Name 2') }}" />
+            <x-input id="family_name2" type="text" class="mt-1 block w-full"
                 wire:model="state.family_name2" autocomplete="family_name2" />
-            <x-jet-input-error for="family_name2" class="mt-2" />
+            <x-input-error for="family_name2" class="mt-2" />
         </div>
 
         <!-- DNI -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="dni" value="{{ __('DNI/NIE') }}" />
-            <x-jet-input id="dni" type="text" class="mt-1 block w-full" wire:model="state.dni"
+            <x-label for="dni" value="{{ __('DNI/NIE') }}" />
+            <x-input id="dni" type="text" class="mt-1 block w-full" wire:model="state.dni"
                 autocomplete="dni" />
-            <x-jet-input-error for="dni" class="mt-2" />
+            <x-input-error for="dni" class="mt-2" />
         </div>
 
         <!-- Email -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="email" value="{{ __('Email') }}" class="required" />
-            <x-jet-input id="email" type="email" class="mt-1 block w-full" wire:model="state.email" />
-            <x-jet-input-error for="email" class="mt-2" />
+            <x-label for="email" value="{{ __('Email') }}" class="required" />
+            <x-input id="email" type="email" class="mt-1 block w-full" wire:model="state.email" />
+            <x-input-error for="email" class="mt-2" />
         </div>
 
         <!-- UserCode -->
         <div class="col-span-6 sm:col-span-4" x-data="{ showUserCode: false }">
-            <x-jet-label for="user_code" value="{{ __('User Code') }}" class="required" />
+            <x-label for="user_code" value="{{ __('User Code') }}" class="required" />
             <div class="relative">
-                <x-jet-input id="user_code" x-bind:type="showUserCode ? 'text' : 'password'"
+                <x-input id="user_code" x-bind:type="showUserCode ? 'text' : 'password'"
                     class="mt-1 block w-full pr-10" wire:model="state.user_code" autocomplete="off" />
                 <button type="button" @click="showUserCode = !showUserCode"
                     class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
@@ -113,28 +113,28 @@
                     </svg>
                 </button>
             </div>
-            <x-jet-input-error for="user_code" class="mt-2" />
+            <x-input-error for="user_code" class="mt-2" />
         </div>
 
         <!-- Language / Locale -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="locale" value="{{ __('Language') }}" />
+            <x-label for="locale" value="{{ __('Language') }}" />
             <select id="locale" wire:model="state.locale"
                 class="mt-1 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                 <option value="es">Español</option>
                 <option value="en">English</option>
             </select>
-            <x-jet-input-error for="locale" class="mt-2" />
+            <x-input-error for="locale" class="mt-2" />
         </div>
     </x-slot>
 
     <x-slot name="actions">
-        <x-jet-action-message class="mr-3" on="saved">
+        <x-action-message class="mr-3" on="saved">
             {{ __('Saved.') }}
-        </x-jet-action-message>
+        </x-action-message>
 
-        <x-jet-button wire:loading.attr="disabled" wire:target="photo" class="bg-indigo-600 hover:bg-indigo-700">
+        <x-button wire:loading.attr="disabled" wire:target="photo" class="bg-indigo-600 hover:bg-indigo-700">
             {{ __('Save') }}
-        </x-jet-button>
+        </x-button>
     </x-slot>
-</x-jet-form-section>
+</x-form-section>

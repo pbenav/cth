@@ -36,7 +36,7 @@
 
                 {{-- Filters --}}
                 <div class="mb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <x-jet-input type="text" wire:model.live.debounce.300ms="searchPermissions" 
+                    <x-input type="text" wire:model.live.debounce.300ms="searchPermissions" 
                         placeholder="{{ __('Search permissions...') }}" class="w-full" />
                     <select wire:model.live="categoryFilter" class="border-gray-300 rounded-md shadow-sm w-full">
                         <option value="">{{ __('All categories') }}</option>
@@ -153,7 +153,7 @@
 
                 {{-- Search --}}
                 <div class="mb-4">
-                    <x-jet-input type="text" wire:model.live.debounce.300ms="searchRoles" placeholder="{{ __('Search roles...') }}" class="w-full md:w-1/3" />
+                    <x-input type="text" wire:model.live.debounce.300ms="searchRoles" placeholder="{{ __('Search roles...') }}" class="w-full md:w-1/3" />
                 </div>
 
                 {{-- Roles List --}}
@@ -252,7 +252,7 @@
 
                 {{-- Search --}}
                 <div class="mb-4">
-                    <x-jet-input type="text" wire:model.live.debounce.300ms="searchUsers" placeholder="{{ __('Search users...') }}" class="w-full md:w-1/3" />
+                    <x-input type="text" wire:model.live.debounce.300ms="searchUsers" placeholder="{{ __('Search users...') }}" class="w-full md:w-1/3" />
                 </div>
 
                 {{-- Users List --}}
@@ -327,7 +327,7 @@
     @endif
 
     {{-- Role Modal --}}
-    <x-jet-dialog-modal wire:model.live="showRoleModal" maxWidth="4xl">
+    <x-dialog-modal wire:model.live="showRoleModal" maxWidth="4xl">
         <x-slot name="title">
             {{ $editingRole ? __('Edit Role') : __('Create New Role') }}
         </x-slot>
@@ -336,14 +336,14 @@
             <div class="space-y-4">
                 {{-- Display Name --}}
                 <div>
-                    <x-jet-label for="roleForm.display_name" value="{{ __('Display Name') }}" />
-                    <x-jet-input id="roleForm.display_name" type="text" class="mt-1 block w-full" wire:model="roleForm.display_name" />
+                    <x-label for="roleForm.display_name" value="{{ __('Display Name') }}" />
+                    <x-input id="roleForm.display_name" type="text" class="mt-1 block w-full" wire:model="roleForm.display_name" />
                     @error('roleForm.display_name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 {{-- Description --}}
                 <div>
-                    <x-jet-label for="roleForm.description" value="{{ __('Description') }}" />
+                    <x-label for="roleForm.description" value="{{ __('Description') }}" />
                     <textarea id="roleForm.description" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" 
                         rows="3" wire:model="roleForm.description"></textarea>
                     @error('roleForm.description') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
@@ -351,7 +351,7 @@
 
                 {{-- Permissions --}}
                 <div>
-                    <x-jet-label value="{{ __('Permissions') }}" class="mb-3" />
+                    <x-label value="{{ __('Permissions') }}" class="mb-3" />
                     <div class="max-h-96 overflow-y-auto border border-gray-200 rounded-lg p-4">
                         @foreach($permissions as $category => $categoryPermissions)
                             <div class="mb-4">
@@ -389,22 +389,22 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$set('showRoleModal', false)">
+            <x-secondary-button wire:click="$set('showRoleModal', false)">
                 {{ __('Cancel') }}
-            </x-jet-secondary-button>
+            </x-secondary-button>
 
-            <x-jet-button class="ml-3" 
+            <x-button class="ml-3" 
                 wire:click.prevent="saveRole" 
                 wire:loading.attr="disabled"
                 onclick="console.log('Button clicked', @this.roleForm)">
                 <span wire:loading.remove wire:target="saveRole">{{ __('Save Role') }}</span>
                 <span wire:loading wire:target="saveRole">{{ __('Saving...') }}</span>
-            </x-jet-button>
+            </x-button>
         </x-slot>
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 
     {{-- User Permissions Modal --}}
-    <x-jet-dialog-modal wire:model.live="showUserPermissionsModal" maxWidth="4xl">
+    <x-dialog-modal wire:model.live="showUserPermissionsModal" maxWidth="4xl">
         <x-slot name="title">
             {{ __('Manage Direct Permissions') }}
             @if($selectedUser)
@@ -448,18 +448,18 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$set('showUserPermissionsModal', false)">
+            <x-secondary-button wire:click="$set('showUserPermissionsModal', false)">
                 {{ __('Cancel') }}
-            </x-jet-secondary-button>
+            </x-secondary-button>
 
-            <x-jet-button class="ml-3" wire:click="saveUserPermissions">
+            <x-button class="ml-3" wire:click="saveUserPermissions">
                 {{ __('Save Permissions') }}
-            </x-jet-button>
+            </x-button>
         </x-slot>
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 
     {{-- Permission Modal --}}
-    <x-jet-dialog-modal wire:model.live="showPermissionModal" maxWidth="2xl">
+    <x-dialog-modal wire:model.live="showPermissionModal" maxWidth="2xl">
         <x-slot name="title">
             {{ $editingPermission ? __('Edit Permission') : __('Create New Permission') }}
         </x-slot>
@@ -477,14 +477,14 @@
                 {{-- Permission Name (only for new) --}}
                 @if(!$editingPermission)
                     <div>
-                        <x-jet-label for="permissionForm.name" value="{{ __('Permission Name') }}" />
-                        <x-jet-input id="permissionForm.name" type="text" class="mt-1 block w-full" wire:model="permissionForm.name" />
+                        <x-label for="permissionForm.name" value="{{ __('Permission Name') }}" />
+                        <x-input id="permissionForm.name" type="text" class="mt-1 block w-full" wire:model="permissionForm.name" />
                         <p class="mt-1 text-xs text-gray-500">{{ __('Internal identifier (e.g., events.create, users.delete)') }}</p>
                         @error('permissionForm.name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
                 @else
                     <div>
-                        <x-jet-label value="{{ __('Permission Name') }}" />
+                        <x-label value="{{ __('Permission Name') }}" />
                         <div class="mt-1 px-3 py-2 bg-gray-100 rounded-md text-sm text-gray-700">
                             {{ $permissionForm['name'] }}
                         </div>
@@ -494,15 +494,15 @@
 
                 {{-- Display Name --}}
                 <div>
-                    <x-jet-label for="permissionForm.display_name" value="{{ __('Display Name') }}" />
-                    <x-jet-input id="permissionForm.display_name" type="text" class="mt-1 block w-full" wire:model="permissionForm.display_name" />
+                    <x-label for="permissionForm.display_name" value="{{ __('Display Name') }}" />
+                    <x-input id="permissionForm.display_name" type="text" class="mt-1 block w-full" wire:model="permissionForm.display_name" />
                     <p class="mt-1 text-xs text-gray-500">{{ __('Human-readable name shown in the interface') }}</p>
                     @error('permissionForm.display_name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 {{-- Category --}}
                 <div>
-                    <x-jet-label for="permissionForm.category" value="{{ __('Category') }}" />
+                    <x-label for="permissionForm.category" value="{{ __('Category') }}" />
                     <div class="mt-1 flex gap-2">
                         <select id="permissionForm.category" 
                             class="flex-1 border-gray-300 rounded-md shadow-sm" 
@@ -519,7 +519,7 @@
 
                 {{-- Description --}}
                 <div>
-                    <x-jet-label for="permissionForm.description" value="{{ __('Description') }}" />
+                    <x-label for="permissionForm.description" value="{{ __('Description') }}" />
                     <textarea id="permissionForm.description" 
                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" 
                         rows="3" 
@@ -543,13 +543,13 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$set('showPermissionModal', false)">
+            <x-secondary-button wire:click="$set('showPermissionModal', false)">
                 {{ __('Cancel') }}
-            </x-jet-secondary-button>
+            </x-secondary-button>
 
-            <x-jet-button class="ml-3" wire:click="savePermission">
+            <x-button class="ml-3" wire:click="savePermission">
                 {{ __('Save Permission') }}
-            </x-jet-button>
+            </x-button>
         </x-slot>
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 </div>

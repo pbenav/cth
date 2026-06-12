@@ -28,7 +28,7 @@
                         
                         <div class="space-y-4">
                             <div>
-                                <x-jet-label value="{{ __('Start') }}" class="font-medium text-gray-700 mb-1" />
+                                <x-label value="{{ __('Start') }}" class="font-medium text-gray-700 mb-1" />
                                 <div class="grid grid-cols-2 gap-2">
                                     <div>
                                         <input type="date" 
@@ -48,7 +48,7 @@
                             </div>
 
                             <div>
-                                <x-jet-label value="{{ __('End') }}" class="font-medium text-gray-700 mb-1" />
+                                <x-label value="{{ __('End') }}" class="font-medium text-gray-700 mb-1" />
                                 <div class="grid grid-cols-2 gap-2">
                                     <div>
                                         <input type="date" 
@@ -73,7 +73,7 @@
                 <!-- Right Column: Observations -->
                 <div class="space-y-6">
                     <div>
-                        <x-jet-label for="observations" value="{{ __('Reason for exceptional clock-in') }}" class="font-medium text-gray-700" />
+                        <x-label for="observations" value="{{ __('Reason for exceptional clock-in') }}" class="font-medium text-gray-700" />
                         <textarea id="observations"
                                   wire:model="observations"
                                   class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm sm:text-sm"
@@ -87,9 +87,9 @@
 
             <!-- Submit Button -->
             <div class="mt-6 flex justify-end">
-                <x-jet-button type="submit" class="bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500">
+                <x-button type="submit" class="bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500">
                     {{ __('Save') }}
-                </x-jet-button>
+                </x-button>
             </div>
         </form>
     @else
