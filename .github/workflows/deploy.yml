@@ -47,7 +47,13 @@ jobs:
           php artisan view:cache
           rm -f bootstrap/cache/livewire-components.php
           
-          # 8. (Opcional) Generar/Actualizar SBOM en producción
+          # 8. Fix for Nginx intercepting Livewire JS
+          mkdir -p public/livewire
+          cp vendor/livewire/livewire/dist/livewire.js public/livewire/livewire.js || true
+          cp vendor/livewire/livewire/dist/livewire.min.js public/livewire/livewire.min.js || true
+          cp vendor/livewire/livewire/dist/livewire.min.js.map public/livewire/livewire.min.js.map || true
+          
+          # 9. (Opcional) Generar/Actualizar SBOM en producción
           composer sbom:generate || true
           
           # 9. Quitar el modo mantenimiento
