@@ -104,7 +104,7 @@
     </x-jet-action-section>
 
     <!-- Modal -->
-    <x-jet-dialog-modal wire:model="showModal">
+    <x-jet-dialog-modal wire:model.live="showModal">
         <x-slot name="title">
             {{ $editingId ? __('Edit Announcement') : __('Create Announcement') }}
         </x-slot>
@@ -113,7 +113,7 @@
             <div class="space-y-4">
                 <div>
                     <x-jet-label for="title" value="{{ __('Title') }}" />
-                    <x-jet-input id="title" type="text" class="mt-1 block w-full" wire:model.defer="title" />
+                    <x-jet-input id="title" type="text" class="mt-1 block w-full" wire:model="title" />
                     <x-jet-input-error for="title" class="mt-2" />
                 </div>
 
@@ -214,13 +214,13 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <x-jet-label for="start_date" value="{{ __('Start Date') }} ({{ __('Optional') }})" />
-                        <x-jet-input id="start_date" type="date" class="mt-1 block w-full" wire:model.defer="start_date" />
+                        <x-jet-input id="start_date" type="date" class="mt-1 block w-full" wire:model="start_date" />
                         <x-jet-input-error for="start_date" class="mt-2" />
                     </div>
 
                     <div>
                         <x-jet-label for="end_date" value="{{ __('End Date') }} ({{ __('Optional') }})" />
-                        <x-jet-input id="end_date" type="date" class="mt-1 block w-full" wire:model.defer="end_date" />
+                        <x-jet-input id="end_date" type="date" class="mt-1 block w-full" wire:model="end_date" />
                         <x-jet-input-error for="end_date" class="mt-2" />
                     </div>
                 </div>
@@ -229,7 +229,7 @@
                     <input id="is_active" 
                            type="checkbox" 
                            class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                           wire:model.defer="is_active">
+                           wire:model="is_active">
                     <label for="is_active" class="ml-2 text-sm text-gray-600">
                         {{ __('Active') }}
                     </label>
@@ -487,7 +487,7 @@
     });
 
     // SweetAlert toast notification
-    document.addEventListener('livewire:load', function () {
+    document.addEventListener('livewire:init', function () {
         Livewire.on('saved', function () {
             Swal.fire({
                 toast: true,

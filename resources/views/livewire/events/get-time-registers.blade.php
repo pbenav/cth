@@ -76,19 +76,19 @@
 
                 <!-- Search Input -->
                 <div class="flex-1 min-w-[200px]">
-                    <x-jet-input class="w-full h-10" placeholder="{{ __('Search') }}" type="text" wire:model="search" />
+                    <x-jet-input class="w-full h-10" placeholder="{{ __('Search') }}" type="text" wire:model.live="search" />
                 </div>
 
                 <!-- Not Confirmed Checkbox -->
                 <label class="flex items-center space-x-2 px-3 py-2 bg-gray-50 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100">
-                    <x-jet-checkbox class="w-5 h-5" wire:model="confirmed" wire:click="$set('filtered', false)" />
+                    <x-jet-checkbox class="w-5 h-5" wire:model.live="confirmed" wire:click="$set('filtered', false)" />
                     <span class="text-sm font-medium text-gray-700">{{ __('Not confirmed') }}</span>
                 </label>
 
                 <!-- Records Per Page -->
                 <div class="flex items-center space-x-2 px-3 py-2 bg-gray-50 rounded-lg border border-gray-200">
                     <span class="text-sm text-gray-600">{{ __('Show') }}</span>
-                    <select wire:model='qtytoshow' class="h-8 border-gray-300 rounded-md text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    <select wire:model.live='qtytoshow' class="h-8 border-gray-300 rounded-md text-sm focus:ring-indigo-500 focus:border-indigo-500">
                         <option value="10">10</option>
                         <option value="25">25</option>
                         <option value="50">50</option>

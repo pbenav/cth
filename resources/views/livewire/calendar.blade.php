@@ -51,7 +51,7 @@
     @push('scripts')
         <script src='{{ asset('js/fullcalendar-bundle.js') }}'></script>
         <script>
-            document.addEventListener('livewire:load', function() {
+            document.addEventListener('livewire:init', function() {
                 var calendarEl = document.getElementById('calendar');
 
                 // Store calendar instance globally for refresh

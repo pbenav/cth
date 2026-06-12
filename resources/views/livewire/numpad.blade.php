@@ -36,7 +36,7 @@
             </div>
 
             <div class="w-auto mb-2 text-center">
-                <form wire:submit.prevent="insertCode">
+                <form wire:submit="insertCode">
                     <input type="password" id="user_code" x-model="user_code" class="btn btn-pad"
                         aria-label="{{ __('Código de usuario') }}"
                         autocomplete="off"
@@ -81,7 +81,7 @@
 
         function initNumpad() {
             return {
-                user_code: @entangle('user_code').defer,
+                user_code: @entangle('user_code'),
                 iniciar: function() {
                     this.user_code = '';
                 },

@@ -1,7 +1,7 @@
 <div>
     <!-- Event Info Modal -->
     <!-- Event Info Modal -->
-    <x-jet-dialog-modal wire:model="showModal" maxWidth="2xl">
+    <x-jet-dialog-modal wire:model.live="showModal" maxWidth="2xl">
         <x-slot name="title">
             @if ($eventData)
                 <div class="flex items-center justify-between pb-3 border-b border-gray-200">

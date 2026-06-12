@@ -13,7 +13,7 @@
             @if(Gate::check('update', $team))
                 <div class="mt-1 flex items-center space-x-3">
                     <div class="relative">
-                        <x-jet-input id="special_event_color" type="color" class="h-10 w-20 p-1 rounded-md border border-gray-300 cursor-pointer" wire:model.defer="state.special_event_color" />
+                        <x-jet-input id="special_event_color" type="color" class="h-10 w-20 p-1 rounded-md border border-gray-300 cursor-pointer" wire:model="state.special_event_color" />
                     </div>
                     <div class="text-sm text-gray-500 font-mono bg-gray-50 px-2 py-1 rounded border border-gray-200">
                         {{ $state['special_event_color'] ?? '#000000' }}
@@ -44,7 +44,7 @@
 </x-jet-form-section>
 
 <script>
-    document.addEventListener('livewire:load', function () {
+    document.addEventListener('livewire:init', function () {
         Livewire.on('saved', function () {
             Swal.fire({
                 toast: true,

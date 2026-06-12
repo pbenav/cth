@@ -1,6 +1,6 @@
 @props(['isteamadmin', 'isinspector', 'eventTypes', 'teamUserList'])
 <div>
-    <x-jet-dialog-modal wire:model="showFiltersModal">
+    <x-jet-dialog-modal wire:model.live="showFiltersModal">
 
         <x-slot name="title">
             {{ __('Set filters to get time register') }}
@@ -9,11 +9,11 @@
         <x-slot name="content">
             <div class="mb-4">
                 <x-jet-label value="{{ __('Start date') }}" class="mt-3 mr-2 required" />
-                <x-jet-input type="date" class="mr-2" wire:model.defer='filter.start' />
+                <x-jet-input type="date" class="mr-2" wire:model='filter.start' />
                 <x-jet-input-error for='filter.start' />
 
                 <x-jet-label value="{{ __('End date') }}" class="mt-3 mr-2 required" />
-                <x-jet-input type="date" class="mr-2" wire:model.defer='filter.end' />
+                <x-jet-input type="date" class="mr-2" wire:model='filter.end' />
                 <x-jet-input-error for='filter.end' />
             </div>
 
@@ -21,7 +21,7 @@
                 @if ($isteamadmin || $isinspector)
                     <div class="mb-4">
                         <x-jet-label value="{{ __('User') }}" />
-                        <select class="sl-select" wire:model.defer='filter.user_id'>
+                        <select class="sl-select" wire:model='filter.user_id'>
                             <option value="">{{ __('All') }}</option>
                             @if (isset($teamUserList))
                                 @foreach ($teamUserList as $user)
@@ -36,14 +36,14 @@
                     <x-jet-label class="whitespace-nowrap" value="{{ __('Not confirmed') }}" />
 
                     <x-jet-checkbox class="h-6 w-6 text-gray-600 checked:text-green-600"
-                        wire:model.defer='filter.is_open' />
+                        wire:model='filter.is_open' />
                     <x-jet-input-error for='filter.is_open' />
                 </div>
             </div>
 
             <div class="mb-4">
                 <x-jet-label value="{{ __('Event Type') }}" />
-                <select class="sl-select" wire:model.defer='filter.event_type_id'>
+                <select class="sl-select" wire:model='filter.event_type_id'>
                     <option value="">{{ __('All') }}</option>
                     @if (isset($eventTypes))
                         @foreach ($eventTypes as $eventType)

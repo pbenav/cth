@@ -11,7 +11,7 @@
         <!-- Week Starts On -->
         <div class="col-span-6 sm:col-span-4">
             <x-jet-label for="week_starts_on" value="{{ __('Week starts on') }}" />
-            <select id="week_starts_on" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full" wire:model.defer="state.week_starts_on">
+            <select id="week_starts_on" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full" wire:model="state.week_starts_on">
                 <option value="1">{{ __('Monday') }}</option>
                 <option value="0">{{ __('Sunday') }}</option>
             </select>

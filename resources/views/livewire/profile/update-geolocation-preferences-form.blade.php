@@ -13,7 +13,7 @@
             <label for="geolocation_enabled" class="flex items-center">
                 <x-jet-checkbox 
                     id="geolocation_enabled" 
-                    wire:model.defer="state.geolocation_enabled"
+                    wire:model="state.geolocation_enabled"
                     x-on:change="handleGeolocationToggle($event)" />
                 <span class="ml-2 text-sm text-gray-600">{{ __('Enable GPS geolocation for clock-in/out') }}</span>
             </label>

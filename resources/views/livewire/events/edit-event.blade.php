@@ -1,6 +1,6 @@
 <div>
     <!-- Event Edit Modal -->
-    <x-jet-dialog-modal wire:model="showModalEditEvent" maxWidth="2xl">
+    <x-jet-dialog-modal wire:model.live="showModalEditEvent" maxWidth="2xl">
         <x-slot name='title'>
             <div class="flex items-center justify-between pb-3 border-b border-gray-200">
                 <div class="flex items-center gap-3">
@@ -117,7 +117,7 @@
                     <div>
                         <label class="text-xs text-gray-600 block mb-1">{{ __('Description') }}</label>
                         <x-jet-input class="block w-full text-sm" 
-                                     wire:model.defer="event.description"
+                                     wire:model="event.description"
                                      placeholder="{{ __('Add a description') }}"
                                      maxlength="255"
                                      {{ $canBeModified ? '' : 'disabled' }} />
@@ -128,7 +128,7 @@
                     <div>
                         <label class="text-xs text-gray-600 block mb-1">{{ __('Observations') }}</label>
                         <textarea class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full text-sm"
-                                  wire:model.defer="event.observations"
+                                  wire:model="event.observations"
                                   rows="4"
                                   placeholder="{{ __('event.observations.placeholder') }}"
                                   maxlength="255"
@@ -211,7 +211,7 @@
     </x-jet-dialog-modal>
 
     <!-- Adjustment Modal -->
-    <x-jet-dialog-modal wire:model="showAdjustmentModal" maxWidth="md">
+    <x-jet-dialog-modal wire:model.live="showAdjustmentModal" maxWidth="md">
         <x-slot name="title">
             <div class="flex items-center text-blue-600">
                 <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -3,7 +3,7 @@
         {{ __('Move') }}
     </x-jet-button>
 
-    <x-jet-dialog-modal wire:model="showModal">
+    <x-jet-dialog-modal wire:model.live="showModal">
         <x-slot name="title">
             {{ __('Move User') }}
         </x-slot>
@@ -13,7 +13,7 @@
 
             <div class="mt-4">
                 <x-jet-label for="destination_team" value="{{ __('Destination Team') }}" />
-                <select id="destination_team" class="form-select block w-full mt-1" wire:model="destinationTeamId">
+                <select id="destination_team" class="form-select block w-full mt-1" wire:model.live="destinationTeamId">
                     <option value="">{{ __('Select a team') }}</option>
                     @foreach($eligibleTeams as $team)
                         <option value="{{ $team->id }}">{{ $team->name }}</option>
@@ -23,7 +23,7 @@
 
             <div class="mt-4">
                 <label for="transfer_events" class="flex items-center">
-                    <x-jet-checkbox id="transfer_events" wire:model="transferEvents" />
+                    <x-jet-checkbox id="transfer_events" wire:model.live="transferEvents" />
                     <span class="ml-2 text-sm text-gray-600">{{ __('Transfer all user event records to the new team') }}</span>
                 </label>
                 <p class="mt-1 text-xs text-gray-500 ml-6">

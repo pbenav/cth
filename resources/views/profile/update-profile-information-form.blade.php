@@ -12,7 +12,7 @@
         @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
             <div x-data="{ photoName: null, photoPreview: null }" class="col-span-6 sm:col-span-4">
                 <!-- Profile Photo File Input -->
-                <input type="file" class="hidden" wire:model="photo" x-ref="photo"
+                <input type="file" class="hidden" wire:model.live="photo" x-ref="photo"
                     x-on:change="
                                     photoName = $refs.photo.files[0].name;
                                     const reader = new FileReader();
@@ -55,7 +55,7 @@
         <!-- Name -->
         <div class="col-span-6 sm:col-span-4">
             <x-jet-label for="name" value="{{ __('Name') }}" class="required" />
-            <x-jet-input id="name" type="text" class="mt-1 block w-full" wire:model.defer="state.name"
+            <x-jet-input id="name" type="text" class="mt-1 block w-full" wire:model="state.name"
                 autocomplete="name" />
             <x-jet-input-error for="name" class="mt-2" />
         </div>
@@ -64,7 +64,7 @@
         <div class="col-span-6 sm:col-span-4">
             <x-jet-label for="family_name1" value="{{ __('Family Name 1') }}" class="required" />
             <x-jet-input id="family_name1" type="text" class="mt-1 block w-full"
-                wire:model.defer="state.family_name1" autocomplete="family_name1" />
+                wire:model="state.family_name1" autocomplete="family_name1" />
             <x-jet-input-error for="family_name1" class="mt-2" />
         </div>
 
@@ -72,14 +72,14 @@
         <div class="col-span-6 sm:col-span-4">
             <x-jet-label for="family_name2" value="{{ __('Family Name 2') }}" />
             <x-jet-input id="family_name2" type="text" class="mt-1 block w-full"
-                wire:model.defer="state.family_name2" autocomplete="family_name2" />
+                wire:model="state.family_name2" autocomplete="family_name2" />
             <x-jet-input-error for="family_name2" class="mt-2" />
         </div>
 
         <!-- DNI -->
         <div class="col-span-6 sm:col-span-4">
             <x-jet-label for="dni" value="{{ __('DNI/NIE') }}" />
-            <x-jet-input id="dni" type="text" class="mt-1 block w-full" wire:model.defer="state.dni"
+            <x-jet-input id="dni" type="text" class="mt-1 block w-full" wire:model="state.dni"
                 autocomplete="dni" />
             <x-jet-input-error for="dni" class="mt-2" />
         </div>
@@ -87,7 +87,7 @@
         <!-- Email -->
         <div class="col-span-6 sm:col-span-4">
             <x-jet-label for="email" value="{{ __('Email') }}" class="required" />
-            <x-jet-input id="email" type="email" class="mt-1 block w-full" wire:model.defer="state.email" />
+            <x-jet-input id="email" type="email" class="mt-1 block w-full" wire:model="state.email" />
             <x-jet-input-error for="email" class="mt-2" />
         </div>
 
@@ -96,7 +96,7 @@
             <x-jet-label for="user_code" value="{{ __('User Code') }}" class="required" />
             <div class="relative">
                 <x-jet-input id="user_code" x-bind:type="showUserCode ? 'text' : 'password'"
-                    class="mt-1 block w-full pr-10" wire:model.defer="state.user_code" autocomplete="off" />
+                    class="mt-1 block w-full pr-10" wire:model="state.user_code" autocomplete="off" />
                 <button type="button" @click="showUserCode = !showUserCode"
                     class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
                     <svg x-show="!showUserCode" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
@@ -119,7 +119,7 @@
         <!-- Language / Locale -->
         <div class="col-span-6 sm:col-span-4">
             <x-jet-label for="locale" value="{{ __('Language') }}" />
-            <select id="locale" wire:model.defer="state.locale"
+            <select id="locale" wire:model="state.locale"
                 class="mt-1 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                 <option value="es">Español</option>
                 <option value="en">English</option>

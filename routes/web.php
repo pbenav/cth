@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\UserMetaController;
 use App\Http\Controllers\MessageController;
-use App\Http\Livewire\GetTimeRegisters;
-use App\Http\Livewire\ReportsComponent;
-use App\Http\Livewire\StatsComponent;
+use App\Livewire\GetTimeRegisters;
+use App\Livewire\ReportsComponent;
+use App\Livewire\StatsComponent;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -82,7 +82,7 @@ Route::middleware([
     Route::get('/mensajes/{id}', [MessageController::class, 'show'])->name('messages.show');
 
     // Audit Log - Accessible by admins and inspectors (permission check in component)
-    Route::get('/audit', \App\Http\Livewire\AuditLogComponent::class)->name('audit.index');
+    Route::get('/audit', \App\Livewire\AuditLogComponent::class)->name('audit.index');
 
     // Documentation
     // Documentation

@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
     addAutoSelectBehavior();
 
     // Also add behavior when Livewire updates the DOM
-    document.addEventListener('livewire:load', addAutoSelectBehavior);
+    document.addEventListener('livewire:init', addAutoSelectBehavior);
     document.addEventListener('livewire:update', addAutoSelectBehavior);
 
     // For dynamically added content (modals, etc.)
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
 // Handle CSRF token mismatch errors (419) in Livewire
 // This happens when switching users in Chromium-based browsers
 // The old CSRF token remains in cached pages, causing "Page Expired" errors
-document.addEventListener('livewire:load', function () {
+document.addEventListener('livewire:init', function () {
     Livewire.hook('message.failed', ({ message, component }) => {
         // Check if it's a 419 error (CSRF token mismatch)
         if (message.response && message.response.status === 419) {

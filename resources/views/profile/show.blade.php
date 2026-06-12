@@ -162,7 +162,7 @@
         // Additional script to handle navigation after Livewire loads
         document.addEventListener('DOMContentLoaded', function() {
             // Preserve the current tab when Livewire updates
-            window.addEventListener('livewire:load', function () {
+            window.addEventListener('livewire:init', function () {
                 Livewire.hook('message.processed', (message, component) => {
                     // Get current tab from Alpine
                     const currentTab = new URLSearchParams(window.location.search).get('tab') || 'account';
@@ -213,7 +213,7 @@
             scrollToWorkSchedule();
             
             // Also run after Livewire updates
-            document.addEventListener('livewire:load', scrollToWorkSchedule);
+            document.addEventListener('livewire:init', scrollToWorkSchedule);
             document.addEventListener('livewire:update', scrollToWorkSchedule);
         });
     </script>

@@ -188,9 +188,9 @@ class MaxWorkdayDurationTest extends TestCase
         // Now try to CLOSE it via GetTimeRegisters::confirm
         // The manual validation in GetTimeRegisters should catch this
         \Livewire\Livewire::actingAs($this->user)
-            ->test(\App\Http\Livewire\GetTimeRegisters::class)
+            ->test(\App\Livewire\GetTimeRegisters::class)
             ->call('confirm', $event->id)
-            ->assertEmitted('alertFail');
+            ->assertDispatched('alertFail');
             
         $event->refresh();
         $this->assertTrue($event->is_open); // Should still be open

@@ -20,7 +20,7 @@
 
             <div class="col-span-6 sm:col-span-4">
                 <x-jet-label for="newBackground" value="{{ __('Upload New Background') }}" />
-                <input type="file" id="newBackground" class="mt-1 block w-full" wire:model="newBackground" accept="image/*" />
+                <input type="file" id="newBackground" class="mt-1 block w-full" wire:model.live="newBackground" accept="image/*" />
                 <x-jet-input-error for="newBackground" class="mt-2" />
                 
                 <div wire:loading wire:target="newBackground" class="mt-2 text-sm text-blue-500">
@@ -55,21 +55,21 @@
             <!-- Legal Representative -->
             <div class="col-span-6 sm:col-span-4">
                 <x-jet-label for="legal_representative" value="{{ __('Representante Legal') }}" />
-                <x-jet-input id="legal_representative" type="text" class="mt-1 block w-full" wire:model.defer="state.LEGAL_REPRESENTATIVE" />
+                <x-jet-input id="legal_representative" type="text" class="mt-1 block w-full" wire:model="state.LEGAL_REPRESENTATIVE" />
                 <x-jet-input-error for="state.LEGAL_REPRESENTATIVE" class="mt-2" />
             </div>
 
             <!-- Legal Company -->
             <div class="col-span-6 sm:col-span-4">
                 <x-jet-label for="legal_company" value="{{ __('Nombre de la Empresa') }}" />
-                <x-jet-input id="legal_company" type="text" class="mt-1 block w-full" wire:model.defer="state.LEGAL_COMPANY" />
+                <x-jet-input id="legal_company" type="text" class="mt-1 block w-full" wire:model="state.LEGAL_COMPANY" />
                 <x-jet-input-error for="state.LEGAL_COMPANY" class="mt-2" />
             </div>
 
             <!-- Legal Email -->
             <div class="col-span-6 sm:col-span-4">
                 <x-jet-label for="legal_email" value="{{ __('Email de Contacto') }}" />
-                <x-jet-input id="legal_email" type="email" class="mt-1 block w-full" wire:model.defer="state.LEGAL_EMAIL" />
+                <x-jet-input id="legal_email" type="email" class="mt-1 block w-full" wire:model="state.LEGAL_EMAIL" />
                 <x-jet-input-error for="state.LEGAL_EMAIL" class="mt-2" />
             </div>
         </x-slot>

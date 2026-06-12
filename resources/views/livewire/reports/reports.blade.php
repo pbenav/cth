@@ -24,7 +24,7 @@
 
             <div>
                 <x-jet-label value="{{ __('Report Source') }}" />
-                <select class="form-control pt-1 h-8 whitespace-nowrap" wire:model='report_source'>
+                <select class="form-control pt-1 h-8 whitespace-nowrap" wire:model.live='report_source'>
                     @foreach ($reportSources as $sourceKey => $sourceName)
                         <option value="{{ $sourceKey }}">
                             {{ $sourceName }}
@@ -36,7 +36,7 @@
             @if ($isTeamAdmin or $isInspector)
                 <div>
                     <x-jet-label value="{{ __('Worker') }}" />
-                    <select class="form-control pt-1 h-8 whitespace-nowrap" wire:model='worker'>
+                    <select class="form-control pt-1 h-8 whitespace-nowrap" wire:model.live='worker'>
                         <option value="%">{{ __('All') }}</option>
                         @foreach ($workers as $w)
                             <option value="{{ $w->id }}" {{ $w->id == $worker ? 'selected' : '' }}>
@@ -52,20 +52,20 @@
             <div class="flex flex-nowrap">
                 <div>
                     <x-jet-label value="{{ __('From date') }}" />
-                    <x-datepicker class="form-control h-8 pt-2" wire:model='fromdate' />
+                    <x-datepicker class="form-control h-8 pt-2" wire:model.live='fromdate' />
                     <x-jet-input-error for='fromdate' />
                 </div>
 
                 <div class="ml-2">
                     <x-jet-label value="{{ __('To date') }}" />
-                    <x-datepicker class="form-control h-8 pt-2" wire:model='todate' name="todate" id="todate" />
+                    <x-datepicker class="form-control h-8 pt-2" wire:model.live='todate' name="todate" id="todate" />
                     <x-jet-input-error class="whitespace-pre-wrap" for='todate' />
                 </div>
             </div>
 
             <div>
                 <x-jet-label value="{{ __('Event Type') }}" />
-                <select class="form-control pt-1 h-8 whitespace-nowrap" wire:model='event_type_id'>
+                <select class="form-control pt-1 h-8 whitespace-nowrap" wire:model.live='event_type_id'>
                     <option value="All">{{ __('All') }}</option>
                     @foreach ($eventTypes as $eventType)
                         <option value="{{ $eventType->id }}">
@@ -97,7 +97,7 @@
 
             <div>
                 <x-jet-label value="{{ __('Type') }}" />
-                <select class="form-control pt-1 h-8 whitespace-nowrap" wire:model='rtype'>
+                <select class="form-control pt-1 h-8 whitespace-nowrap" wire:model.live='rtype'>
                     @foreach ($rtypes as $rtype_key => $rtype_val)
                         <option value="{{ $rtype_key }}">
                             {{ $rtype_key }}</option>
@@ -334,7 +334,7 @@
         }
 
         // Listen for when Livewire finishes updating
-        document.addEventListener('livewire:load', function() {
+        document.addEventListener('livewire:init', function() {
             // NO cerramos el mensaje automáticamente cuando Livewire termina
             // Solo lo cerramos cuando el iframe se carga (onload) o en caso de export directo
             Livewire.hook('message.processed', (message, component) => {

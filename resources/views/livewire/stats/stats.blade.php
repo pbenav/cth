@@ -23,7 +23,7 @@
             @if ($isTeamAdmin or $isInspector)
                 <div>
                     <x-jet-label value="{{ __('Worker') }}" />
-                    <select class="pt-1 h-8 whitespace-nowrap form-control" wire:model="browsedUser">
+                    <select class="pt-1 h-8 whitespace-nowrap form-control" wire:model.live="browsedUser">
                         @foreach ($workers as $w)
                             <option value="{{ data_get($w, 'id', '') }}">
                                 {{ data_get($w, 'full_name_with_dni', '') }}
@@ -37,7 +37,7 @@
             <div class="flex flex-row gap-2">
                 <div>
                     <x-jet-label value="{{ __('Month') }}" />
-                    <select class="pt-1 h-8 whitespace-nowrap form-control" wire:model="selectedMonth"
+                    <select class="pt-1 h-8 whitespace-nowrap form-control" wire:model.live="selectedMonth"
                         wire:change="getData">
                         <option {{ $selectedMonth == 1 ? "selected value=$selectedMonth" : '' }} value="1">
                             {{ __('January') }}
@@ -80,7 +80,7 @@
                 </div>
                 <div>
                     <x-jet-label value="{{ __('Year') }}" />
-                    <select class="pt-1 h-8 whitespace-nowrap form-control" wire:model="selectedYear">
+                    <select class="pt-1 h-8 whitespace-nowrap form-control" wire:model.live="selectedYear">
                         @foreach (range(2022, date('Y') + 1) as $year)
                             <option value="{{ $year }}">{{ $year }}</option>
                         @endforeach

@@ -13,7 +13,7 @@
 
     @if ($showComposeForm)
         <div class="mb-6 p-4 bg-white rounded-lg shadow-md">
-            <form wire:submit.prevent="sendMessage">
+            <form wire:submit="sendMessage">
                 @if($replyingTo)
                     <div class="mb-3 p-2 bg-blue-50 border-l-4 border-blue-400 text-sm text-blue-700">
                         <i class="fas fa-reply mr-1"></i> Respondiendo a mensaje
@@ -30,7 +30,7 @@
                             Seleccionar todo el equipo
                         </button>
                     </div>
-                    <select id="recipients" wire:model="recipients" multiple class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" size="6">
+                    <select id="recipients" wire:model.live="recipients" multiple class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" size="6">
                         @foreach ($users as $user)
                             <option value="{{ $user->id }}">{{ $user->name }} {{ $user->family_name1 }}</option>
                         @endforeach
@@ -42,11 +42,11 @@
                 </div>
                 <div class="mb-4">
                     <label for="subject" class="block text-sm font-medium text-gray-700">Asunto</label>
-                    <input type="text" id="subject" wire:model.defer="subject" class="block w-full mt-1">
+                    <input type="text" id="subject" wire:model="subject" class="block w-full mt-1">
                 </div>
                 <div class="mb-4">
                     <label for="body" class="block text-sm font-medium text-gray-700">Mensaje</label>
-                    <textarea id="body" wire:model.defer="body" rows="5" class="block w-full mt-1"></textarea>
+                    <textarea id="body" wire:model="body" rows="5" class="block w-full mt-1"></textarea>
                 </div>
                 <div class="flex justify-end">
                     <button type="submit" class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
@@ -79,14 +79,14 @@
                     <div class="flex items-center space-x-4">
                         @if ($view === 'inbox' || $view === 'sent' || $view === 'alerts')
                         <div class="flex items-center">
-                            <input type="checkbox" wire:model="selectAll" class="mr-2">
+                            <input type="checkbox" wire:model.live="selectAll" class="mr-2">
                             <span>{{ __('Select all') }}</span>
                         </div>
                         @endif
 
                         @if ($view === 'inbox' && count($selectedMessages) > 0)
                             <div class="flex items-center">
-                                <select wire:model="bulkAction" class="form-control mr-2">
+                                <select wire:model.live="bulkAction" class="form-control mr-2">
                                     <option value="">{{ __('Bulk Action') }}</option>
                                     <option value="markAsRead">{{ __('Mark as read') }}</option>
                                     <option value="delete">{{ __('Delete') }}</option>
@@ -98,7 +98,7 @@
                         @endif
                         @if ($view === 'sent' && count($selectedMessages) > 0)
                             <div class="flex items-center">
-                                <select wire:model="bulkAction" class="form-control mr-2">
+                                <select wire:model.live="bulkAction" class="form-control mr-2">
                                     <option value="">{{ __('Bulk Action') }}</option>
                                     <option value="delete">{{ __('Delete') }}</option>
                                 </select>
@@ -109,7 +109,7 @@
                         @endif
                         @if ($view === 'alerts' && count($selectedNotifications) > 0)
                             <div class="flex items-center">
-                                <select wire:model="bulkAlertAction" class="form-control mr-2">
+                                <select wire:model.live="bulkAlertAction" class="form-control mr-2">
                                     <option value="">{{ __('Bulk Action') }}</option>
                                     <option value="delete">{{ __('Delete') }}</option>
                                 </select>
@@ -133,7 +133,7 @@
                         @foreach ($messageList as $notification)
                             <div class="p-4 bg-white rounded-lg shadow-md flex items-center justify-between" wire:key="'notification-{{ $notification->id }}'">
                                 <div class="flex items-center">
-                                    <input type="checkbox" wire:model="selectedNotifications" value="{{ $notification->id }}" class="mr-4">
+                                    <input type="checkbox" wire:model.live="selectedNotifications" value="{{ $notification->id }}" class="mr-4">
                                     <a href="{{ $notification->data['url'] ?? '#' }}">
                                         {{ $notification->data['message'] }}
                                     </a>

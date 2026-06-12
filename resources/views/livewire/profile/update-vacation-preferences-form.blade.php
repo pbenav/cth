@@ -9,7 +9,7 @@
 
     <x-slot name="form">
         <!-- Calculation Type -->
-        <div class="col-span-6" x-data="{ calculationType: @entangle('state.vacation_calculation_type') }">
+        <div class="col-span-6" x-data="{ calculationType: @entangle('state.vacation_calculation_type').live }">
             <x-jet-label for="vacation_calculation_type" value="{{ __('Tipo de cálculo') }}" />
             
             <div class="mt-3 space-y-3">
@@ -20,7 +20,7 @@
                             id="calculation_natural" 
                             type="radio" 
                             value="natural"
-                            wire:model.defer="state.vacation_calculation_type"
+                            wire:model="state.vacation_calculation_type"
                             class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
                         >
                     </div>
@@ -41,7 +41,7 @@
                             id="calculation_working" 
                             type="radio" 
                             value="working"
-                            wire:model.defer="state.vacation_calculation_type"
+                            wire:model="state.vacation_calculation_type"
                             class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
                         >
                     </div>
@@ -60,7 +60,7 @@
         </div>
 
         <!-- Working Days Count (shown only when working days is selected) -->
-        <div class="col-span-6 sm:col-span-4" x-data="{ calculationType: @entangle('state.vacation_calculation_type') }" x-show="calculationType === 'working'" x-transition>
+        <div class="col-span-6 sm:col-span-4" x-data="{ calculationType: @entangle('state.vacation_calculation_type').live }" x-show="calculationType === 'working'" x-transition>
             <x-jet-label for="vacation_working_days" value="{{ __('Número de días hábiles') }}" />
             <input 
                 id="vacation_working_days" 
@@ -68,7 +68,7 @@
                 min="1" 
                 max="365"
                 class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full" 
-                wire:model.defer="state.vacation_working_days"
+                wire:model="state.vacation_working_days"
             >
             <x-jet-input-error for="state.vacation_working_days" class="mt-2" />
             <p class="mt-2 text-sm text-gray-600">

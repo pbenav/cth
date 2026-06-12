@@ -8,8 +8,8 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
-use App\Http\Livewire\EditEvent;
-use App\Http\Livewire\ReportsComponent;
+use App\Livewire\EditEvent;
+use App\Livewire\ReportsComponent;
 
 class InspectorRoleTest extends TestCase
 {

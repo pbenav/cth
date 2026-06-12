@@ -180,7 +180,7 @@
     </x-jet-action-section>
 
     <!-- Delete Event Type Confirmation Modal -->
-    <x-jet-confirmation-modal wire:model="confirmingEventTypeDeletion">
+    <x-jet-confirmation-modal wire:model.live="confirmingEventTypeDeletion">
         <x-slot name="title">
             {{ __('Eliminar tipo de evento') }}
         </x-slot>
@@ -201,7 +201,7 @@
     </x-jet-confirmation-modal>
 
     <!-- Manage Event Type Modal -->
-    <x-jet-dialog-modal wire:model="managingEventType">
+    <x-jet-dialog-modal wire:model.live="managingEventType">
         <x-slot name="title">
             <div class="flex items-center space-x-3 border-b border-gray-100 pb-4">
                 <div class="bg-indigo-100 p-2 rounded-full">
@@ -220,7 +220,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <x-jet-label for="name" value="{{ __('Nombre') }}" class="font-semibold text-gray-700" />
-                        <x-jet-input id="name" type="text" class="mt-1 block w-full" wire:model.defer="state.name" placeholder="Ej. Vacaciones" />
+                        <x-jet-input id="name" type="text" class="mt-1 block w-full" wire:model="state.name" placeholder="Ej. Vacaciones" />
                         <x-jet-input-error for="state.name" class="mt-2" />
                     </div>
                     <div>
@@ -228,7 +228,7 @@
                         <div class="mt-1 flex items-center space-x-3">
                             <input id="color" type="color" 
                                    class="h-10 w-20 p-1 rounded-md border border-gray-300 cursor-pointer" 
-                                   wire:model="state.color" 
+                                   wire:model.live="state.color" 
                                    value="{{ $state['color'] ?? '#000000' }}" />
                             <span class="text-sm text-gray-500 font-mono">{{ $state['color'] ?? '' }}</span>
                         </div>
@@ -240,7 +240,7 @@
                     <x-jet-label for="observations" value="{{ __('Observaciones') }}" class="font-semibold text-gray-700" />
                     <textarea id="observations" 
                               class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm transition duration-150 ease-in-out sm:text-sm" 
-                              wire:model.defer="state.observations"
+                              wire:model="state.observations"
                               rows="3"
                               placeholder="Descripción opcional..."></textarea>
                     <x-jet-input-error for="state.observations" class="mt-2" />
@@ -249,7 +249,7 @@
                 <div class="bg-gray-50 rounded-lg p-4 space-y-4 border border-gray-100">
                     <div class="flex items-start">
                         <div class="flex items-center h-5">
-                            <x-jet-checkbox id="is_all_day" wire:model.defer="state.is_all_day" class="text-indigo-600" />
+                            <x-jet-checkbox id="is_all_day" wire:model="state.is_all_day" class="text-indigo-600" />
                         </div>
                         <div class="ml-3 text-sm">
                             <label for="is_all_day" class="font-medium text-gray-700">{{ __('Evento de día completo') }}</label>
@@ -259,7 +259,7 @@
 
                     <div class="flex items-start">
                         <div class="flex items-center h-5">
-                            <x-jet-checkbox id="is_workday_type" wire:model.defer="state.is_workday_type" class="text-indigo-600" />
+                            <x-jet-checkbox id="is_workday_type" wire:model="state.is_workday_type" class="text-indigo-600" />
                         </div>
                         <div class="ml-3 text-sm">
                             <label for="is_workday_type" class="font-medium text-gray-700">{{ __('Tipo de Jornada Principal') }}</label>
@@ -269,7 +269,7 @@
 
                     <div class="flex items-start">
                         <div class="flex items-center h-5">
-                            <x-jet-checkbox id="is_authorizable" wire:model.defer="state.is_authorizable" class="text-indigo-600" />
+                            <x-jet-checkbox id="is_authorizable" wire:model="state.is_authorizable" class="text-indigo-600" />
                         </div>
                         <div class="ml-3 text-sm">
                             <label for="is_authorizable" class="font-medium text-gray-700">{{ __('Autorizable') }}</label>
@@ -279,7 +279,7 @@
 
                     <div class="flex items-start">
                         <div class="flex items-center h-5">
-                            <x-jet-checkbox id="is_pause_type" wire:model.defer="state.is_pause_type" class="text-indigo-600" />
+                            <x-jet-checkbox id="is_pause_type" wire:model="state.is_pause_type" class="text-indigo-600" />
                         </div>
                         <div class="ml-3 text-sm">
                             <label for="is_pause_type" class="font-medium text-gray-700">{{ __('Es tipo pausa') }}</label>
@@ -303,7 +303,7 @@
 </div>
 
 <script>
-    document.addEventListener('livewire:load', function () {
+    document.addEventListener('livewire:init', function () {
         Livewire.on('saved', function () {
             Swal.fire({
                 toast: true,

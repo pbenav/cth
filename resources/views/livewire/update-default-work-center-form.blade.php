@@ -11,7 +11,7 @@
         <x-slot name="form">
             <div class="col-span-6 sm:col-span-4">
                 <x-jet-label for="work_center" value="{{ __('Work Center') }}" />
-                <select id="work_center" wire:model.defer="defaultWorkCenterId" class="form-select rounded-md shadow-sm mt-1 block w-full">
+                <select id="work_center" wire:model="defaultWorkCenterId" class="form-select rounded-md shadow-sm mt-1 block w-full">
                     <option value="">{{ __('None') }}</option>
                     @foreach ($workCenters as $workCenter)
                         <option value="{{ $workCenter->id }}">{{ $workCenter->name }}</option>

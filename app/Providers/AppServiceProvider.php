@@ -35,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
         $this->registerPermissionDirectives();
 
         // Override Jetstream's UpdateTeamNameForm with our custom one
-        \Livewire\Livewire::component('teams.update-team-name-form', \App\Http\Livewire\Teams\UpdateTeamNameForm::class);
+        \Livewire\Livewire::component('teams.update-team-name-form', \App\Livewire\Teams\UpdateTeamNameForm::class);
 
         // CONFIGURACIÓN PARA PROXY SSL (Se basa directamente en la URL configurada)
         if (str_starts_with(config('app.url') ?? '', 'https')) {

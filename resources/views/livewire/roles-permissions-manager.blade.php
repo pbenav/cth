@@ -36,9 +36,9 @@
 
                 {{-- Filters --}}
                 <div class="mb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <x-jet-input type="text" wire:model.debounce.300ms="searchPermissions" 
+                    <x-jet-input type="text" wire:model.live.debounce.300ms="searchPermissions" 
                         placeholder="{{ __('Search permissions...') }}" class="w-full" />
-                    <select wire:model="categoryFilter" class="border-gray-300 rounded-md shadow-sm w-full">
+                    <select wire:model.live="categoryFilter" class="border-gray-300 rounded-md shadow-sm w-full">
                         <option value="">{{ __('All categories') }}</option>
                         @foreach($categories as $category)
                             <option value="{{ $category }}">{{ __(ucfirst(str_replace('_', ' ', $category))) }}</option>
@@ -153,7 +153,7 @@
 
                 {{-- Search --}}
                 <div class="mb-4">
-                    <x-jet-input type="text" wire:model.debounce.300ms="searchRoles" placeholder="{{ __('Search roles...') }}" class="w-full md:w-1/3" />
+                    <x-jet-input type="text" wire:model.live.debounce.300ms="searchRoles" placeholder="{{ __('Search roles...') }}" class="w-full md:w-1/3" />
                 </div>
 
                 {{-- Roles List --}}
@@ -252,7 +252,7 @@
 
                 {{-- Search --}}
                 <div class="mb-4">
-                    <x-jet-input type="text" wire:model.debounce.300ms="searchUsers" placeholder="{{ __('Search users...') }}" class="w-full md:w-1/3" />
+                    <x-jet-input type="text" wire:model.live.debounce.300ms="searchUsers" placeholder="{{ __('Search users...') }}" class="w-full md:w-1/3" />
                 </div>
 
                 {{-- Users List --}}
@@ -327,7 +327,7 @@
     @endif
 
     {{-- Role Modal --}}
-    <x-jet-dialog-modal wire:model="showRoleModal" maxWidth="4xl">
+    <x-jet-dialog-modal wire:model.live="showRoleModal" maxWidth="4xl">
         <x-slot name="title">
             {{ $editingRole ? __('Edit Role') : __('Create New Role') }}
         </x-slot>
@@ -337,7 +337,7 @@
                 {{-- Display Name --}}
                 <div>
                     <x-jet-label for="roleForm.display_name" value="{{ __('Display Name') }}" />
-                    <x-jet-input id="roleForm.display_name" type="text" class="mt-1 block w-full" wire:model.defer="roleForm.display_name" />
+                    <x-jet-input id="roleForm.display_name" type="text" class="mt-1 block w-full" wire:model="roleForm.display_name" />
                     @error('roleForm.display_name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
@@ -345,7 +345,7 @@
                 <div>
                     <x-jet-label for="roleForm.description" value="{{ __('Description') }}" />
                     <textarea id="roleForm.description" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" 
-                        rows="3" wire:model.defer="roleForm.description"></textarea>
+                        rows="3" wire:model="roleForm.description"></textarea>
                     @error('roleForm.description') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
@@ -370,7 +370,7 @@
                                         <label class="flex items-center space-x-2 p-2 hover:bg-gray-50 rounded">
                                             <input type="checkbox" 
                                                 value="{{ $permission->id }}" 
-                                                wire:model.defer="selectedRolePermissions"
+                                                wire:model="selectedRolePermissions"
                                                 class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                                             <div class="flex-1">
                                                 <div class="text-sm font-medium text-gray-700">{{ $permission->display_name }}</div>
@@ -404,7 +404,7 @@
     </x-jet-dialog-modal>
 
     {{-- User Permissions Modal --}}
-    <x-jet-dialog-modal wire:model="showUserPermissionsModal" maxWidth="4xl">
+    <x-jet-dialog-modal wire:model.live="showUserPermissionsModal" maxWidth="4xl">
         <x-slot name="title">
             {{ __('Manage Direct Permissions') }}
             @if($selectedUser)
@@ -431,7 +431,7 @@
                                 <label class="flex items-center space-x-2 p-2 hover:bg-gray-50 rounded">
                                     <input type="checkbox" 
                                         value="{{ $permission->id }}" 
-                                        wire:model.defer="userDirectPermissions"
+                                        wire:model="userDirectPermissions"
                                         class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                                     <div class="flex-1">
                                         <div class="text-sm font-medium text-gray-700">{{ $permission->display_name }}</div>
@@ -459,7 +459,7 @@
     </x-jet-dialog-modal>
 
     {{-- Permission Modal --}}
-    <x-jet-dialog-modal wire:model="showPermissionModal" maxWidth="2xl">
+    <x-jet-dialog-modal wire:model.live="showPermissionModal" maxWidth="2xl">
         <x-slot name="title">
             {{ $editingPermission ? __('Edit Permission') : __('Create New Permission') }}
         </x-slot>
@@ -478,7 +478,7 @@
                 @if(!$editingPermission)
                     <div>
                         <x-jet-label for="permissionForm.name" value="{{ __('Permission Name') }}" />
-                        <x-jet-input id="permissionForm.name" type="text" class="mt-1 block w-full" wire:model.defer="permissionForm.name" />
+                        <x-jet-input id="permissionForm.name" type="text" class="mt-1 block w-full" wire:model="permissionForm.name" />
                         <p class="mt-1 text-xs text-gray-500">{{ __('Internal identifier (e.g., events.create, users.delete)') }}</p>
                         @error('permissionForm.name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
@@ -495,7 +495,7 @@
                 {{-- Display Name --}}
                 <div>
                     <x-jet-label for="permissionForm.display_name" value="{{ __('Display Name') }}" />
-                    <x-jet-input id="permissionForm.display_name" type="text" class="mt-1 block w-full" wire:model.defer="permissionForm.display_name" />
+                    <x-jet-input id="permissionForm.display_name" type="text" class="mt-1 block w-full" wire:model="permissionForm.display_name" />
                     <p class="mt-1 text-xs text-gray-500">{{ __('Human-readable name shown in the interface') }}</p>
                     @error('permissionForm.display_name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
@@ -506,7 +506,7 @@
                     <div class="mt-1 flex gap-2">
                         <select id="permissionForm.category" 
                             class="flex-1 border-gray-300 rounded-md shadow-sm" 
-                            wire:model.defer="permissionForm.category">
+                            wire:model="permissionForm.category">
                             <option value="">{{ __('Select or type new...') }}</option>
                             @foreach($categories as $category)
                                 <option value="{{ $category }}">{{ __(ucfirst(str_replace('_', ' ', $category))) }}</option>
@@ -523,7 +523,7 @@
                     <textarea id="permissionForm.description" 
                         class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" 
                         rows="3" 
-                        wire:model.defer="permissionForm.description"></textarea>
+                        wire:model="permissionForm.description"></textarea>
                     @error('permissionForm.description') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
@@ -531,7 +531,7 @@
                 <div>
                     <label class="flex items-center space-x-3">
                         <input type="checkbox" 
-                            wire:model.defer="permissionForm.requires_context"
+                            wire:model="permissionForm.requires_context"
                             class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                         <div>
                             <div class="text-sm font-medium text-gray-700">{{ __('Requires Context') }}</div>

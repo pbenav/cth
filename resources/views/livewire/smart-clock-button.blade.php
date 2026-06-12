@@ -407,7 +407,7 @@
         document.addEventListener('DOMContentLoaded', initializeClock);
         
         // Also restart the clock when Livewire updates the component
-        document.addEventListener('livewire:load', initializeClock);
+        document.addEventListener('livewire:init', initializeClock);
         document.addEventListener('livewire:update', initializeClock);
         
         // Function to call SmartClock methods with GPS
@@ -588,6 +588,6 @@
         });
         
         // Also preload when Livewire loads
-        document.addEventListener('livewire:load', preloadGPSLocation);
+        document.addEventListener('livewire:init', preloadGPSLocation);
     </script>
 </div>

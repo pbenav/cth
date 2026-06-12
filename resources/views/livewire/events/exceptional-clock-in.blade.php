@@ -17,7 +17,7 @@
             </div>
         </div>
 
-        <form wire:submit.prevent="save">
+        <form wire:submit="save">
             <!-- Main Form Grid (2 columns) -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
@@ -33,14 +33,14 @@
                                     <div>
                                         <input type="date" 
                                                id="start_date" 
-                                               wire:model.defer="start_date" 
+                                               wire:model="start_date" 
                                                class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full text-sm">
                                         @error('start_date') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                                     </div>
                                     <div>
                                         <input type="time" 
                                                id="start_time" 
-                                               wire:model.defer="start_time" 
+                                               wire:model="start_time" 
                                                class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full text-sm">
                                         @error('start_time') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                                     </div>
@@ -53,14 +53,14 @@
                                     <div>
                                         <input type="date" 
                                                id="end_date" 
-                                               wire:model.defer="end_date" 
+                                               wire:model="end_date" 
                                                class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full text-sm">
                                         @error('end_date') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                                     </div>
                                     <div>
                                         <input type="time" 
                                                id="end_time" 
-                                               wire:model.defer="end_time" 
+                                               wire:model="end_time" 
                                                class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full text-sm">
                                         @error('end_time') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                                     </div>
@@ -75,7 +75,7 @@
                     <div>
                         <x-jet-label for="observations" value="{{ __('Reason for exceptional clock-in') }}" class="font-medium text-gray-700" />
                         <textarea id="observations"
-                                  wire:model.defer="observations"
+                                  wire:model="observations"
                                   class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm sm:text-sm"
                                   placeholder="{{ __('exceptional_event.reason_placeholder') }}"
                                   rows="8"></textarea>

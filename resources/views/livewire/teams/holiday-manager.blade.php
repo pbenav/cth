@@ -49,7 +49,7 @@
     </x-jet-action-section>
 
     <!-- Add Holiday Modal -->
-    <x-jet-dialog-modal wire:model="managingHoliday">
+    <x-jet-dialog-modal wire:model.live="managingHoliday">
         <x-slot name="title">
             {{ $holidayId ? __('Edit Holiday') : __('Add Holiday') }}
         </x-slot>
@@ -58,21 +58,21 @@
             <div class="col-span-6 sm:col-span-4">
                 <x-jet-label for="name" value="{{ __('Name') }}" />
                 <x-jet-input id="name" type="text" class="mt-1 block w-full"
-                    wire:model.defer="holidayForm.name" />
+                    wire:model="holidayForm.name" />
                 <x-jet-input-error for="holidayForm.name" class="mt-2" />
             </div>
 
             <div class="col-span-6 sm:col-span-4 mt-4">
                 <x-jet-label for="date" value="{{ __('Date') }}" />
                 <x-jet-input id="date" type="date" class="mt-1 block w-full"
-                    wire:model.defer="holidayForm.date" />
+                    wire:model="holidayForm.date" />
                 <x-jet-input-error for="holidayForm.date" class="mt-2" />
             </div>
 
             <div class="col-span-6 sm:col-span-4">
                 <x-jet-label for="type" value="{{ __('Type') }}" />
                 <select id="type" class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
-                    wire:model.defer="holidayForm.type">
+                    wire:model="holidayForm.type">
                     <option value="">{{ __('Select type...') }}</option>
                     <option value="Nacional">{{ __('Nacional') }}</option>
                     <option value="Regional">{{ __('Regional') }}</option>
@@ -95,7 +95,7 @@
     </x-jet-dialog-modal>
 
     <!-- Delete Holiday Confirmation Modal -->
-    <x-jet-confirmation-modal wire:model="confirmingHolidayDeletion">
+    <x-jet-confirmation-modal wire:model.live="confirmingHolidayDeletion">
         <x-slot name="title">
             {{ __('Delete Holiday') }}
         </x-slot>
@@ -116,7 +116,7 @@
     </x-jet-confirmation-modal>
 
     <!-- Import Holidays Modal -->
-    <x-jet-dialog-modal wire:model="importingHolidays" max-width="2xl">
+    <x-jet-dialog-modal wire:model.live="importingHolidays" max-width="2xl">
         <x-slot name="title">
             {{ __('Import Holidays') }}
         </x-slot>
@@ -127,7 +127,7 @@
                     <div>
                         <x-jet-label for="importYear" value="{{ __('Year') }}" />
                         <select id="importYear" class="mt-1 block border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
-                            wire:model="importYear">
+                            wire:model.live="importYear">
                             @for($year = now()->year - 1; $year <= now()->year + 2; $year++)
                                 <option value="{{ $year }}">{{ $year }}</option>
                             @endfor
@@ -173,7 +173,7 @@
                                 <div class="px-4 py-2 border-b border-gray-100 dark:border-gray-600 last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-700">
                                     <label class="flex items-center cursor-pointer">
                                         <input type="checkbox" 
-                                            wire:model="selectedHolidays" 
+                                            wire:model.live="selectedHolidays" 
                                             value="{{ $index }}"
                                             class="rounded border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                                         <div class="ml-3 flex-1">

@@ -12,7 +12,7 @@
             <x-jet-label for="timezone" value="{{ __('Zona Horaria') }}" />
             
             @if($isTeamAdmin)
-                <select id="timezone" class="mt-1 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" wire:model.defer="state.timezone">
+                <select id="timezone" class="mt-1 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" wire:model="state.timezone">
                     <option value="">{{ __('Selecciona una zona horaria') }}</option>
                     @foreach ($timezones as $identifier => $name)
                         <option value="{{ $identifier }}">{{ $name }}</option>
@@ -38,7 +38,7 @@
 </x-jet-form-section>
 
 <script>
-    document.addEventListener('livewire:load', function () {
+    document.addEventListener('livewire:init', function () {
         Livewire.on('saved', function () {
             Swal.fire({
                 toast: true,

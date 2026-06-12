@@ -18,7 +18,7 @@
                 {{-- Checkbox for selection --}}
                 @if ($level === 0 && $view !== 'trash')
                     @if ($isSent || ($view === 'inbox' && $isUnread))
-                        <input type="checkbox" wire:model="selectedMessages" value="{{ $message->id }}" class="mr-3 mt-1 flex-shrink-0" onclick="event.stopPropagation()">
+                        <input type="checkbox" wire:model.live="selectedMessages" value="{{ $message->id }}" class="mr-3 mt-1 flex-shrink-0" onclick="event.stopPropagation()">
                     @endif
                 @endif
 

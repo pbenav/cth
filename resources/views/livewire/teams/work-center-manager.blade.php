@@ -132,7 +132,7 @@
     </x-jet-action-section>
 
     <!-- Unified Work Center Management Modal -->
-    <x-jet-dialog-modal wire:model="confirmingWorkCenterManagement">
+    <x-jet-dialog-modal wire:model.live="confirmingWorkCenterManagement">
         <x-slot name="title">
             {{ $workCenterBeingUpdatedId ? __('Edit Work Center') : __('Create Work Center') }}
         </x-slot>
@@ -140,13 +140,13 @@
         <x-slot name="content">
             <div class="col-span-6 sm:col-span-4">
                 <x-jet-label for="name" value="{{ __('Name') }}" />
-                <x-jet-input id="name" type="text" class="mt-1 block w-full" wire:model.defer="state.name" />
+                <x-jet-input id="name" type="text" class="mt-1 block w-full" wire:model="state.name" />
                 <x-jet-input-error for="name" class="mt-2" />
             </div>
 
             <div class="col-span-6 sm:col-span-4 mt-4">
                 <x-jet-label for="code" value="{{ __('Code') }}" />
-                <x-jet-input id="code" type="text" class="mt-1 block w-full" wire:model.defer="state.code" />
+                <x-jet-input id="code" type="text" class="mt-1 block w-full" wire:model="state.code" />
                 <x-jet-input-error for="code" class="mt-2" />
             </div>
 
@@ -158,7 +158,7 @@
                     
                     <div class="space-y-4">
                         <div class="flex items-center">
-                            <input id="enable_nfc" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" wire:model.defer="state.enable_nfc">
+                            <input id="enable_nfc" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" wire:model="state.enable_nfc">
                             <label for="enable_nfc" class="ml-2 block text-sm text-gray-900">
                                 {{ __('Enable NFC verification for this work center') }}
                             </label>
@@ -167,7 +167,7 @@
                         <div wire:show="state.enable_nfc">
                             <x-jet-label for="nfc_tag_description" value="{{ __('NFC Tag Description') }}" />
                             <textarea id="nfc_tag_description" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full" 
-                                     wire:model.defer="state.nfc_tag_description" rows="2"
+                                     wire:model="state.nfc_tag_description" rows="2"
                                      placeholder="{{ __('e.g., Blue NFC sticker on main entrance door') }}"></textarea>
                             <x-jet-input-error for="nfc_tag_description" class="mt-2" />
                             <p class="mt-1 text-xs text-gray-500">{{ __('Physical description to help locate the NFC tag (optional)') }}</p>
@@ -278,31 +278,31 @@
 
             <div class="col-span-6 sm:col-span-4 mt-4">
                 <x-jet-label for="address" value="{{ __('Address') }}" />
-                <x-jet-input id="address" type="text" class="mt-1 block w-full" wire:model.defer="state.address" />
+                <x-jet-input id="address" type="text" class="mt-1 block w-full" wire:model="state.address" />
                 <x-jet-input-error for="address" class="mt-2" />
             </div>
 
             <div class="col-span-6 sm:col-span-4 mt-4">
                 <x-jet-label for="city" value="{{ __('City') }}" />
-                <x-jet-input id="city" type="text" class="mt-1 block w-full" wire:model.defer="state.city" />
+                <x-jet-input id="city" type="text" class="mt-1 block w-full" wire:model="state.city" />
                 <x-jet-input-error for="city" class="mt-2" />
             </div>
 
             <div class="col-span-6 sm:col-span-4 mt-4">
                 <x-jet-label for="postal_code" value="{{ __('Postal Code') }}" />
-                <x-jet-input id="postal_code" type="text" class="mt-1 block w-full" wire:model.defer="state.postal_code" />
+                <x-jet-input id="postal_code" type="text" class="mt-1 block w-full" wire:model="state.postal_code" />
                 <x-jet-input-error for="postal_code" class="mt-2" />
             </div>
 
             <div class="col-span-6 sm:col-span-4 mt-4">
                 <x-jet-label for="state" value="{{ __('State') }}" />
-                <x-jet-input id="state" type="text" class="mt-1 block w-full" wire:model.defer="state.state" />
+                <x-jet-input id="state" type="text" class="mt-1 block w-full" wire:model="state.state" />
                 <x-jet-input-error for="state" class="mt-2" />
             </div>
 
             <div class="col-span-6 sm:col-span-4 mt-4">
                 <x-jet-label for="country" value="{{ __('Country') }}" />
-                <x-jet-input id="country" type="text" class="mt-1 block w-full" wire:model.defer="state.country" />
+                <x-jet-input id="country" type="text" class="mt-1 block w-full" wire:model="state.country" />
                 <x-jet-input-error for="country" class="mt-2" />
             </div>
         </x-slot>
@@ -319,7 +319,7 @@
     </x-jet-dialog-modal>
 
     <!-- Remove Work Center Confirmation Modal -->
-    <x-jet-confirmation-modal wire:model="confirmingWorkCenterRemoval">
+    <x-jet-confirmation-modal wire:model.live="confirmingWorkCenterRemoval">
         <x-slot name="title">
             {{ __('Remove Work Center') }}
         </x-slot>
@@ -393,7 +393,7 @@
     }
 
     // SweetAlert toast notification for saved event
-    document.addEventListener('livewire:load', function () {
+    document.addEventListener('livewire:init', function () {
         Livewire.on('saved', function () {
             Swal.fire({
                 toast: true,

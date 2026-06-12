@@ -36,7 +36,7 @@
                             <x-jet-label for="email" value="{{ __('User') }}" />
                             <select id="user-select"
                                 class="mt-1 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
-                                wire:model.defer="addTeamMemberForm.email">
+                                wire:model="addTeamMemberForm.email">
                                 <option value="">{{ __('Select a user...') }}</option>
                                 @foreach ($availableUsers as $availableUser)
                                     <option value="{{ $availableUser->email }}">
@@ -108,7 +108,7 @@
                         <div class="col-span-6 sm:col-span-4">
                             <x-jet-label for="email" value="{{ __('Email') }}" />
                             <x-jet-input id="email" type="email" class="mt-1 block w-full"
-                                wire:model.defer="addTeamMemberForm.email" />
+                                wire:model="addTeamMemberForm.email" />
                             <x-jet-input-error for="email" class="mt-2" />
                         </div>
                     @endif
@@ -320,7 +320,7 @@
     @endif
 
     <!-- Role Management Modal -->
-    <x-jet-dialog-modal wire:model="currentlyManagingRole">
+    <x-jet-dialog-modal wire:model.live="currentlyManagingRole">
         <x-slot name="title">
             {{ __('Manage Role') }}
         </x-slot>
@@ -371,7 +371,7 @@
     </x-jet-dialog-modal>
 
     <!-- Leave Team Confirmation Modal -->
-    <x-jet-confirmation-modal wire:model="confirmingLeavingTeam">
+    <x-jet-confirmation-modal wire:model.live="confirmingLeavingTeam">
         <x-slot name="title">
             {{ __('Leave Team') }}
         </x-slot>
@@ -392,7 +392,7 @@
     </x-jet-confirmation-modal>
 
     <!-- Remove Team Member Confirmation Modal -->
-    <x-jet-confirmation-modal wire:model="confirmingTeamMemberRemoval">
+    <x-jet-confirmation-modal wire:model.live="confirmingTeamMemberRemoval">
         <x-slot name="title">
             {{ __('Remove Team Member') }}
         </x-slot>

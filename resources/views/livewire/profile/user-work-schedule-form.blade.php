@@ -21,13 +21,13 @@
             <div class="col-span-6 sm:col-span-2">
                 <x-jet-label for="start_time_{{ $index }}" value="{{ __('Hora de inicio') }}" />
                 <x-jet-input id="start_time_{{ $index }}" type="time" class="mt-1 block w-full"
-                    wire:model.defer="schedule.{{ $index }}.start" />
+                    wire:model="schedule.{{ $index }}.start" />
                 <x-jet-input-error for="schedule.{{ $index }}.start" class="mt-2" />
             </div>
             <div class="col-span-6 sm:col-span-2">
                 <x-jet-label for="end_time_{{ $index }}" value="{{ __('Hora de fin') }}" />
                 <x-jet-input id="end_time_{{ $index }}" type="time" class="mt-1 block w-full"
-                    wire:model.defer="schedule.{{ $index }}.end" />
+                    wire:model="schedule.{{ $index }}.end" />
                 <x-jet-input-error for="schedule.{{ $index }}.end" class="mt-2" />
             </div>
             <div class="col-span-6 sm:w-full">
@@ -49,7 +49,7 @@
                             @foreach ($daysISO as $isoNumber => $dayLabel)
                                 <label class="inline-flex items-center">
                                     <span class="mr-2 ml-2 text-gray-700">{{ $dayLabel }}</span>
-                                    <input type="checkbox" wire:model="schedule.{{ $index }}.days"
+                                    <input type="checkbox" wire:model.live="schedule.{{ $index }}.days"
                                         value="{{ $isoNumber }}" class="form-checkbox h-5 w-5 text-indigo-600">
                                 </label>
                             @endforeach

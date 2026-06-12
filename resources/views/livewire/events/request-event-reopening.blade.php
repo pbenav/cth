@@ -52,7 +52,7 @@
                             {{ __('Reason for reopening request') }} <span class="text-red-500">*</span>
                         </label>
                         <textarea 
-                            wire:model.defer="reason" 
+                            wire:model="reason" 
                             id="reason"
                             rows="4" 
                             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"

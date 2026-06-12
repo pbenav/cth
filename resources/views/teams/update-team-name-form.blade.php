@@ -34,7 +34,7 @@
             <x-jet-input id="name"
                         type="text"
                         class="mt-1 block w-full"
-                        wire:model.defer="state.name"
+                        wire:model="state.name"
                         :disabled="! Gate::check('update', $team)" />
 
             <x-jet-input-error for="name" class="mt-2" />
@@ -47,7 +47,7 @@
             <x-jet-input id="max_member_teams"
                         type="number"
                         class="mt-1 block w-full {{ !$canManageTeamLimit ? 'bg-gray-100' : '' }}"
-                        wire:model.defer="state.max_member_teams"
+                        wire:model="state.max_member_teams"
                         :disabled="!$canManageTeamLimit" />
 
             <x-jet-input-error for="max_member_teams" class="mt-2" />
@@ -71,7 +71,7 @@
 </x-jet-form-section>
 
 <script>
-    document.addEventListener('livewire:load', function () {
+    document.addEventListener('livewire:init', function () {
         Livewire.on('saved', function () {
             Swal.fire({
                 toast: true,

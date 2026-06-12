@@ -1,5 +1,5 @@
 <div>
-    <x-jet-dialog-modal wire:model="showAddEventModal" maxWidth="2xl">
+    <x-jet-dialog-modal wire:model.live="showAddEventModal" maxWidth="2xl">
 
         <x-slot name="title">
             <div class="flex items-center space-x-3">
@@ -114,14 +114,14 @@
                                 <div>
                                     <x-jet-label for="start_date" value="{{ __('Start date') }}"
                                         class="font-medium text-gray-700" />
-                                    <x-jet-input id="start_date" type="date" wire:model.defer="start_date"
+                                    <x-jet-input id="start_date" type="date" wire:model="start_date"
                                         class="mt-1 block w-full" required />
                                     <x-jet-input-error for="start_date" class="mt-1" />
                                 </div>
                                 <div>
                                     <x-jet-label for="end_date" value="{{ __('End date') }}"
                                         class="font-medium text-gray-700" />
-                                    <x-jet-input id="end_date" type="date" wire:model.defer="end_date"
+                                    <x-jet-input id="end_date" type="date" wire:model="end_date"
                                         class="mt-1 block w-full" required />
                                     <x-jet-input-error for="end_date" class="mt-1" />
                                 </div>
@@ -132,12 +132,12 @@
                                 <x-jet-label value="{{ __('Start') }}" class="font-medium text-gray-700 mb-1" />
                                 <div class="grid grid-cols-2 gap-2">
                                     <div>
-                                        <x-jet-input type="date" wire:model.defer="start_date"
+                                        <x-jet-input type="date" wire:model="start_date"
                                             class="block w-full text-sm" required />
                                         <x-jet-input-error for="start_date" class="mt-1" />
                                     </div>
                                     <div>
-                                        <x-jet-input type="time" wire:model.defer="start_time"
+                                        <x-jet-input type="time" wire:model="start_time"
                                             class="block w-full text-sm" required step="300" />
                                         <x-jet-input-error for="start_time" class="mt-1" />
                                     </div>
@@ -152,7 +152,7 @@
                     <div>
                         <x-jet-label for="description" value="{{ __('Description') }}"
                             class="font-medium text-gray-700" />
-                        <x-jet-input id="description" class="mt-1 block w-full" wire:model.defer="description"
+                        <x-jet-input id="description" class="mt-1 block w-full" wire:model="description"
                             placeholder="{{ __('Add a description') }}" maxlength="255" />
                         <x-jet-input-error for='description' class="mt-1" />
                         <p class="mt-1 text-xs text-gray-500">{{ __('If empty, event type name will be used') }}</p>
@@ -163,7 +163,7 @@
                             class="font-medium text-gray-700" />
                         <textarea id="observations"
                             class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm sm:text-sm"
-                            wire:model.defer="observations" rows="4" placeholder="{{ __('event.observations.placeholder') }}"
+                            wire:model="observations" rows="4" placeholder="{{ __('event.observations.placeholder') }}"
                             maxlength="255"></textarea>
                         <x-jet-input-error for='observations' class="mt-1" />
                     </div>
@@ -189,7 +189,7 @@
     </x-jet-dialog-modal>
 
     <!-- Adjustment Modal -->
-    <x-jet-dialog-modal wire:model="showAdjustmentModal" maxWidth="md">
+    <x-jet-dialog-modal wire:model.live="showAdjustmentModal" maxWidth="md">
         <x-slot name="title">
             <div class="flex items-center text-blue-600">
                 <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
