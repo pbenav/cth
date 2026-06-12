@@ -45,6 +45,7 @@ jobs:
           php artisan config:cache
           php artisan route:cache
           php artisan view:cache
+          rm -f bootstrap/cache/livewire-components.php
           
           # 8. (Opcional) Generar/Actualizar SBOM en producción
           composer sbom:generate || true
