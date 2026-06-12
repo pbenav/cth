@@ -1,7 +1,7 @@
 {
-    "/js/app.js": "/js/app.js?id=579e3017536f3fc0b247f6d8c332bab6",
-    "/js/fullcalendar-bundle.js": "/js/fullcalendar-bundle.js?id=d4f97ea529bd20d9ee004e9039666540",
-    "/css/app.css": "/css/app.css?id=1b444212832dec635e2e680c62fec1d8",
-    "/css/quill.snow.css": "/css/quill.snow.css?id=3d3d589cc65a75849a1ece15041bffb6",
-    "/js/quill.js": "/js/quill.js?id=cda744273ed7e32de5379e83724d8b4d"
+    "/js/app.js": "/js/app.js",
+    "/js/fullcalendar-bundle.js": "/js/fullcalendar-bundle.js",
+    "/css/app.css": "/css/app.css",
+    "/css/quill.snow.css": "/css/quill.snow.css",
+    "/js/quill.js": "/js/quill.js"
 }

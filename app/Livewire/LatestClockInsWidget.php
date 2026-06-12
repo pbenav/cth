@@ -12,7 +12,7 @@ class LatestClockInsWidget extends Component
             ->select([
                 'events.*',  // Select all event fields including JSON columns
             ])
-            ->with('eventType')
+            ->with(['eventType', 'team'])
             ->where('is_open', false)
             ->latest('start')
             ->take(5)

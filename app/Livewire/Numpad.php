@@ -37,10 +37,12 @@ class Numpad extends Component
      *
      * @param \Illuminate\Http\Request $request
      * @param \App\Services\LoginSecurityService $loginSecurityService
-     * @return \Illuminate\Http\RedirectResponse|void
      */
-    public function insertCode(Request $request, LoginSecurityService $loginSecurityService)
+    public function insertCode()
     {
+        $request = request();
+        $loginSecurityService = app(\App\Services\LoginSecurityService::class);
+        \Log::info('Numpad attempt with code: ' . $this->user_code);
         try {
             $loginSecurityService->check($request);
         } catch (ValidationException $e) {
@@ -66,6 +68,10 @@ class Numpad extends Component
         }
 
         Auth::loginUsingId($user->id);
+        
+        // Activar el modo kiosko (fichaje) para limitar los permisos en esta sesión
+        session(['kiosk_mode' => true]);
+        
         $loginSecurityService->clearAttemptsOnSuccess($request);
 
         if (is_null($user->current_team_id)) {

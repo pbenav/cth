@@ -59,6 +59,9 @@ Route::middleware([
         return view('inicio'); // Previously dashboard.blade.php
     })->name('inicio');
     
+    // Ruta para desbloquear Kiosko
+    Route::get('/kiosk/unlock', \App\Livewire\KioskUnlockComponent::class)->name('kiosk.unlock');
+    
     // Events - Time registration management  
     Route::get('/events', GetTimeRegisters::class)->name('events');
     

@@ -1,4 +1,8 @@
-<div x-data="initNumpad()" x-init="iniciar()" role="form" aria-label="{{ __('Formulario de ingreso de código') }}">
+<div x-data="{
+    addCode(s) { $wire.user_code = ($wire.user_code || '') + s; },
+    resetCode() { $wire.user_code = ''; },
+    deleteCode() { $wire.user_code = ($wire.user_code || '').slice(0, -1); }
+}" x-init="$wire.user_code = ''" role="form" aria-label="{{ __('Formulario de ingreso de código') }}">
     {{-- Livewire Component --}}
     @livewire('add-event')
 
@@ -37,10 +41,9 @@
 
             <div class="w-auto mb-2 text-center">
                 <form wire:submit="insertCode">
-                    <input type="password" id="user_code" x-model="user_code" class="btn btn-pad"
+                    <input type="password" id="user_code" wire:model="user_code" class="btn btn-pad"
                         aria-label="{{ __('Código de usuario') }}"
-                        autocomplete="off"
-                        @keyup.enter="$wire.insertCode()" />
+                        autocomplete="off" />
                 </form>
             </div>
 
@@ -78,23 +81,5 @@
         window.onload = () => {
             document.getElementById("user_code").focus();
         };
-
-        function initNumpad() {
-            return {
-                user_code: @entangle('user_code'),
-                iniciar: function() {
-                    this.user_code = '';
-                },
-                addCode: function(s) {
-                    this.user_code += s;
-                },
-                resetCode: function() {
-                    this.user_code = '';
-                },
-                deleteCode: function() {
-                    this.user_code = this.user_code.slice(0, -1);
-                },
-            }
-        }
     </script>
 </div>

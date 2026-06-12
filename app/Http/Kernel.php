@@ -40,6 +40,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\SessionExpired::class,
             \App\Http\Middleware\PreventBackHistory::class,
             \App\Http\Middleware\SetUserLocale::class,
+            \App\Http\Middleware\EnsureNotKioskMode::class,
         ],
 
         'api' => [

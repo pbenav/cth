@@ -11,11 +11,6 @@ window.Swal = Swal;
 // Import SweetAlert2 CSS so it's included in the compiled bundle
 import 'sweetalert2/dist/sweetalert2.min.css';
 
-import Alpine from 'alpinejs';
-
-window.Alpine = Alpine;
-
-Alpine.start();
 
 // Auto-select text content when input fields get focus
 document.addEventListener('DOMContentLoaded', function () {
