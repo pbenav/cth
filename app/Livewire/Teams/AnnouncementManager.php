@@ -69,7 +69,7 @@ class AnnouncementManager extends Component
      */
     public function edit(int $id)
     {
-        $announcement = TeamAnnouncement::findOrFail($id);
+        $announcement = TeamAnnouncement::with('team')->findOrFail($id);
         
         // Verify authorization
         if (!Gate::allows('update', $announcement)) {
@@ -134,7 +134,7 @@ class AnnouncementManager extends Component
         }
 
         if ($this->editingId) {
-            $announcement = TeamAnnouncement::findOrFail($this->editingId);
+            $announcement = TeamAnnouncement::with('team')->findOrFail($this->editingId);
             
             // Verify authorization
             if (!Gate::allows('update', $announcement)) {
@@ -189,7 +189,7 @@ class AnnouncementManager extends Component
      */
     public function delete(int $id)
     {
-        $announcement = TeamAnnouncement::findOrFail($id);
+        $announcement = TeamAnnouncement::with('team')->findOrFail($id);
         
         // Verify authorization
         if (!Gate::allows('delete', $announcement)) {
@@ -211,7 +211,7 @@ class AnnouncementManager extends Component
      */
     public function toggleActive(int $id)
     {
-        $announcement = TeamAnnouncement::findOrFail($id);
+        $announcement = TeamAnnouncement::with('team')->findOrFail($id);
         
         // Verify authorization
         if (!Gate::allows('update', $announcement)) {
@@ -259,7 +259,7 @@ class AnnouncementManager extends Component
     public function render()
     {
         $announcements = $this->team ? $this->team->announcements()
-            ->with('creator')
+            ->with(['creator', 'team'])
             ->orderBy('created_at', 'desc')
             ->get() : collect();
 

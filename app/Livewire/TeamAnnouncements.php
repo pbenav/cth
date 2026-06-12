@@ -17,7 +17,7 @@ class TeamAnnouncements extends Component
         if ($this->team) {
             $this->announcements = $this->team->announcements()
                 ->active()
-                ->with('creator')
+                ->with(['creator', 'team'])
                 ->orderBy('created_at', 'desc')
                 ->get();
         } else {
