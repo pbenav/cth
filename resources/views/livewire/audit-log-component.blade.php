@@ -71,7 +71,7 @@
                                         {{ $log->user_name }}
                                     </td>
                                     <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                        {{ \Carbon\Carbon::parse($log->created_at)->format('d/m/Y H:i') }}
+                                        {{ \Carbon\Carbon::parse($log->created_at)->setTimezone(config('app.timezone', 'Europe/Madrid'))->format('d/m/Y H:i') }}
                                     </td>
                                     <td class="px-4 py-3 whitespace-nowrap text-right text-sm font-medium">
                                         <button wire:click="viewLog({{ $log->id }})" class="text-indigo-600 hover:text-indigo-900">

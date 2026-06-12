@@ -62,7 +62,7 @@ class AuditLogComponent extends Component
             $this->selectedLog['user_name'] = $user ? $user->name . ' ' . $user->family_name1 : 'Unknown User (' . $this->selectedLog['user_id'] . ')';
             
             // Format dates
-            $this->selectedLog['formatted_date'] = \Carbon\Carbon::parse($this->selectedLog['created_at'])->format('d/m/Y H:i:s');
+            $this->selectedLog['formatted_date'] = \Carbon\Carbon::parse($this->selectedLog['created_at'])->setTimezone(config('app.timezone', 'Europe/Madrid'))->format('d/m/Y H:i:s');
             
             // Extract event information from JSON
             $eventData = json_decode($this->selectedLog['modified_event'] ?? $this->selectedLog['original_event'], true);
@@ -213,6 +213,15 @@ class AuditLogComponent extends Component
                 return $value ? __('Sí') : __('No');
             
             default:
+                // Si el valor parece una fecha (Y-m-d H:i:s o ISO), formatearlo a la zona horaria local
+                if (is_string($value) && (preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $value) || preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/', $value))) {
+                    try {
+                        return \Carbon\Carbon::parse($value, 'UTC')->setTimezone(config('app.timezone', 'Europe/Madrid'))->format('d/m/Y H:i:s');
+                    } catch (\Exception $e) {
+                        return (string)$value;
+                    }
+                }
+                
                 return (string)$value;
         }
     }

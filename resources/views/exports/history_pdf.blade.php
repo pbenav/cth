@@ -55,7 +55,7 @@
                     $workCenterName = $workCenter ? $workCenter->name : '-';
                 @endphp
                 <tr>
-                    <td style="font-size: 0.85em;">{{ \Carbon\Carbon::parse($record->created_at)->format('d/m/Y H:i') }}</td>
+                    <td style="font-size: 0.85em;">{{ \Carbon\Carbon::parse($record->created_at)->setTimezone(config('app.timezone', 'Europe/Madrid'))->format('d/m/Y H:i') }}</td>
                     <td style="font-size: 0.85em;">{{ $userName }}</td>
                     <td style="font-size: 0.85em; text-align: center;">#{{ $eventId }}</td>
                     <td style="font-size: 0.85em;">{{ $affectedUserName }}</td>

@@ -132,7 +132,7 @@
         @php
             $user = \App\Models\User::find($record->user_id);
             $userName = $user ? $user->name . ' ' . $user->family_name1 : __('Unknown');
-            $date = \Carbon\Carbon::parse($record->created_at)->format('d/m/Y H:i:s');
+            $date = \Carbon\Carbon::parse($record->created_at)->setTimezone(config('app.timezone', 'Europe/Madrid'))->format('d/m/Y H:i:s');
             
             // Extract event information from JSON
             $eventData = json_decode($record->modified_event ?? $record->original_event, true);
