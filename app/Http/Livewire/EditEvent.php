@@ -345,7 +345,7 @@ class EditEvent extends Component
         try {
             if ($this->isApplyingAdjustment) {
                 // Save without firing the observer to avoid double-validation loop
-                Event::withoutObservers(fn () => $this->event->save());
+                Event::withoutEvents(fn () => $this->event->save());
             } else {
                 $this->event->save();
             }
@@ -526,7 +526,7 @@ class EditEvent extends Component
                 $this->event->observations .= __('Ajuste automático al primer tramo horario (:minutes min)', ['minutes' => $firstEvent['minutes']]);
                 
                 // Create additional events for remaining slots.
-                // Use withoutObservers() to avoid triggering duration validation
+                // Use withoutEvents() to avoid triggering duration validation
                 // for each partial slot (the total adjustment is already validated above).
                 $teamTimezone = $this->getEventTimezone($this->event);
                 for ($i = 1; $i < count($eventsToCreate); $i++) {
@@ -540,7 +540,7 @@ class EditEvent extends Component
                         ->setTimezone('UTC')
                         ->format('Y-m-d H:i:s');
                     
-                    Event::withoutObservers(fn () => Event::create([
+                    Event::withoutEvents(fn () => Event::create([
                         'user_id' => $this->event->user_id,
                         'event_type_id' => $this->event->event_type_id,
                         'team_id' => $this->event->team_id,
