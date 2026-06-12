@@ -448,8 +448,8 @@ class EditEvent extends Component
             return redirect()->route('events');
         }
 
-        $this->emitTo('get-time-registers', '$refresh'); // Forzar refresco del listado de eventos
-        Log::info('Señal emitTo(\'get-time-registers\', \'$refresh\') enviada.');
+        $this->dispatch('$refresh')->to('get-time-registers'); // Forzar refresco del listado de eventos
+        Log::info('Señal dispatch(\'$refresh\')->to(\'get-time-registers\') enviada.');
 
         // Refresh the entire calendar component to keep Livewire in sync
         $this->dispatch('refreshCalendar');
