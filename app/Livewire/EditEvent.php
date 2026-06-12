@@ -358,7 +358,7 @@ class EditEvent extends Component
         }
 
         if (auth()->user()->isTeamAdmin()) {
-            // Solo audita si el evento está cerrado (is_open = false)
+            // Audita todas las modificaciones realizadas por un administrador
             $this->insertHistory('events', $this->original_event, $this->event, false);
             unset($this->original_event);
         }
@@ -436,6 +436,13 @@ class EditEvent extends Component
         $origin = $this->origin;
         $event = Event::find($eventId);
         if ($event) {
+            // Auditar la eliminación (guardar que fue eliminado para que quede rastro)
+            if (auth()->check() && auth()->user()->isTeamAdmin()) {
+                $deletedState = clone $event;
+                $deletedState->observations = '[EVENTO ELIMINADO] ' . ($deletedState->observations ?? '');
+                $this->insertHistory('events', $event, $deletedState, false, true);
+            }
+
             $event->delete();
             Log::info("Evento eliminado: ID {$eventId}"); // Registro de depuración
         } else {

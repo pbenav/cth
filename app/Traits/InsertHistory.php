@@ -25,22 +25,11 @@ trait InsertHistory
      * @param bool $isAuthorizationChange Indica si es un cambio de autorización
      * @return void
      */
-    public function insertHistory($tablename, $original_event, $modified_event, $isAuthorizationChange = false)
+    public function insertHistory($tablename, $original_event, $modified_event, $isAuthorizationChange = false, $forceAudit = false)
     {
-        // Solo auditar si el evento está cerrado o es un cambio de autorización
-        $shouldAudit = false;
-        
-        if ($isAuthorizationChange) {
-            // Siempre auditar cambios de autorización
-            $shouldAudit = true;
-        } elseif (isset($modified_event->is_open) && $modified_event->is_open === false) {
-            // Auditar solo eventos cerrados
-            $shouldAudit = true;
-        }
-        
-        if (!$shouldAudit) {
-            return;
-        }
+        // En base a la petición, ahora registramos TODAS las modificaciones y eliminaciones,
+        // no solo cuando el evento está cerrado.
+        $shouldAudit = true;
 
         // Optimización: Extraer solo los atributos básicos si son modelos Eloquent
         // Esto evita que el JSON incluya todas las relaciones cargadas (eager loading) que inflan el tamaño
@@ -73,9 +62,18 @@ trait InsertHistory
             }
         }
 
-        // Si no hay cambios reales, no insertamos nada
-        if (empty($finalModified) && !$isAuthorizationChange) {
+        // Si no hay cambios reales y no estamos forzando o cambiando autorización, no insertamos nada
+        if (empty($finalModified) && !$isAuthorizationChange && !$forceAudit) {
             return;
+        }
+
+        // Siempre inyectar el ID, user_id y event_type_id del evento para que AuditLogComponent pueda parsearlo correctamente
+        // Dado que la optimización redujo el JSON a solo las diferencias, la UI necesita las IDs para saber a qué afecta.
+        foreach (['id', 'user_id', 'event_type_id'] as $key) {
+            if (isset($originalData[$key])) {
+                $finalOriginal[$key] = $originalData[$key];
+                $finalModified[$key] = $originalData[$key];
+            }
         }
         
         DB::table('events_history')->insert([
