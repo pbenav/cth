@@ -472,7 +472,12 @@
 
                 document.addEventListener('livewire:init', () => {
                     Livewire.on('alert', (event) => {
-                        let message = Array.isArray(event) ? event[0] : event;
+                        let message = event;
+                        if (Array.isArray(event)) {
+                            message = event[0]?.message ?? event[0];
+                        } else if (typeof event === 'object' && event !== null) {
+                            message = event.message ?? event;
+                        }
                         Swal.fire({
                             icon: 'success',
                             title: "{{ __('sweetalert.alert.title') }}",
@@ -492,7 +497,12 @@
                     });
 
                     Livewire.on('confirmConfirmation', (event) => {
-                        let eventId = Array.isArray(event) ? event[0] : event;
+                        let eventId = event;
+                        if (Array.isArray(event)) {
+                            eventId = event[0]?.eventId ?? event[0];
+                        } else if (typeof event === 'object' && event !== null) {
+                            eventId = event.eventId ?? event;
+                        }
                         Swal.fire({
                             title: "{{ __('sweetalert.confirm_confirmation.title') }}",
                             text: "{{ __('sweetalert.confirm_confirmation.text') }}",
@@ -508,7 +518,12 @@
                     });
 
                     Livewire.on('deleteConfirmation', (event) => {
-                        let eventId = Array.isArray(event) ? event[0] : event;
+                        let eventId = event;
+                        if (Array.isArray(event)) {
+                            eventId = event[0]?.eventId ?? event[0];
+                        } else if (typeof event === 'object' && event !== null) {
+                            eventId = event.eventId ?? event;
+                        }
                         Swal.fire({
                             title: "{{ __('sweetalert.delete_confirmation.title') }}",
                             text: "{{ __('sweetalert.delete_confirmation.text') }}",
