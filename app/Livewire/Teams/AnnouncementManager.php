@@ -54,7 +54,7 @@ class AnnouncementManager extends Component
         $this->resetForm();
         $this->showModal = true;
         // Clear the editor content on the frontend
-        $this->dispatch('load-announcement-content', ['content' => '', 'format' => null]);
+        $this->dispatch('load-announcement-content', content: '', format: null);
     }
 
     public function setFormat($format)
@@ -91,11 +91,7 @@ class AnnouncementManager extends Component
         $this->showModal = true;
         
         // Emitir evento con el contenido directamente para que JavaScript lo cargue
-        // Emitir evento de navegador para Alpine.js
-        $this->dispatchBrowserEvent('load-announcement-content', [
-            'content' => $announcement->content,
-            'format' => $this->format
-        ]);
+        $this->dispatch('load-announcement-content', content: $announcement->content, format: $this->format);
     }
 
     /**

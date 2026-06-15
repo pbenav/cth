@@ -437,10 +437,16 @@
             },
 
             loadContent(data) {
+                // In Livewire 3, event details might be wrapped in an array
+                if (Array.isArray(data) && data.length > 0) {
+                    data = data[0];
+                }
+                
                 let newContent = (typeof data === 'object' && data !== null && 'content' in data) ? data.content : data;
                 let newFormat = (typeof data === 'object' && data !== null && 'format' in data) ? data.format : null;
                 
-                if (!newContent) newContent = '';
+                if (typeof newContent !== 'string') newContent = '';
+
                 
                 this.content = newContent;
                 this.format = newFormat;
