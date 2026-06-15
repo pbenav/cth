@@ -192,6 +192,7 @@ class GetTimeRegisters extends Component
      */
     public function edit($eventId): void
     {
+        if (is_array($eventId)) { $eventId = $eventId['eventId'] ?? $eventId[0] ?? $eventId; }
         $ev = Event::with(['eventType', 'team'])->find($eventId);
         if (!$ev) {
             return;
@@ -207,6 +208,7 @@ class GetTimeRegisters extends Component
      */
     public function showEvent($eventId): void
     {
+        if (is_array($eventId)) { $eventId = $eventId['eventId'] ?? $eventId[0] ?? $eventId; }
         $ev = Event::with(['user', 'eventType', 'workCenter', 'team'])->find($eventId);
         if (!$ev) return;
         
@@ -222,6 +224,7 @@ class GetTimeRegisters extends Component
      */
     public function confirm($eventId): void
     {
+        if (is_array($eventId)) { $eventId = $eventId['eventId'] ?? $eventId[0] ?? $eventId; }
         $ev = Event::with(['user', 'team'])->find($eventId);
         if (!$ev || !$ev->hasCompleteDates()) {
             $this->dispatch('incompleteEventConfirmation');
@@ -265,6 +268,7 @@ class GetTimeRegisters extends Component
      */
     public function alertConfirm($eventId): void
     {
+        if (is_array($eventId)) { $eventId = $eventId['eventId'] ?? $eventId[0] ?? $eventId; }
         $ev = Event::with('team')->find($eventId);
         if (!$ev) return;
         if (!$ev->is_open && !$this->isTeamAdmin) {
@@ -286,6 +290,7 @@ class GetTimeRegisters extends Component
      */
     public function alertDelete($eventId): void
     {
+        if (is_array($eventId)) { $eventId = $eventId['eventId'] ?? $eventId[0] ?? $eventId; }
         $ev = Event::with('team')->find($eventId);
         if (!$ev) return;
         if (!$ev->is_open && !$this->isTeamAdmin) {
@@ -303,6 +308,7 @@ class GetTimeRegisters extends Component
      */
     public function delete($eventId): void
     {
+        if (is_array($eventId)) { $eventId = $eventId['eventId'] ?? $eventId[0] ?? $eventId; }
         $ev = Event::with('team')->find($eventId);
         if (!$ev) return;
         if ($this->isTeamAdmin || $ev->is_open) {
