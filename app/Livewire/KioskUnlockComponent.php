@@ -29,7 +29,7 @@ class KioskUnlockComponent extends Component
     
     public function forgotPassword()
     {
-        Auth::logout();
+        Auth::guard('web')->logout();
         session()->invalidate();
         session()->regenerateToken();
         
