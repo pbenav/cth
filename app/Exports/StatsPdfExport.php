@@ -380,7 +380,7 @@ class StatsPdfExport
         $start = microtime(true);
         $this->hasData = true;
 
-        $query = Event::with('eventType')
+        $query = Event::with(['eventType', 'team'])
             ->where('user_id', $this->browsedUser)
             ->where('team_id', $this->team->id)
             ->whereDate('start', '>=', $this->fromDate)

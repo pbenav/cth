@@ -172,7 +172,7 @@ class ReportsController extends Controller
         $toDateTimeUTC = $toDateTime->copy()->setTimezone('UTC');
         
         $query = Event::query()
-            ->with(['user', 'eventType'])
+            ->with(['user', 'eventType', 'team'])
             ->where('team_id', $team->id)
             // Use timestamp comparison instead of whereDate to account for timezone
             ->where(function($q) use ($fromDateTimeUTC, $toDateTimeUTC) {
@@ -316,7 +316,7 @@ class ReportsController extends Controller
         $toDateTimeUTC = $toDateTime->copy()->setTimezone('UTC');
         
         $query = Event::query()
-            ->with(['user', 'eventType'])
+            ->with(['user', 'eventType', 'team'])
             ->where('team_id', $team->id)
             // Use timestamp comparison instead of whereDate to account for timezone
             ->where(function($q) use ($fromDateTimeUTC, $toDateTimeUTC) {
