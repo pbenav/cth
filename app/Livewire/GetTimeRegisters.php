@@ -27,11 +27,11 @@ class GetTimeRegisters extends Component
     use InsertHistory;
 
     public bool $showFiltersModal = false;
-    public string $search = '';
+    public ?string $search = '';
     public Event $filter;
-    public string $sort = 'start';
-    public string $direction = 'desc';
-    public string $qtytoshow = '10';
+    public ?string $sort = 'start';
+    public ?string $direction = 'desc';
+    public ?string $qtytoshow = '10';
     public bool $readyonload = false;
     public $user;
     public $team;
@@ -46,8 +46,8 @@ class GetTimeRegisters extends Component
 
     
     // Propiedades individuales para el filtro (para queryString)
-    public string $filterStart = '';
-    public string $filterEnd = '';
+    public ?string $filterStart = '';
+    public ?string $filterEnd = '';
     public ?int $filterUserId = null;
     public ?int $filterEventTypeId = null;
 
@@ -715,11 +715,10 @@ class GetTimeRegisters extends Component
         });
 
         $query->when($this->filtered, function ($q) {
-            $q->when($this->filter->start, fn($query) => $query->whereDate('events.start', '>=', $this->filter->start))
-              ->when($this->filter->end, fn($query) => $query->whereDate('events.end', '<=', $this->filter->end))
-              ->when($this->filter->user_id, fn($query) => $query->where('events.user_id', $this->filter->user_id))
-              ->when($this->filter->is_open, fn($query) => $query->where('events.is_open', '1'))
-              ->when($this->filter->event_type_id, fn($query) => $query->where('events.event_type_id', $this->filter->event_type_id));
+            $q->when($this->filterStart, fn($query) => $query->whereDate('events.start', '>=', $this->filterStart))
+              ->when($this->filterEnd, fn($query) => $query->whereDate('events.end', '<=', $this->filterEnd))
+              ->when($this->filterUserId, fn($query) => $query->where('events.user_id', $this->filterUserId))
+              ->when($this->filterEventTypeId, fn($query) => $query->where('events.event_type_id', $this->filterEventTypeId));
         });
 
         $query->when($this->confirmed, function ($q) {

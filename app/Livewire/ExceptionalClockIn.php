@@ -17,12 +17,12 @@ use Livewire\Component;
  */
 class ExceptionalClockIn extends Component
 {
-    public string $token;
-    public string $start_date;
-    public string $start_time;
-    public string $end_date;
-    public string $end_time;
-    public string $observations;
+    public ?string $token;
+    public ?string $start_date;
+    public ?string $start_time;
+    public ?string $end_date;
+    public ?string $end_time;
+    public ?string $observations;
     public ?ExceptionalClockInToken $tokenRecord = null;
     public bool $isValidToken = false;
 

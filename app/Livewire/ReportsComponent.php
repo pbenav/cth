@@ -27,10 +27,10 @@ class ReportsComponent extends Component
     public bool $isInspector;
     public $workers;
     public $worker;
-    public string $fromdate;
-    public string $todate;
+    public ?string $fromdate;
+    public ?string $todate;
     public $event_type_id;
-    public string $rtype;
+    public ?string $rtype;
     public array $rtypes = [
         "PDF" => \Maatwebsite\Excel\Excel::DOMPDF,
         "XLS" => \Maatwebsite\Excel\Excel::XLSX,

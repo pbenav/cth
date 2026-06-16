@@ -15,16 +15,16 @@ use Livewire\Component;
  */
 class MessagesComponent extends Component
 {
-    public string $view = 'inbox';
+    public ?string $view = 'inbox';
     public bool $showComposeForm = false;
     public array $recipients = [];
-    public string $subject = '';
-    public string $body = '';
+    public ?string $subject = '';
+    public ?string $body = '';
     public $users;
     public array $selectedMessages = [];
-    public string $bulkAction = '';
+    public ?string $bulkAction = '';
     public array $selectedNotifications = [];
-    public string $bulkAlertAction = '';
+    public ?string $bulkAlertAction = '';
     public bool $selectAll = false;
     public ?int $message = null;
     public ?int $replyingTo = null;

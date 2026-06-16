@@ -30,20 +30,20 @@ class AddEvent extends Component
     use HandlesEventAuthorization;
 
     public bool $showAddEventModal = false;
-    public string $workScheduleHint = '';
+    public ?string $workScheduleHint = '';
     public bool $goDashboardModal = false;
     public $now;
-    public string $start_date;
-    public string $end_date;
-    public string $start_time;
-    public string $end_time;
+    public ?string $start_date;
+    public ?string $end_date;
+    public ?string $start_time;
+    public ?string $end_time;
     public ?int $user_id = null;
-    public string $description = '';
+    public ?string $description = '';
     public $event_type_id = null;
     public $eventTypes;
     public ?EventType $selectedEventType = null;
-    public string $observations = '';
-    public string $origin;
+    public ?string $observations = '';
+    public ?string $origin;
     public ?float $latitude = null;
     public ?float $longitude = null;
     protected $listeners = ['add'];

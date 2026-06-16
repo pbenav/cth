@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class KioskUnlockComponent extends Component
 {
-    public string $password = '';
+    public ?string $password = '';
     
     public function unlock()
     {

@@ -23,7 +23,7 @@ class Numpad extends Component
      *
      * @var string
      */
-    public string $user_code = '';
+    public ?string $user_code = '';
 
     /**
      * Indicates whether the numpad is open.

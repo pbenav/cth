@@ -42,7 +42,7 @@ class EditEvent extends Component
      *
      * @var string
      */
-    public string $workScheduleHint = '';
+    public ?string $workScheduleHint = '';
 
     /**
      * Holds the collection of event types.
@@ -76,7 +76,7 @@ class EditEvent extends Component
      *
      * @var string
      */
-    public string $origin = 'events';
+    public ?string $origin = 'events';
 
     /**
      * The event listeners for the component.

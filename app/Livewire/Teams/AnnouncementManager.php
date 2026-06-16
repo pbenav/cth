@@ -17,8 +17,8 @@ class AnnouncementManager extends Component
     public $team;
     public bool $showModal = false;
     public ?int $editingId = null;
-    public string $title = '';
-    public string $content = '';
+    public ?string $title = '';
+    public ?string $content = '';
     public ?string $format = null;
     public bool $is_active = true;
     public ?string $start_date = null;
