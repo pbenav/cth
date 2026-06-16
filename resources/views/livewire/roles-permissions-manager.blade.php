@@ -250,9 +250,19 @@
                     <p class="mt-1 text-sm text-gray-600">{{ __('Assign roles and direct permissions to team members') }}</p>
                 </div>
 
-                {{-- Search --}}
-                <div class="mb-4">
+                {{-- Search and Filter --}}
+                <div class="mb-4 flex flex-col md:flex-row gap-4">
                     <x-input type="text" wire:model.live.debounce.300ms="searchUsers" placeholder="{{ __('Search users...') }}" class="w-full md:w-1/3" />
+                    
+                    <select wire:model.live="filterRole" class="border-gray-300 rounded-md w-full md:w-1/4 shadow-sm">
+                        <option value="">{{ __('All Roles') }}</option>
+                        <option value="none">{{ __('No custom role') }}</option>
+                        @foreach($roles as $role)
+                            @if($role->team_id === $team->id || $role->team_id === null)
+                                <option value="{{ $role->id }}">{{ $role->display_name }}</option>
+                            @endif
+                        @endforeach
+                    </select>
                 </div>
 
                 {{-- Users List --}}
@@ -260,14 +270,35 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    {{ __('User') }}
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" wire:click="orderUsers('name')">
+                                    <div class="flex items-center space-x-1">
+                                        <span>{{ __('User') }}</span>
+                                        @if($usersSortField === 'name')
+                                            <i class="fas fa-sort-{{ $usersSortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                                        @else
+                                            <i class="fas fa-sort text-gray-300"></i>
+                                        @endif
+                                    </div>
                                 </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    {{ __('Email') }}
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" wire:click="orderUsers('email')">
+                                    <div class="flex items-center space-x-1">
+                                        <span>{{ __('Email') }}</span>
+                                        @if($usersSortField === 'email')
+                                            <i class="fas fa-sort-{{ $usersSortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                                        @else
+                                            <i class="fas fa-sort text-gray-300"></i>
+                                        @endif
+                                    </div>
                                 </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    {{ __('Assigned Role') }}
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100" wire:click="orderUsers('role')">
+                                    <div class="flex items-center space-x-1">
+                                        <span>{{ __('Assigned Role') }}</span>
+                                        @if($usersSortField === 'role')
+                                            <i class="fas fa-sort-{{ $usersSortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                                        @else
+                                            <i class="fas fa-sort text-gray-300"></i>
+                                        @endif
+                                    </div>
                                 </th>
                                 <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     {{ __('Actions') }}

@@ -48,6 +48,9 @@ class RolesPermissionsManager extends Component
     // Filters
     public $searchRoles = '';
     public $searchUsers = '';
+    public $filterRole = '';
+    public $usersSortField = 'name';
+    public $usersSortDirection = 'asc';
     public $categoryFilter = '';
     
     protected $queryString = ['activeTab'];
@@ -67,7 +70,22 @@ class RolesPermissionsManager extends Component
 
     public function updatingSearchUsers()
     {
-        $this->resetPage();
+        $this->resetPage('usersPage');
+    }
+
+    public function updatingFilterRole()
+    {
+        $this->resetPage('usersPage');
+    }
+
+    public function orderUsers($field)
+    {
+        if ($this->usersSortField === $field) {
+            $this->usersSortDirection = $this->usersSortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->usersSortField = $field;
+            $this->usersSortDirection = 'asc';
+        }
     }
 
     public function setActiveTab($tab)
@@ -469,6 +487,29 @@ class RolesPermissionsManager extends Component
                 $q->where('name', 'like', '%'.$this->searchUsers.'%')
                   ->orWhere('email', 'like', '%'.$this->searchUsers.'%');
             });
+        }
+
+        if ($this->filterRole !== '') {
+            $teamUsersQuery->whereHas('teams', function($q) {
+                $q->where('teams.id', $this->team->id);
+                if ($this->filterRole === 'none') {
+                    $q->whereNull('team_user.custom_role_id');
+                } else {
+                    $q->where('team_user.custom_role_id', $this->filterRole);
+                }
+            });
+        }
+
+        if ($this->usersSortField === 'role') {
+            $teamUsersQuery->leftJoin('team_user', function($join) {
+                $join->on('users.id', '=', 'team_user.user_id')
+                     ->where('team_user.team_id', '=', $this->team->id);
+            })->leftJoin('roles', 'team_user.custom_role_id', '=', 'roles.id')
+            ->orderBy('roles.display_name', $this->usersSortDirection)
+            ->orderBy('users.name', 'asc')
+            ->select('users.*');
+        } else {
+            $teamUsersQuery->orderBy('users.' . $this->usersSortField, $this->usersSortDirection);
         }
 
         $teamUsers = $teamUsersQuery->paginate(10, ['*'], 'usersPage');
