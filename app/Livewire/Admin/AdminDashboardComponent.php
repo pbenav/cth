@@ -22,7 +22,8 @@ class AdminDashboardComponent extends Component
         $sharedTeams = $totalTeams - $personalTeams;
 
         // 3. Most active teams (by number of events)
-        $mostActiveTeams = Team::withCount('events')
+        $mostActiveTeams = Team::with('owner')
+            ->withCount('events')
             ->orderByDesc('events_count')
             ->take(5)
             ->get();
