@@ -390,8 +390,8 @@ class GetTimeRegisters extends Component
     public function applyFiltersFromModal(): void
     {
         // Sincronizar propiedades individuales con el objeto filter
-        $this->filterStart = $this->filter->start;
-        $this->filterEnd = $this->filter->end;
+        $this->filterStart = $this->filter->start ?? '';
+        $this->filterEnd = $this->filter->end ?? '';
         $this->filterUserId = $this->filter->user_id;
         $this->filterEventTypeId = $this->filter->event_type_id;
         
