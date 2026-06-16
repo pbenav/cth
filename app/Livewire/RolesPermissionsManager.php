@@ -15,12 +15,12 @@ class RolesPermissionsManager extends Component
 {
     use WithPagination;
 
-    public $team;
+    public ?Team $team = null;
     public $activeTab = 'roles';
     
     // Role management
     public $showRoleModal = false;
-    public $editingRole = null;
+    public ?Role $editingRole = null;
     public $roleForm = [
         'name' => '',
         'display_name' => '',
@@ -30,7 +30,7 @@ class RolesPermissionsManager extends Component
     
     // Permission management
     public $showPermissionModal = false;
-    public $editingPermission = null;
+    public ?Permission $editingPermission = null;
     public $permissionForm = [
         'name' => '',
         'display_name' => '',
@@ -42,7 +42,7 @@ class RolesPermissionsManager extends Component
     
     // User permissions
     public $showUserPermissionsModal = false;
-    public $selectedUser = null;
+    public ?User $selectedUser = null;
     public $userDirectPermissions = [];
     
     // Filters

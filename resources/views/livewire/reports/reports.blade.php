@@ -356,7 +356,8 @@
                 });
             });
 
-            Livewire.on('download-report', function(data) {
+            Livewire.on('download-report', function(payload) {
+                const data = payload[0] || payload;
                 // First, check if this will be an async report by making a HEAD request
                 fetch(data.url, {
                         method: 'HEAD'
@@ -402,7 +403,8 @@
                     });
             });
 
-            Livewire.on('async-report-started', function(data) {
+            Livewire.on('async-report-started', function(payload) {
+                const data = payload[0] || payload;
                 hideReportLoading(); // Ensure loading spinner is closed
                 Swal.fire({
                     icon: 'info',
