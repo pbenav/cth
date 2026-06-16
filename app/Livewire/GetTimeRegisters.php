@@ -147,6 +147,12 @@ class GetTimeRegisters extends Component
 
         // Open edit modal if event_id is present in URL
         if ($this->targetEventId) {
+            $targetEvent = Event::find($this->targetEventId);
+            if ($targetEvent && $targetEvent->user_id !== $this->user->id) {
+                // Automáticamente desactivamos 'showOnlyMine' para que el evento sea visible
+                $this->showOnlyMine = false;
+            }
+            
             // We need to defer this call slightly to ensure the view is ready to receive the event
             // But since we are in mount, we can't easily defer. 
             // However, emitTo works if the component is rendered in the same request.
