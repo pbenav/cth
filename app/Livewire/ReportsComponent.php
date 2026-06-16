@@ -402,13 +402,13 @@ class ReportsComponent extends Component
 
         if ($diffInDays > 365) {
             $this->dispatch('long-report-warning', [
-                'title' => __('Long Report'),
-                'text' => __('You have selected a range greater than a year. The generation may take a while. Do you wish to continue or cancel?'),
+                'title' => __('Informe muy extenso'),
+                'text' => __('Has seleccionado un rango superior a un año. La generación se puede demorar bastante. ¿Deseas continuar o cancelar?'),
             ]);
         } elseif ($diffInDays > 90) {
             $this->dispatch('medium-report-warning', [
-                'title' => __('Generating Report...'),
-                'text' => __('You have selected a wide date range (more than 3 months). The generation may take a bit longer than usual.'),
+                'title' => __('Generando informe...'),
+                'text' => __('Has seleccionado un rango de fechas amplio (más de 3 meses). La generación puede tardar un poco más de lo habitual.'),
             ]);
         }
         

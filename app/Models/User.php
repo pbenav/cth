@@ -73,7 +73,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $with = ['currentTeam'];
+    protected $with = ['currentTeam', 'meta'];
 
     /**
      * The "booted" method of the model.

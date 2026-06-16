@@ -436,8 +436,8 @@
                     text: data.text,
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonText: '{{ __('Continue') }}',
-                    cancelButtonText: '{{ __('Cancel') }}',
+                    confirmButtonText: 'Continuar',
+                    cancelButtonText: 'Cancelar',
                     allowOutsideClick: false,
                     allowEscapeKey: false
                 }).then((result) => {
@@ -448,8 +448,8 @@
                         // Reshow the loading spinner
                         showReportLoading();
                         Swal.update({
-                            title: '{{ __('Generating...') }}',
-                            html: '{{ __('Please wait...') }}<br><br><i class="fas fa-spinner fa-spin fa-2x text-indigo-500"></i>'
+                            title: 'Generando...',
+                            html: 'Por favor, espera...<br><br><i class="fas fa-spinner fa-spin fa-2x text-indigo-500"></i>'
                         });
                     }
                 });
