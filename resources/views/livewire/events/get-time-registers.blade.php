@@ -87,14 +87,14 @@
 
                 <!-- Records Per Page -->
                 <div class="flex items-center space-x-2 px-3 py-2 bg-gray-50 rounded-lg border border-gray-200">
-                    <span class="text-sm text-gray-600">{{ __('Show') }}</span>
-                    <select wire:model.live='qtytoshow' class="h-8 border-gray-300 rounded-md text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    <span class="text-sm text-gray-600 leading-none">{{ __('Show') }}</span>
+                    <select wire:model.live='qtytoshow' class="py-1 pl-3 pr-8 border-gray-300 rounded-md text-sm focus:ring-indigo-500 focus:border-indigo-500">
                         <option value="10">10</option>
                         <option value="25">25</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
                     </select>
-                    <span class="text-sm text-gray-600">{{ __('records') }}</span>
+                    <span class="text-sm text-gray-600 leading-none">{{ __('records') }}</span>
                 </div>
             </div>
         </div>
