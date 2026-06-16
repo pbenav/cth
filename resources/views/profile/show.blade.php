@@ -163,16 +163,18 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Preserve the current tab when Livewire updates
             window.addEventListener('livewire:init', function () {
-                Livewire.hook('message.processed', (message, component) => {
-                    // Get current tab from Alpine
-                    const currentTab = new URLSearchParams(window.location.search).get('tab') || 'account';
-                    
-                    // Update URL without reloading to preserve tab state
-                    if (currentTab && !window.location.search.includes('tab=' + currentTab)) {
-                        const url = new URL(window.location);
-                        url.searchParams.set('tab', currentTab);
-                        window.history.replaceState({}, '', url);
-                    }
+                Livewire.hook('commit', ({ succeed }) => {
+                    succeed(() => {
+                        // Get current tab from Alpine
+                        const currentTab = new URLSearchParams(window.location.search).get('tab') || 'account';
+                        
+                        // Update URL without reloading to preserve tab state
+                        if (currentTab && !window.location.search.includes('tab=' + currentTab)) {
+                            const url = new URL(window.location);
+                            url.searchParams.set('tab', currentTab);
+                            window.history.replaceState({}, '', url);
+                        }
+                    });
                 });
             });
             

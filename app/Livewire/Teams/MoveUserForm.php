@@ -107,13 +107,13 @@ class MoveUserForm extends Component
             $message = __('User moved successfully.') . ' ' . __('Events transferred: :success.', ['success' => $successCount]);
             if ($failCount > 0) {
                 $message .= ' ' . __(':fail events could not be transferred.', ['fail' => $failCount]);
-                $this->dispatchBrowserEvent('swal:modal-reload', [
+                $this->dispatch('swal:modal-reload', [
                     'type' => 'warning',
                     'title' => __('Movement Summary'),
                     'text' => $message,
                 ]);
             } else {
-                $this->dispatchBrowserEvent('swal:modal-reload', [
+                $this->dispatch('swal:modal-reload', [
                     'type' => 'success',
                     'title' => __('Movement Summary'),
                     'text' => $message,

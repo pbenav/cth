@@ -234,7 +234,7 @@ class AddEvent extends Component
 
         if ($isWorkdayType && $eventStartTime->isAfter($nowInTeamTz->copy()->addMinutes(5))) {
             $this->showAddEventModal = false;
-            $this->dispatchBrowserEvent('alertFail', [
+            $this->dispatch('alertFail', [
                 'message' => __('No se pueden registrar fichajes de jornada laboral en fechas futuras.')
             ]);
             if ($this->origin === 'calendar') {

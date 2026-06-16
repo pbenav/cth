@@ -269,7 +269,7 @@ class ReportsComponent extends Component
                          'Content-Type' => 'application/pdf',
                      ]);
                  } catch (\Exception $e) {
-                     $this->dispatchBrowserEvent('swal', [
+                     $this->dispatch('swal', [
                          'title' => __('Error'),
                          'text' => __('Could not generate PDF: ') . $e->getMessage(),
                          'icon' => 'error',

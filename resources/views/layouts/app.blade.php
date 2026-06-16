@@ -173,10 +173,11 @@
         <script>
             // Listener for 'alertFail' events
             window.addEventListener('alertFail', event => {
+                const data = event.detail[0] || event.detail;
                 Swal.fire({
                     icon: 'info',
                     title: "{{ __('sweetalert.alert_fail.title') }}",
-                    text: event.detail.message,
+                    text: data.message,
                     showConfirmButton: true,
                     confirmButtonText: "{{ __('sweetalert.ok_button') }}",
                 });
@@ -184,10 +185,11 @@
 
             // Listener for simple success alerts
             window.addEventListener('swal:alert', event => {
+                const data = event.detail[0] || event.detail;
                 Swal.fire({
-                    title: event.detail.title,
-                    text: event.detail.text,
-                    icon: event.detail.icon,
+                    title: data.title,
+                    text: data.text,
+                    icon: data.icon,
                     toast: true,
                     position: 'top-end',
                     showConfirmButton: false,
@@ -198,10 +200,11 @@
 
             // Listener for modals that require a page reload on close
             window.addEventListener('swal:modal-reload', event => {
+                const data = event.detail[0] || event.detail;
                 Swal.fire({
-                    icon: event.detail.type || 'info',
-                    title: event.detail.title,
-                    text: event.detail.text,
+                    icon: data.type || 'info',
+                    title: data.title,
+                    text: data.text,
                     showConfirmButton: true,
                     confirmButtonText: "{{ __('sweetalert.ok_button') }}",
                 }).then((result) => {

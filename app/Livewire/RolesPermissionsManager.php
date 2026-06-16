@@ -182,7 +182,7 @@ class RolesPermissionsManager extends Component
             
             \Log::info('Role saved successfully', ['role_id' => $role->id]);
             
-            $this->dispatchBrowserEvent('swal:alert', [
+            $this->dispatch('swal:alert', [
                 'title' => __('Success'),
                 'text' => __('Role saved successfully'),
                 'icon' => 'success'
@@ -221,7 +221,7 @@ class RolesPermissionsManager extends Component
             $role->delete();
             
             DB::commit();
-            $this->dispatchBrowserEvent('swal:alert', [
+            $this->dispatch('swal:alert', [
                 'title' => __('Success'),
                 'text' => __('Role deleted successfully'),
                 'icon' => 'success'
@@ -277,7 +277,7 @@ class RolesPermissionsManager extends Component
             }
 
             DB::commit();
-            $this->dispatchBrowserEvent('swal:alert', [
+            $this->dispatch('swal:alert', [
                 'title' => __('Success'),
                 'text' => __('User permissions updated successfully'),
                 'icon' => 'success'
@@ -296,7 +296,7 @@ class RolesPermissionsManager extends Component
             ->where('user_id', $userId)
             ->update(['custom_role_id' => $roleId]);
         
-        $this->dispatchBrowserEvent('swal:alert', [
+        $this->dispatch('swal:alert', [
             'title' => __('Success'),
             'text' => __('Role assigned successfully'),
             'icon' => 'success'
@@ -382,7 +382,7 @@ class RolesPermissionsManager extends Component
                 ]);
             }
 
-            $this->dispatchBrowserEvent('swal:alert', [
+            $this->dispatch('swal:alert', [
                 'title' => __('Success'),
                 'text' => __('Permission saved successfully'),
                 'icon' => 'success'
@@ -405,7 +405,7 @@ class RolesPermissionsManager extends Component
 
         try {
             $permission->delete();
-            $this->dispatchBrowserEvent('swal:alert', [
+            $this->dispatch('swal:alert', [
                 'title' => __('Success'),
                 'text' => __('Permission deleted successfully'),
                 'icon' => 'success'
