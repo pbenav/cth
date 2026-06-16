@@ -163,6 +163,16 @@ class Team extends JetstreamTeam
     }
 
     /**
+     * Get the events associated with the team.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function events()
+    {
+        return $this->hasMany(Event::class);
+    }
+
+    /**
      * Check if this is the welcome team.
      *
      * @return boolean
