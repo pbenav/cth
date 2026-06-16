@@ -28,7 +28,6 @@ class GetTimeRegisters extends Component
 
     public bool $showFiltersModal = false;
     public ?string $search = '';
-    public Event $filter;
     public ?string $sort = 'start';
     public ?string $direction = 'desc';
     public ?string $qtytoshow = '10';
@@ -86,11 +85,6 @@ class GetTimeRegisters extends Component
     ];
 
     protected $rules = [
-        'filter.start' => 'required|date',
-        'filter.end' => 'required|date|after:filter.start',
-        'filter.user_id' => 'nullable|integer',
-        'filter.is_open' => 'boolean',
-        'filter.event_type_id' => 'nullable|integer',
         'filterStart' => 'required|date',
         'filterEnd' => 'required|date|after:filterStart',
         'filterUserId' => 'nullable|integer',
@@ -103,16 +97,6 @@ class GetTimeRegisters extends Component
     public function mount()
     {
         // Inicializar propiedades del filtro si no vienen de URL
-        
-        // Crear objeto filter sincronizado con las propiedades individuales
-        $this->filter = new Event([
-            "start" => $this->filterStart,
-            "end" => $this->filterEnd,
-            "user_id" => $this->filterUserId,
-            "is_open" => false,
-            "event_type_id" => $this->filterEventTypeId,
-        ]);
-        
         $this->user = Auth::user();
         $this->team = $this->user ? $this->user->currentTeam : null;
         $this->teamUserList = $this->team ? $this->team->allUsers()->sortBy(function ($user) {
@@ -353,12 +337,6 @@ class GetTimeRegisters extends Component
         $this->filterEnd = '';
         $this->filterUserId = null;
         $this->filterEventTypeId = null;
-        
-        // Sincronizar con el objeto filter
-        $this->filter->start = '';
-        $this->filter->end = '';
-        $this->filter->user_id = null;
-        $this->filter->event_type_id = null;
     }
 
     /**
@@ -372,12 +350,6 @@ class GetTimeRegisters extends Component
         // Solo establecer fechas por defecto si están vacías
         if (empty($this->filterStart)) $this->filterStart = date('Y-m-01');
         if (empty($this->filterEnd)) $this->filterEnd = date('Y-m-t');
-        
-        // Sincronizar con el objeto filter
-        $this->filter->start = $this->filterStart;
-        $this->filter->end = $this->filterEnd;
-        $this->filter->user_id = $this->filterUserId;
-        $this->filter->event_type_id = $this->filterEventTypeId;
 
         $this->showFiltersModal = true;
     }
@@ -389,11 +361,7 @@ class GetTimeRegisters extends Component
      */
     public function applyFiltersFromModal(): void
     {
-        // Sincronizar propiedades individuales con el objeto filter
-        $this->filterStart = $this->filter->start ?? '';
-        $this->filterEnd = $this->filter->end ?? '';
-        $this->filterUserId = $this->filter->user_id;
-        $this->filterEventTypeId = $this->filter->event_type_id;
+        $this->validate();
         
         $this->filtered = true;
         $this->confirmed = false;
@@ -405,10 +373,7 @@ class GetTimeRegisters extends Component
      */
     public function syncFilterProperties(): void
     {
-        $this->filterStart = $this->filter->start ?? date('Y-m-01');
-        $this->filterEnd = $this->filter->end ?? date('Y-m-t');
-        $this->filterUserId = $this->filter->user_id;
-        $this->filterEventTypeId = $this->filter->event_type_id;
+        // Esta función ya no es necesaria pues usamos las propiedades nativas
     }
 
     /**

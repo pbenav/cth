@@ -9,19 +9,19 @@
         <x-slot name="content">
             <div class="mb-4">
                 <x-label value="{{ __('Start date') }}" class="mt-3 mr-2 required" />
-                <x-input type="date" class="mr-2" wire:model='filter.start' />
-                <x-input-error for='filter.start' />
+                <x-input type="date" class="mr-2" wire:model='filterStart' />
+                <x-input-error for='filterStart' />
 
                 <x-label value="{{ __('End date') }}" class="mt-3 mr-2 required" />
-                <x-input type="date" class="mr-2" wire:model='filter.end' />
-                <x-input-error for='filter.end' />
+                <x-input type="date" class="mr-2" wire:model='filterEnd' />
+                <x-input-error for='filterEnd' />
             </div>
 
             <div class="mb-4 flex flex-row flex-wrap gap-2">
                 @if ($isteamadmin || $isinspector)
                     <div class="mb-4">
                         <x-label value="{{ __('User') }}" />
-                        <select class="sl-select" wire:model='filter.user_id'>
+                        <select class="sl-select" wire:model='filterUserId'>
                             <option value="">{{ __('All') }}</option>
                             @if (isset($teamUserList))
                                 @foreach ($teamUserList as $user)
@@ -29,21 +29,21 @@
                                 @endforeach
                             @endif
                         </select>
-                        <x-input-error for='filter.user_id' />
+                        <x-input-error for='filterUserId' />
                     </div>
                 @endif
                 <div class="mb-4 text-left sm:text-center">
                     <x-label class="whitespace-nowrap" value="{{ __('Not confirmed') }}" />
 
                     <x-checkbox class="h-6 w-6 text-gray-600 checked:text-green-600"
-                        wire:model='filter.is_open' />
-                    <x-input-error for='filter.is_open' />
+                        wire:model='confirmed' />
+                    <x-input-error for='confirmed' />
                 </div>
             </div>
 
             <div class="mb-4">
                 <x-label value="{{ __('Event Type') }}" />
-                <select class="sl-select" wire:model='filter.event_type_id'>
+                <select class="sl-select" wire:model='filterEventTypeId'>
                     <option value="">{{ __('All') }}</option>
                     @if (isset($eventTypes))
                         @foreach ($eventTypes as $eventType)
@@ -51,7 +51,7 @@
                         @endforeach
                     @endif
                 </select>
-                <x-input-error for='filter.event_type_id' />
+                <x-input-error for='filterEventTypeId' />
             </div>
 
         </x-slot>
