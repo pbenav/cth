@@ -335,16 +335,25 @@
 
         // Listen for when Livewire finishes updating
         document.addEventListener('livewire:init', function() {
-            // NO cerramos el mensaje automáticamente cuando Livewire termina
-            // Solo lo cerramos cuando el iframe se carga (onload) o en caso de export directo
-            Livewire.hook('message.processed', (message, component) => {
-                // Si no estamos generando preview (es decir, es un export directo), cerramos después de un delay
-                setTimeout(() => {
-                    // Solo cerrar si no hay preview activo (el iframe no se está cargando)
-                    if (!document.querySelector('iframe[src*="reports.preview"]')) {
-                        hideReportLoading();
-                    }
-                }, 1000); // Increased from 500ms to 1000ms
+            Livewire.hook('commit', ({ succeed, fail }) => {
+                succeed(() => {
+                    setTimeout(() => {
+                        // Close if there are validation errors
+                        if (document.querySelectorAll('.text-red-600').length > 0) {
+                            hideReportLoading();
+                            return;
+                        }
+                        
+                        // Close if there is no preview iframe active
+                        if (!document.querySelector('iframe[src*="reports.preview"]')) {
+                            hideReportLoading();
+                        }
+                    }, 500); 
+                });
+                
+                fail(() => {
+                    hideReportLoading();
+                });
             });
 
             Livewire.on('download-report', function(data) {
