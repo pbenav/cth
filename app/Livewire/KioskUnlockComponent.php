@@ -27,6 +27,15 @@ class KioskUnlockComponent extends Component
         $this->addError('password', __('La contraseña es incorrecta.'));
     }
     
+    public function forgotPassword()
+    {
+        Auth::logout();
+        session()->invalidate();
+        session()->regenerateToken();
+        
+        return redirect()->route('password.request');
+    }
+
     public function render()
     {
         return view('livewire.kiosk-unlock-component')->layout('layouts.guest');

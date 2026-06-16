@@ -26,6 +26,12 @@
                 <x-input id="password" class="block w-full pl-10 border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-lg shadow-sm" type="password" wire:model="password" required autofocus autocomplete="current-password" placeholder="{{ __('Tu contraseña') }}" />
             </div>
             <x-input-error for="password" class="mt-2" />
+            
+            <div class="flex justify-end mt-2">
+                <button type="button" wire:click="forgotPassword" class="text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors focus:outline-none">
+                    {{ __('¿Olvidaste tu contraseña?') }}
+                </button>
+            </div>
         </div>
 
         <div class="flex items-center justify-between mt-6">
