@@ -69,6 +69,13 @@ class User extends Authenticatable
     use TwoFactorAuthenticatable;
 
     /**
+     * Eager load relationships automatically.
+     *
+     * @var array
+     */
+    protected $with = ['currentTeam'];
+
+    /**
      * The "booted" method of the model.
      *
      * @return void
