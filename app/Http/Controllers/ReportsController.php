@@ -51,14 +51,26 @@ class ReportsController extends Controller
         // Check if this is a download request or just a preview
         $isDownload = $request->input('download', false);
         
-        // For downloads, use the max limit. For previews, use the async threshold
-        $limit = $isDownload ? $maxMonths : min($maxMonths, $asyncThreshold);
+        $diffInDays = $start->diffInDays($end);
 
-        if ($start->diffInDays($end) > ($limit * 30.5)) {
-            $message = $isDownload 
-                ? __('The date range cannot exceed :months months.', ['months' => $limit])
-                : __('The date range cannot exceed :months months for preview.', ['months' => $limit]);
-            abort(400, $message);
+        // Absolute hard limit to prevent out-of-memory (OOM) crashes
+        if ($diffInDays > (3 * 365)) {
+            abort(400, __('El rango de fechas es demasiado extenso. El límite absoluto es de 3 años por solicitud.'));
+        }
+
+        // Protect the server: Limit heavy reports to avoid CPU exhaustion
+        if ($diffInDays > 90) {
+            // Rate limit globally to 5 heavy reports per minute across the whole server
+            if (\Illuminate\Support\Facades\RateLimiter::tooManyAttempts('global-heavy-reports', 5)) {
+                abort(429, __('El servidor está procesando un volumen alto de informes complejos en este momento. Por favor, espera un par de minutos e inténtalo de nuevo.'));
+            }
+            \Illuminate\Support\Facades\RateLimiter::hit('global-heavy-reports', 60);
+
+            // Rate limit per user to 3 heavy reports per 5 minutes
+            if (\Illuminate\Support\Facades\RateLimiter::tooManyAttempts('heavy-report:' . $user->id, 3)) {
+                abort(429, __('Estás generando demasiados informes extensos en poco tiempo. Por favor, espera unos minutos antes de generar otro.'));
+            }
+            \Illuminate\Support\Facades\RateLimiter::hit('heavy-report:' . $user->id, 300);
         }
 
         // Security check: only admins/inspectors can see other workers
