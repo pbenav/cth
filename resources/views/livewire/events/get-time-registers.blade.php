@@ -545,5 +545,15 @@
             </script>
         @endpush
 
+        @if ($targetEventId)
+            <script>
+                document.addEventListener('livewire:initialized', () => {
+                    setTimeout(() => {
+                        Livewire.dispatch('showEventDetails', { data: {{ $targetEventId }} });
+                    }, 100);
+                });
+            </script>
+        @endif
+
     </div>
 </div>

@@ -152,12 +152,6 @@ class GetTimeRegisters extends Component
                 // Automáticamente desactivamos 'showOnlyMine' para que el evento sea visible
                 $this->showOnlyMine = false;
             }
-            
-            // We need to defer this call slightly to ensure the view is ready to receive the event
-            // But since we are in mount, we can't easily defer. 
-            // However, emitTo works if the component is rendered in the same request.
-            // Let's try emitting directly to the new modal.
-            $this->showEvent($this->targetEventId);
         }
     }
 

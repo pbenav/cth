@@ -60,6 +60,24 @@ class Event extends Model
     use \App\Traits\HandlesTimezoneConversion;
 
     /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        parent::boot();
+
+        static::deleted(function ($event) {
+            // Delete related notifications when the event is deleted
+            \Illuminate\Support\Facades\DB::table('notifications')
+                ->where('data', 'like', '%"event_id":' . $event->id . '%')
+                ->orWhere('data', 'like', '%"event_id":"' . $event->id . '"%')
+                ->delete();
+        });
+    }
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
