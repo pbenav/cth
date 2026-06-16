@@ -395,14 +395,21 @@ class ReportsComponent extends Component
         // Usually preview is fast, so maybe keep it sync only and strictly limited?
         // Or allow preview up to the max limit?
         // If it's async, we can't preview it easily.
-        // So for preview, we enforce the async threshold as a hard limit.
-        
         $asyncThreshold = $this->team->async_report_threshold_months ?? Team::DEFAULT_ASYNC_THRESHOLD_MONTHS;
         $limit = min($maxMonths, $asyncThreshold);
 
-        if ($start->diffInDays($end) > ($limit * 30.5)) {
-             $this->addError('todate', __('The date range cannot exceed :months months for preview.', ['months' => $limit]));
-             return;
+        $diffInDays = $start->diffInDays($end);
+
+        if ($diffInDays > 365) {
+            $this->dispatch('long-report-warning', [
+                'title' => __('Long Report'),
+                'text' => __('You have selected a range greater than a year. The generation may take a while. Do you wish to continue or cancel?'),
+            ]);
+        } elseif ($diffInDays > 90) {
+            $this->dispatch('medium-report-warning', [
+                'title' => __('Generating Report...'),
+                'text' => __('You have selected a wide date range (more than 3 months). The generation may take a bit longer than usual.'),
+            ]);
         }
         
         $this->pdfUrl = route('reports.preview', [
@@ -415,6 +422,11 @@ class ReportsComponent extends Component
             'orderBy' => $this->orderBy,
             't' => time() // Force cache busting
         ]);
+    }
+
+    public function cancelPreview()
+    {
+        $this->pdfUrl = null;
     }
 
     /**

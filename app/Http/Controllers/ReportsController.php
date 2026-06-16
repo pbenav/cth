@@ -33,7 +33,7 @@ class ReportsController extends Controller
     public function preview(Request $request)
     {
         $user = Auth::user();
-        $team = $user->currentTeam;
+        $team = $user->loadMissing('currentTeam')->currentTeam;
         
         $workerId = $request->input('worker');
         $fromDate = $request->input('fromdate');
@@ -272,7 +272,7 @@ class ReportsController extends Controller
     public function export(Request $request)
     {
         $user = Auth::user();
-        $team = $user->currentTeam;
+        $team = $user->loadMissing('currentTeam')->currentTeam;
         
         $workerId = $request->input('worker');
         $fromDate = $request->input('fromdate');

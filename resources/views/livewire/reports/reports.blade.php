@@ -418,6 +418,42 @@
                     allowEscapeKey: true
                 });
             });
+
+            Livewire.on('medium-report-warning', function(payload) {
+                const data = payload[0] || payload;
+                if (reportLoadingAlert) {
+                    Swal.update({
+                        title: data.title,
+                        html: data.text + '<br><br><i class="fas fa-spinner fa-spin fa-2x text-indigo-500"></i>'
+                    });
+                }
+            });
+
+            Livewire.on('long-report-warning', function(payload) {
+                const data = payload[0] || payload;
+                Swal.fire({
+                    title: data.title,
+                    text: data.text,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: '{{ __('Continue') }}',
+                    cancelButtonText: '{{ __('Cancel') }}',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                }).then((result) => {
+                    if (!result.isConfirmed) {
+                        @this.call('cancelPreview');
+                        hideReportLoading();
+                    } else {
+                        // Reshow the loading spinner
+                        showReportLoading();
+                        Swal.update({
+                            title: '{{ __('Generating...') }}',
+                            html: '{{ __('Please wait...') }}<br><br><i class="fas fa-spinner fa-spin fa-2x text-indigo-500"></i>'
+                        });
+                    }
+                });
+            });
         });
     </script>
 @endpush

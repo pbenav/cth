@@ -76,7 +76,7 @@ class EventsHistoryPdfExport
         app()->setLocale('es');
         
         $user = auth()->user();
-        $pdfEngine = $user && $user->currentTeam ? $user->currentTeam->pdf_engine : 'browsershot';
+        $pdfEngine = $user && $user->loadMissing('currentTeam')->currentTeam ? $user->loadMissing('currentTeam')->currentTeam->pdf_engine : 'browsershot';
 
         if ($pdfEngine === 'mpdf') {
             return $this->generateMpdf();

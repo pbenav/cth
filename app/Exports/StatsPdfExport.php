@@ -27,7 +27,7 @@ class StatsPdfExport
     public function __construct($userId, $teamId, $browsedUserId, $fromDate, $toDate, $eventTypeId = null)
     {
         $this->user = User::find($userId);
-        $this->team = $this->user->currentTeam;
+        $this->team = $this->user->loadMissing('currentTeam')->currentTeam;
         $this->browsedUser = $browsedUserId;
         $this->actualUser = $this->user;
         $this->eventTypeId = $eventTypeId;
@@ -45,7 +45,7 @@ class StatsPdfExport
         // Force Spanish locale for translations
         app()->setLocale('es');
         
-        $pdfEngine = $this->user && $this->user->currentTeam ? $this->user->currentTeam->pdf_engine : 'browsershot';
+        $pdfEngine = $this->user && $this->user->loadMissing('currentTeam')->currentTeam ? $this->user->loadMissing('currentTeam')->currentTeam->pdf_engine : 'browsershot';
 
         if ($pdfEngine === 'mpdf') {
             return $this->generateMpdf();
@@ -396,11 +396,11 @@ class StatsPdfExport
         $daysWithEvents = [];
         $eventTypesInUse = [];
 
-        $teamTimezone = $this->actualUser->currentTeam->timezone ?? config('app.timezone');
+        $teamTimezone = $this->actualUser->loadMissing('currentTeam')->currentTeam->timezone ?? config('app.timezone');
         $startDate = Carbon::parse($this->fromDate, $teamTimezone);
         $endDate = Carbon::parse($this->toDate, $teamTimezone);
         
-        $holidays = $this->actualUser->currentTeam->holidays()
+        $holidays = $this->actualUser->loadMissing('currentTeam')->currentTeam->holidays()
             ->whereBetween('date', [$startDate, $endDate])
             ->pluck('date')
             ->map(fn ($date) => $date->format('Y-m-d'));
@@ -489,7 +489,7 @@ class StatsPdfExport
         $dayCountsPerType = [];
         $uniqueDays = [];
 
-        $workdayEventType = $this->actualUser->currentTeam->eventTypes()->where('is_workday_type', true)->first();
+        $workdayEventType = $this->actualUser->loadMissing('currentTeam')->currentTeam->eventTypes()->where('is_workday_type', true)->first();
 
         foreach ($dailyTypeHours as $day => $types) {
             if ($workdayEventType) {
