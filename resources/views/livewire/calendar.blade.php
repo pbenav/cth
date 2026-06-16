@@ -144,7 +144,7 @@
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 const eventId = parseInt(info.event.id.replace('event_', ''));
-                                @this.emit('eventDrop', eventId, info.event.start.toISOString(), info.event.end.toISOString());
+                                @this.eventDrop(eventId, info.event.start.toISOString(), info.event.end ? info.event.end.toISOString() : null);
                             } else {
                                 info.revert();
                             }
@@ -170,7 +170,7 @@
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 const eventId = parseInt(info.event.id.replace('event_', ''));
-                                @this.emit('eventResize', eventId, info.event.start.toISOString(), info.event.end.toISOString());
+                                @this.eventResize(eventId, info.event.start.toISOString(), info.event.end ? info.event.end.toISOString() : null);
                             } else {
                                 info.revert();
                             }
