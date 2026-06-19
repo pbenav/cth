@@ -319,11 +319,6 @@ class EditEvent extends Component
             $this->event->is_extra_hours = !$this->event->eventType->is_workday_type;
         }
 
-        // An event edited manually always has an end date (enforced by validation)
-        // Therefore, it should no longer be considered "open"
-        if ($this->event->end) {
-            $this->event->is_open = false;
-        }
 
         // Skip duration validation if we are in the process of applying an adjustment.
         // The adjustment itself has already determined the correct time limits.
