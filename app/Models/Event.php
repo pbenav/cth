@@ -71,8 +71,7 @@ class Event extends Model
         static::deleted(function ($event) {
             // Delete related notifications when the event is deleted
             \Illuminate\Support\Facades\DB::table('notifications')
-                ->where('data', 'like', '%"event_id":' . $event->id . '%')
-                ->orWhere('data', 'like', '%"event_id":"' . $event->id . '"%')
+                ->where('data->event_id', $event->id)
                 ->delete();
         });
     }
