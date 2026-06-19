@@ -89,8 +89,8 @@
             <!-- MTX URL -->
             <div class="col-span-6 sm:col-span-4">
                 <x-label for="mtx_url" value="{{ __('URL del Servidor MTX') }}" />
-                <x-input id="mtx_url" type="url" class="mt-1 block w-full bg-gray-50 dark:bg-gray-800" wire:model="state.MTX_URL" placeholder="https://mtx.sientia.com" />
-                <x-input-error for="state.MTX_URL" class="mt-2" />
+                <x-input id="mtx_url" type="url" class="mt-1 block w-full bg-gray-50 dark:bg-gray-800" wire:model="state.MTX_API_URL" placeholder="https://mtx.sientia.com" />
+                <x-input-error for="state.MTX_API_URL" class="mt-2" />
                 <p class="text-[11px] text-gray-400 mt-1">La URL base de MTX (ej: https://mtx.sientia.com).</p>
             </div>
 
