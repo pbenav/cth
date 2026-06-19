@@ -369,6 +369,12 @@ class EditEvent extends Component
         $this->dispatch('alert', __('Event updated!'));
         $this->dispatch('render')->to('get-time-registers');
         $this->dispatch('refreshCalendar');
+
+        // IMPORTANT: Ensure MTX represents the current active state
+        $user = $this->event->user ?? User::find($this->event->user_id);
+        if ($user) {
+            app(\App\Services\SmartClockInService::class)->syncCurrentStateToMtx($user, 'manual_edit');
+        }
     }
 
     public function applyAdjustment($type, \App\Services\EventAdjustmentService $adjustmentService)
@@ -465,6 +471,14 @@ class EditEvent extends Component
 
         $this->showModalEditEvent = false;
         Log::info("Modal de edición cerrado.");
+
+        // IMPORTANT: Ensure MTX represents the current active state
+        if (isset($event)) {
+            $user = $event->user ?? User::find($event->user_id);
+            if ($user) {
+                app(\App\Services\SmartClockInService::class)->syncCurrentStateToMtx($user, 'manual_delete');
+            }
+        }
     }
 
     /**

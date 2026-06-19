@@ -1036,4 +1036,17 @@ class SmartClockInService
         return $this->isWithinWorkSchedule($timeToCheck, $user);
     }
 
+    public function syncCurrentStateToMtx(\App\Models\User $user, string $source = 'system')
+    {
+        // Check if user has an open workday shift right now
+        $hasOpenShift = \App\Models\Event::where('user_id', $user->id)
+            ->where('is_open', true)
+            ->whereHas('eventType', function($q) {
+                $q->where('is_workday_type', true);
+            })
+            ->exists();
+
+        $action = $hasOpenShift ? 'start' : 'stop';
+        \App\Jobs\SyncWorkdayWithMtx::dispatch($user->email, $action, $source);
+    }
 }

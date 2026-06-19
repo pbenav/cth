@@ -392,6 +392,9 @@ class AddEvent extends Component
             // Refresh the entire calendar component to keep Livewire in sync
             $this->dispatch('refreshCalendar');
         }
+
+        // IMPORTANT: Ensure MTX represents the current active state
+        app(\App\Services\SmartClockInService::class)->syncCurrentStateToMtx($user, 'manual_add');
     }
 
     public function applyAdjustment($type)
