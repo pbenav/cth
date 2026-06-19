@@ -382,6 +382,9 @@ class AddEvent extends Component
         $this->showAdjustmentModal = false;
         $this->isExceptionalOverride = false;
 
+        // IMPORTANT: Ensure MTX represents the current active state
+        app(\App\Services\SmartClockInService::class)->syncCurrentStateToMtx($user, 'manual_add');
+
         if ($this->origin == 'numpad') {
             return redirect()->route('events')->with('info', 'E_SUCCESS');
         } elseif ($this->origin == '1') {
@@ -392,9 +395,6 @@ class AddEvent extends Component
             // Refresh the entire calendar component to keep Livewire in sync
             $this->dispatch('refreshCalendar');
         }
-
-        // IMPORTANT: Ensure MTX represents the current active state
-        app(\App\Services\SmartClockInService::class)->syncCurrentStateToMtx($user, 'manual_add');
     }
 
     public function applyAdjustment($type)

@@ -458,6 +458,14 @@ class EditEvent extends Component
         }
 
         session()->flash('alert', __('Event has been removed!'));
+
+        // IMPORTANT: Ensure MTX represents the current active state
+        if (isset($event)) {
+            $user = $event->user ?? User::find($event->user_id);
+            if ($user) {
+                app(\App\Services\SmartClockInService::class)->syncCurrentStateToMtx($user, 'manual_delete');
+            }
+        }
         
         if ($origin === 'events') {
             return redirect()->route('events');
@@ -471,14 +479,6 @@ class EditEvent extends Component
 
         $this->showModalEditEvent = false;
         Log::info("Modal de edición cerrado.");
-
-        // IMPORTANT: Ensure MTX represents the current active state
-        if (isset($event)) {
-            $user = $event->user ?? User::find($event->user_id);
-            if ($user) {
-                app(\App\Services\SmartClockInService::class)->syncCurrentStateToMtx($user, 'manual_delete');
-            }
-        }
     }
 
     /**
