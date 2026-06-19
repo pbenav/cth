@@ -1051,9 +1051,13 @@ class SmartClockInService
 
         if ($latestEvent) {
             $action = $latestEvent->is_open ? 'start' : 'stop';
-            // UTC to local or use UTC directly? MTX expects UTC, or MTX timezone?
-            // Actually, start and end in DB are UTC strings (e.g., '2026-06-19 14:00:00').
-            $timestamp = $latestEvent->is_open ? $latestEvent->start : $latestEvent->end;
+            $rawTimestamp = $latestEvent->is_open ? $latestEvent->start : $latestEvent->end;
+            
+            // The DB stores strings in UTC. We must explicitely parse them as UTC
+            // and send as ISO8601 so MTX knows exactly what time it is, avoiding timezone offsets
+            if ($rawTimestamp) {
+                $timestamp = \Carbon\Carbon::parse($rawTimestamp, 'UTC')->toIso8601String();
+            }
         }
 
         \App\Jobs\SyncWorkdayWithMtx::dispatch($user->email, $action, $source, $timestamp);

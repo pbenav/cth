@@ -333,6 +333,7 @@ class SmartClockButton extends Component
         if ($result['success']) {
             $this->refreshClockData();
             $this->dispatch('eventCreated');
+            app(\App\Services\SmartClockInService::class)->syncCurrentStateToMtx($user, 'clock_out_adjusted');
         }
     }
 
