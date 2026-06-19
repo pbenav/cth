@@ -1058,6 +1058,8 @@ class SmartClockInService
             if ($rawTimestamp) {
                 $timestamp = \Carbon\Carbon::parse($rawTimestamp, 'UTC')->toIso8601String();
             }
+        } else {
+            $action = 'delete_active';
         }
 
         \App\Jobs\SyncWorkdayWithMtx::dispatch($user->email, $action, $source, $timestamp);
