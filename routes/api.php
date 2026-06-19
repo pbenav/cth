@@ -87,4 +87,7 @@ Route::prefix('v1')->middleware('throttle:60,1')->group(function () {
     });
 });
 
+// S2S Integration (MTX <-> CTH)
+Route::post('/s2s/sync-workday', [\App\Http\Controllers\Api\S2SIntegrationController::class, 'syncWorkday']);
+
     // NOTE: worker endpoint moved into /v1/mobile group above to avoid duplicate/ambiguous endpoints
