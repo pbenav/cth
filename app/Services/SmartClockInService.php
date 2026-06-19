@@ -407,6 +407,9 @@ class SmartClockInService
                 ? __('Clocked in successfully at :time (outside schedule)', ['time' => $nowTeamTz->format('H:i')])
                 : __('Clocked in successfully at :time', ['time' => $nowTeamTz->format('H:i')]);
 
+            // MTX Integration
+            \App\Jobs\SyncWorkdayWithMtx::dispatch($user->email, 'start', $source);
+
             return [
                 'success' => true,
                 'status_code' => self::STATUS_CLOCK_IN_SUCCESS,
@@ -427,7 +430,7 @@ class SmartClockInService
     /**
      * Execute the clock out action
      */
-    public function clockOut(User $user, int $eventId): array
+    public function clockOut(User $user, int $eventId, string $source = null): array
     {
         $teamTimezone = $this->getUserTimezone($user);
         
@@ -463,6 +466,9 @@ class SmartClockInService
 
             $startTime = $this->utcToTeamTimezone($event->start, $teamTimezone)
                 ->format('H:i');
+
+            // MTX Integration
+            \App\Jobs\SyncWorkdayWithMtx::dispatch($user->email, 'stop', $source);
 
             return [
                 'success' => true,

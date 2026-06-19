@@ -31,4 +31,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'mtx' => [
+        'url' => env('MTX_API_URL'),
+        'secret' => env('MTX_S2S_SECRET'),
+    ],
+
 ];

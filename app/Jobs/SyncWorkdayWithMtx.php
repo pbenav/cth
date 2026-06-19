@@ -1,0 +1,61 @@
+<?php
+
+namespace App\Jobs;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+
+class SyncWorkdayWithMtx implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public $email;
+    public $cthAction; // 'start' or 'stop'
+    public $source;
+
+    public function __construct(string $email, string $cthAction, string $source = null)
+    {
+        $this->email = $email;
+        $this->cthAction = $cthAction;
+        $this->source = $source;
+    }
+
+    public function handle(): void
+    {
+        // Avoid infinite loop if the request came from MTX
+        if ($this->source === 's2s_api') {
+            return;
+        }
+
+        $apiUrl = rtrim(config('services.mtx.url'), '/');
+        $secret = config('services.mtx.secret');
+
+        if (!$apiUrl || !$secret) {
+            return; // Not configured
+        }
+
+        try {
+            $response = Http::withHeaders(['X-S2S-Secret' => $secret])
+                ->acceptJson()
+                ->post($apiUrl . '/api/s2s/sync-workday', [
+                    'email' => $this->email,
+                    'action' => $this->cthAction,
+                ]);
+
+            if (!$response->successful()) {
+                if ($response->status() !== 404) {
+                    Log::error('MTX Sync: Failed to sync with MTX via S2S', ['email' => $this->email, 'response' => $response->body()]);
+                }
+            } else {
+                Log::info('MTX Sync: Successfully synced ' . $this->cthAction . ' to MTX', ['email' => $this->email]);
+            }
+        } catch (\Exception $e) {
+            Log::error('MTX Sync Exception: ' . $e->getMessage(), ['email' => $this->email]);
+        }
+    }
+}
