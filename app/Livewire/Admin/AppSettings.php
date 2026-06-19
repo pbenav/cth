@@ -21,6 +21,8 @@ class AppSettings extends Component
             'LEGAL_REPRESENTATIVE' => env('LEGAL_REPRESENTATIVE', 'Pablo Benavides'),
             'LEGAL_COMPANY' => env('LEGAL_COMPANY', 'Sientia'),
             'LEGAL_EMAIL' => env('LEGAL_EMAIL', 'info@sientia.com'),
+            'MTX_URL' => env('MTX_URL', 'https://mtx.sientia.com'),
+            'MTX_S2S_SECRET' => env('MTX_S2S_SECRET', ''),
         ];
     }
 

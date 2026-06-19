@@ -72,6 +72,35 @@
                 <x-input id="legal_email" type="email" class="mt-1 block w-full" wire:model="state.LEGAL_EMAIL" />
                 <x-input-error for="state.LEGAL_EMAIL" class="mt-2" />
             </div>
+
+            <!-- Divider -->
+            <div class="col-span-6 border-t border-gray-100 dark:border-gray-800 my-4"></div>
+
+            <!-- Integrations Section Header -->
+            <div class="col-span-6">
+                <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-1">
+                    🔗 {{ __('Integración con MTX') }}
+                </h3>
+                <p class="text-xs text-gray-500">
+                    {{ __('Configura la URL y la clave compartida (Secret) para conectarte con la plataforma de administración Sientia MTX.') }}
+                </p>
+            </div>
+
+            <!-- MTX URL -->
+            <div class="col-span-6 sm:col-span-4">
+                <x-label for="mtx_url" value="{{ __('URL del Servidor MTX') }}" />
+                <x-input id="mtx_url" type="url" class="mt-1 block w-full bg-gray-50 dark:bg-gray-800" wire:model="state.MTX_URL" placeholder="https://mtx.sientia.com" />
+                <x-input-error for="state.MTX_URL" class="mt-2" />
+                <p class="text-[11px] text-gray-400 mt-1">La URL base de MTX (ej: https://mtx.sientia.com).</p>
+            </div>
+
+            <!-- MTX Secret -->
+            <div class="col-span-6 sm:col-span-4">
+                <x-label for="mtx_secret" value="{{ __('Clave de Seguridad S2S') }}" />
+                <x-input id="mtx_secret" type="password" class="mt-1 block w-full bg-gray-50 dark:bg-gray-800" wire:model="state.MTX_S2S_SECRET" />
+                <x-input-error for="state.MTX_S2S_SECRET" class="mt-2" />
+                <p class="text-[11px] text-gray-400 mt-1">Debe coincidir exactamente con el Secret configurado en el servidor MTX.</p>
+            </div>
         </x-slot>
 
         <x-slot name="actions">
