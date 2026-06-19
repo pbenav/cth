@@ -17,12 +17,14 @@ class SyncWorkdayWithMtx implements ShouldQueue
     public $email;
     public $cthAction; // 'start' or 'stop'
     public $source;
+    public $timestamp;
 
-    public function __construct(string $email, string $cthAction, string $source = null)
+    public function __construct(string $email, string $cthAction, string $source = null, string $timestamp = null)
     {
         $this->email = $email;
         $this->cthAction = $cthAction;
         $this->source = $source;
+        $this->timestamp = $timestamp;
     }
 
     public function handle(): void
@@ -40,12 +42,18 @@ class SyncWorkdayWithMtx implements ShouldQueue
         }
 
         try {
+            $payload = [
+                'email' => $this->email,
+                'action' => $this->cthAction,
+            ];
+            
+            if ($this->timestamp) {
+                $payload['timestamp'] = $this->timestamp;
+            }
+
             $response = Http::withHeaders(['X-S2S-Secret' => $secret])
                 ->acceptJson()
-                ->post($apiUrl . '/api/s2s/sync-workday', [
-                    'email' => $this->email,
-                    'action' => $this->cthAction,
-                ]);
+                ->post($apiUrl . '/api/s2s/sync-workday', $payload);
 
             if (!$response->successful()) {
                 if ($response->status() !== 404) {

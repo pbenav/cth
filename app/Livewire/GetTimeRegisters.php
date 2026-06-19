@@ -242,6 +242,9 @@ class GetTimeRegisters extends Component
                 $this->dispatch('incompleteEventConfirmation');
             }
         }
+
+        // IMPORTANT: Ensure MTX represents the current active state
+        app(\App\Services\SmartClockInService::class)->syncCurrentStateToMtx($ev->user, 'manual_confirm');
     }
 
     /**

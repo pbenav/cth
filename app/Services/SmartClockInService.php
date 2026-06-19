@@ -1038,15 +1038,24 @@ class SmartClockInService
 
     public function syncCurrentStateToMtx(\App\Models\User $user, string $source = 'system')
     {
-        // Check if user has an open workday shift right now
-        $hasOpenShift = \App\Models\Event::where('user_id', $user->id)
-            ->where('is_open', true)
+        // Find the most recent workday event to get the exact timestamp
+        $latestEvent = \App\Models\Event::where('user_id', $user->id)
             ->whereHas('eventType', function($q) {
                 $q->where('is_workday_type', true);
             })
-            ->exists();
+            ->orderBy('start', 'desc')
+            ->first();
 
-        $action = $hasOpenShift ? 'start' : 'stop';
-        \App\Jobs\SyncWorkdayWithMtx::dispatch($user->email, $action, $source);
+        $action = 'stop';
+        $timestamp = null;
+
+        if ($latestEvent) {
+            $action = $latestEvent->is_open ? 'start' : 'stop';
+            // UTC to local or use UTC directly? MTX expects UTC, or MTX timezone?
+            // Actually, start and end in DB are UTC strings (e.g., '2026-06-19 14:00:00').
+            $timestamp = $latestEvent->is_open ? $latestEvent->start : $latestEvent->end;
+        }
+
+        \App\Jobs\SyncWorkdayWithMtx::dispatch($user->email, $action, $source, $timestamp);
     }
 }
