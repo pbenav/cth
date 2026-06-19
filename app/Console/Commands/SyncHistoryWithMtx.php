@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Http;
 
 class SyncHistoryWithMtx extends Command
 {
-    protected $signature = 'mtx:sync-history {--from= : The start date in YYYY-MM-DD format}';
+    protected $signature = 'mtx:sync-history {--from= : The start date in YYYY-MM-DD format} {--y : Automatically confirm the destructive action}';
     protected $description = 'Synchronize historical workday events from CTH to MTX';
 
     public function handle()
@@ -30,7 +30,7 @@ class SyncHistoryWithMtx extends Command
         $this->warn("⚠️ ATENCIÓN: Esta acción reemplazará todos los registros de jornada en MTX a partir del " . $fromDate->toDateString() . ".");
         $this->warn("Cualquier registro de jornada (workday) creado manualmente en MTX después de esta fecha será eliminado de forma permanente.");
         
-        if (!$this->confirm('¿Estás seguro de que deseas continuar con la sincronización?')) {
+        if (!$this->option('y') && !$this->confirm('¿Estás seguro de que deseas continuar con la sincronización?')) {
             $this->info('Operación cancelada por el usuario.');
             return 0;
         }
