@@ -38,31 +38,49 @@ class S2SIntegrationController extends Controller
             $cthNextAction = $clockAction['action'] ?? null;
             $cthCanClock = $clockAction['can_clock'] ?? false;
 
-            $shouldClock = false;
-            if ($action === 'start' && in_array($cthNextAction, ['clock_in', 'confirm_exceptional_clock_in'])) {
-                $shouldClock = true;
-            } elseif ($action === 'stop' && in_array($cthNextAction, ['clock_out', 'working_options'])) {
-                $shouldClock = true;
-            }
+            if ($action === 'start') {
+                // Si ya está trabajando en CTH (el próximo paso es clock_out o working_options),
+                // no abrimos un nuevo turno ni damos error. Entendemos que es un cambio de puesto de trabajo en MTX.
+                if (in_array($cthNextAction, ['clock_out', 'working_options'])) {
+                    return response()->json([
+                        'success' => true, 
+                        'status' => 'already_working', 
+                        'action_taken' => false, 
+                        'message' => 'Cambio de puesto de trabajo en MTX, manteniendo turno de CTH activo.'
+                    ]);
+                }
 
-            if ($shouldClock) {
-                // Determine event type for clock in
-                if ($action === 'start') {
-                    $eventTypeId = $clockAction['event_type_id'] ?? null;
-                    if (!$eventTypeId) {
-                        return response()->json(['message' => 'No event type available for clock in'], 400);
-                    }
-                    $overtime = $clockAction['overtime'] ?? false;
-                    $this->smartClockInService->clockIn($user, $eventTypeId, $overtime, 's2s_api', 'Sincronizado desde MTX');
-                } else {
+                // Si no está trabajando, procedemos a iniciar el turno en CTH
+                $eventTypeId = $clockAction['event_type_id'] ?? null;
+                if (!$eventTypeId) {
+                    // Buscar el tipo de evento de trabajo por defecto para garantizar el fichaje de entrada
+                    $defaultEventType = \App\Models\EventType::where('is_work_time', true)->first();
+                    $eventTypeId = $defaultEventType ? $defaultEventType->id : null;
+                }
+
+                if (!$eventTypeId) {
+                    return response()->json(['message' => 'No event type available for clock in'], 400);
+                }
+
+                $overtime = $clockAction['overtime'] ?? false;
+                $this->smartClockInService->clockIn($user, $eventTypeId, $overtime, 's2s_api', 'Sincronizado desde MTX');
+
+                return response()->json(['success' => true, 'status' => 'started', 'action_taken' => true]);
+
+            } elseif ($action === 'stop') {
+                // El stop solo llega cuando el usuario pulsa explícitamente el botón terminar en MTX
+                if (in_array($cthNextAction, ['clock_out', 'working_options'])) {
                     $openEventId = $clockAction['open_event_id'] ?? null;
                     if ($openEventId) {
                         $this->smartClockInService->clockOut($user, $openEventId);
+                        return response()->json(['success' => true, 'status' => 'stopped', 'action_taken' => true]);
                     }
                 }
+
+                return response()->json(['success' => true, 'status' => 'not_working', 'action_taken' => false]);
             }
 
-            return response()->json(['success' => true, 'action_taken' => $shouldClock]);
+            return response()->json(['success' => true, 'action_taken' => false]);
         } catch (\Exception $e) {
             Log::error('S2S CTH Sync Error: ' . $e->getMessage());
             return response()->json(['message' => 'Server error'], 500);
