@@ -337,9 +337,7 @@ class User extends Authenticatable
             return false;
         }
 
-        $roleObject = \Laravel\Jetstream\Jetstream::role($teamRole->key);
-
-        return $roleObject && $roleObject->key === $role;
+        return $teamRole->key === $role;
     }
 
     /**
