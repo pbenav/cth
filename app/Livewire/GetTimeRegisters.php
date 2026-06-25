@@ -546,13 +546,42 @@ class GetTimeRegisters extends Component
     }
 
     /**
-     * Mark the events as ready to load.
+     * Mark the events as ready to load and calculate pagination page if targetEventId is present.
      *
      * @return void
      */
     public function loadEvents(): void
     {
         $this->readyonload = true;
+
+        if ($this->targetEventId) {
+            $targetEvent = Event::find($this->targetEventId);
+            if ($targetEvent) {
+                $query = Event::query()->with(['user', 'eventType', 'team']);
+                $this->applyFilters($query);
+
+                if ($this->sort === 'name') {
+                    $query->join('users', 'events.user_id', '=', 'users.id')
+                        ->select('events.id')
+                        ->orderBy('users.family_name1', $this->direction)
+                        ->orderBy('users.name', $this->direction);
+                } else {
+                    $query->select('events.id')->orderBy('events.' . $this->sort, $this->direction);
+                }
+                
+                if ($this->sort !== 'start') {
+                    $query->orderBy('events.start', 'desc');
+                }
+
+                $ids = $query->pluck('events.id')->toArray();
+                $pos = array_search($this->targetEventId, $ids);
+
+                if ($pos !== false) {
+                    $page = (int) floor($pos / ((int)$this->qtytoshow)) + 1;
+                    $this->setPage($page);
+                }
+            }
+        }
     }
 
     /**
