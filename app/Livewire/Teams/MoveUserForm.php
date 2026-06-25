@@ -30,6 +30,7 @@ class MoveUserForm extends Component
             $this->eligibleTeams = Team::where('id', '!=', $this->team->id)->get();
         } else {
             // Filter teams where user can administer
+            $authUser->load(['ownedTeams.users', 'teams.users']);
             $this->eligibleTeams = $authUser->allTeams()->filter(function ($t) use ($authUser) {
                 return $authUser->ownsTeam($t) || $authUser->hasTeamRole($t, 'admin');
             })->where('id', '!=', $this->team->id);
@@ -85,6 +86,9 @@ class MoveUserForm extends Component
                 }
             }
         }
+
+        // Cargar explícitamente la relación teams del usuario para evitar Lazy Loading en teamRole y belongsToTeam
+        $this->user->load('teams');
 
         // Get the user's role in the source team, or default to 'editor'
         $role = optional($this->user->teamRole($this->team))->key ?? 'editor';
