@@ -315,6 +315,34 @@ class User extends Authenticatable
     }
 
     /**
+     * Determine if the user has the given role on the given team.
+     * Overrides Jetstream's HasTeams trait to prevent null TypeError in PHP 8.4.
+     *
+     * @param  mixed  $team
+     * @param  string  $role
+     * @return bool
+     */
+    public function hasTeamRole($team, string $role): bool
+    {
+        if ($this->ownsTeam($team)) {
+            return true;
+        }
+
+        if (!$this->belongsToTeam($team)) {
+            return false;
+        }
+
+        $teamRole = $this->teamRole($team);
+        if (!$teamRole || empty($teamRole->key)) {
+            return false;
+        }
+
+        $roleObject = \Laravel\Jetstream\Jetstream::role($teamRole->key);
+
+        return $roleObject && $roleObject->key === $role;
+    }
+
+    /**
      * Check if the user has the inspector role in the current team.
      *
      * @return boolean
