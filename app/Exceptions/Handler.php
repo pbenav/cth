@@ -4,6 +4,8 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use PDOException;
+use Illuminate\Database\QueryException;
 
 class Handler extends ExceptionHandler
 {
@@ -111,5 +113,48 @@ class Handler extends ExceptionHandler
             // For non-admins or API requests, silently fail (already logged)
             return null;
         });
+
+        // Manejar errores de conexión rechazada a la base de datos
+        $this->renderable(function (PDOException $e, $request) {
+            if ($this->isConnectionRefused($e)) {
+                if ($request->expectsJson()) {
+                    return response()->json([
+                        'message' => __('No se pudo establecer la conexión con la base de datos. Por favor, inténtelo de nuevo más tarde.')
+                    ], 503);
+                }
+                
+                return response()->view('errors.503', [
+                    'exception' => $e,
+                    'message' => __('No se pudo establecer la conexión con la base de datos. Por favor, inténtelo de nuevo más tarde.')
+                ], 503);
+            }
+        });
+
+        $this->renderable(function (QueryException $e, $request) {
+            if ($this->isConnectionRefused($e)) {
+                if ($request->expectsJson()) {
+                    return response()->json([
+                        'message' => __('No se pudo establecer la conexión con la base de datos. Por favor, inténtelo de nuevo más tarde.')
+                    ], 503);
+                }
+                
+                return response()->view('errors.503', [
+                    'exception' => $e,
+                    'message' => __('No se pudo establecer la conexión con la base de datos. Por favor, inténtelo de nuevo más tarde.')
+                ], 503);
+            }
+        });
+    }
+
+    /**
+     * Determina si la excepción es un error de conexión rechazada a la base de datos.
+     *
+     * @param  \Throwable  $e
+     * @return bool
+     */
+    protected function isConnectionRefused(Throwable $e): bool
+    {
+        $message = $e->getMessage();
+        return str_contains($message, '2002') || str_contains($message, 'Connection refused');
     }
 }
