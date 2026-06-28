@@ -1098,13 +1098,18 @@ class SmartClockInService
         if ($openEvents->count() > 0) {
             $hasUsedGrace = (bool) $user->meta()->where('meta_key', 'has_used_grace_closing')->value('meta_value');
             
+            // Construir lista de fechas para máxima transparencia
+            $datesList = $openEvents->map(function($ev) {
+                return $ev->start ? \Carbon\Carbon::parse($ev->start)->format('d/m/Y H:i') : 'Fecha desconocida';
+            })->implode(', ');
+
             if (!$hasUsedGrace) {
                 return [
                     'can_clock' => false,
                     'requires_closing' => true,
                     'grace_closing_available' => true,
                     'open_events_count' => $openEvents->count(),
-                    'message' => __('Tienes :count turnos anteriores sin cerrar. Por ser la primera vez, puedes cerrarlos automáticamente basándonos en tu horario habitual.', ['count' => $openEvents->count()]),
+                    'message' => __('Tienes :count turno(s) anterior(es) sin cerrar (:dates). Por ser la primera vez, puedes cerrarlos automáticamente basándonos en tu horario habitual.', ['count' => $openEvents->count(), 'dates' => $datesList]),
                     'status_code' => 'GRACE_CLOSING_PENDING'
                 ];
             } else {
@@ -1113,7 +1118,7 @@ class SmartClockInService
                     'requires_closing' => true,
                     'grace_closing_available' => false,
                     'open_events_count' => $openEvents->count(),
-                    'message' => __('No puedes iniciar un nuevo turno porque tienes un turno anterior sin cerrar. Debes cerrar tu jornada anterior manualmente indicando la hora real de salida.', ['count' => $openEvents->count()]),
+                    'message' => __('No puedes iniciar un nuevo turno porque tienes turno(s) anterior(es) sin cerrar (:dates). Debes cerrar tu jornada anterior manualmente indicando la hora real de salida.', ['count' => $openEvents->count(), 'dates' => $datesList]),
                     'status_code' => 'STRICT_CLOSING_REQUIRED'
                 ];
             }
