@@ -58,7 +58,7 @@ class SyncHistoryWithMtx extends Command
             $payloadEvents[] = [
                 'email' => $event->user->email,
                 'start_at' => \Carbon\Carbon::parse($event->start, 'UTC')->toIso8601String(),
-                'end_at' => $event->end ? \Carbon\Carbon::parse($event->end, 'UTC')->toIso8601String() : null,
+                'end_at' => ($event->end && !$event->is_open) ? \Carbon\Carbon::parse($event->end, 'UTC')->toIso8601String() : null,
             ];
         }
 
