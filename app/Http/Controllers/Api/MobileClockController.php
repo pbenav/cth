@@ -157,6 +157,19 @@ class MobileClockController extends Controller
             // Get current clock status and determine action
             $clockAction = $this->smartClockInService->getClockAction($user);
 
+            if (($clockAction['action'] ?? null) === 'clock_in') {
+                $graceCheck = $this->smartClockInService->checkOpenEventsGraceBeforeClockIn($user);
+                if (!$graceCheck['can_clock']) {
+                    return response()->json([
+                        'message' => $graceCheck['message'],
+                        'status_code' => $graceCheck['status_code'],
+                        'data' => [
+                            'grace_closing_available' => $graceCheck['grace_closing_available'] ?? false,
+                        ]
+                    ], 400);
+                }
+            }
+
             if (empty($clockAction['can_clock']) || !$clockAction['can_clock']) {
                 // For mobile API, automatically allow exceptional clock-ins
                 if (($clockAction['action'] ?? null) === 'confirm_exceptional_clock_in') {
@@ -513,6 +526,17 @@ class MobileClockController extends Controller
         try {
             $clockAction = $this->smartClockInService->getClockAction($user);
             $clockAction = $clockAction ?? [];
+            
+            if (($clockAction['action'] ?? null) === 'clock_in') {
+                $graceCheck = $this->smartClockInService->checkOpenEventsGraceBeforeClockIn($user);
+                if (!$graceCheck['can_clock']) {
+                    $clockAction['can_clock'] = false;
+                    $clockAction['action'] = 'grace_or_strict_closing';
+                    $clockAction['message'] = $graceCheck['message'];
+                    $clockAction['status_code'] = $graceCheck['status_code'];
+                    $clockAction['grace_closing_available'] = $graceCheck['grace_closing_available'] ?? false;
+                }
+            }
             
             if (config('app.debug')) {
                 Log::debug('[MobileClockController][status] Clock action:', [
@@ -1000,6 +1024,29 @@ class MobileClockController extends Controller
                 'total_exits' => 0,
                 'current_status' => 'unknown'
             ];
+        }
+    }
+
+    /**
+     * Aplica el cierre automático inteligente basándose en los tramos horarios del usuario (Medida de Gracia).
+     */
+    public function applyGraceClosing(Request $request): JsonResponse
+    {
+        $user = $request->user();
+        if (!$user) {
+            return response()->json(['message' => 'No autenticado'], 401);
+        }
+
+        if ($request->filled('user_code') && $request->input('user_code') !== $user->user_code) {
+            return response()->json(['message' => 'Usuario no autorizado'], 403);
+        }
+
+        try {
+            $result = $this->smartClockInService->applyGraceClosing($user);
+            return response()->json($result, $result['success'] ? 200 : 400);
+        } catch (\Exception $e) {
+            Log::error('Mobile applyGraceClosing error: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Error al aplicar el cierre automático'], 500);
         }
     }
 }

@@ -220,6 +220,25 @@
                     <p class="mt-3 text-sm text-gray-600 dark:text-gray-400 text-center">
                         {{ ($clockData['action'] ?? '') === 'clock_in' ? __('Ready to start your shift') : __('Ready to end your shift') }}
                     </p>
+            @elseif(($clockData['action'] ?? '') === 'grace_or_strict_closing')
+                <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-exclamation-triangle text-yellow-600 dark:text-yellow-400 mr-2"></i>
+                        <p class="text-yellow-800 dark:text-yellow-200 font-medium">{{ __('Gestión de turnos pendientes') }}</p>
+                    </div>
+                    <p class="text-sm text-yellow-700 dark:text-yellow-300 mb-4">
+                        {{ $clockData['message'] }}
+                    </p>
+                    @if($clockData['grace_closing_available'] ?? false)
+                        <div class="flex flex-col gap-3">
+                            <button
+                                wire:click="applyGraceClosing"
+                                class="w-full flex justify-center items-center px-4 py-3 text-sm font-medium text-white bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-700 hover:to-yellow-800 rounded-lg hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-all duration-200">
+                                <i class="fas fa-magic mr-2"></i><span>{{ __('Cerrar turnos antiguos automáticamente (Medida de Gracia)') }}</span>
+                            </button>
+                        </div>
+                    @endif
+                </div>
             @else
 
                 @php

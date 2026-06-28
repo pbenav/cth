@@ -1038,8 +1038,9 @@ class SmartClockInService
 
     public function syncCurrentStateToMtx(\App\Models\User $user, string $source = 'system')
     {
-        // Find the most recent workday event to get the exact timestamp
-        $latestEvent = \App\Models\Event::with(['team', 'eventType'])->where('user_id', $user->id)
+        // 1. Buscar si queda ALGÚN evento de jornada abierto (gestión de múltiples eventos concurrentes)
+        $activeEvent = \App\Models\Event::with(['team', 'eventType'])->where('user_id', $user->id)
+            ->where('is_open', true)
             ->whereHas('eventType', function($q) {
                 $q->where('is_workday_type', true);
             })
@@ -1049,19 +1050,151 @@ class SmartClockInService
         $action = 'stop';
         $timestamp = null;
 
-        if ($latestEvent) {
-            $action = $latestEvent->is_open ? 'start' : 'stop';
-            $rawTimestamp = $latestEvent->is_open ? $latestEvent->start : $latestEvent->end;
-            
-            // The DB stores strings in UTC. We must explicitely parse them as UTC
-            // and send as ISO8601 so MTX knows exactly what time it is, avoiding timezone offsets
+        if ($activeEvent) {
+            // Mientras haya al menos un evento abierto, para MTX el usuario sigue trabajando
+            $action = 'start';
+            $rawTimestamp = $activeEvent->start;
             if ($rawTimestamp) {
                 $timestamp = \Carbon\Carbon::parse($rawTimestamp, 'UTC')->toIso8601String();
             }
         } else {
-            $action = 'delete_active';
+            // Si no hay ningún evento abierto, buscamos el último cerrado para obtener la hora exacta de fin
+            $lastClosedEvent = \App\Models\Event::with(['team', 'eventType'])->where('user_id', $user->id)
+                ->where('is_open', false)
+                ->whereHas('eventType', function($q) {
+                    $q->where('is_workday_type', true);
+                })
+                ->orderBy('end', 'desc')
+                ->first();
+
+            if ($lastClosedEvent) {
+                $action = 'stop';
+                $rawTimestamp = $lastClosedEvent->end;
+                if ($rawTimestamp) {
+                    $timestamp = \Carbon\Carbon::parse($rawTimestamp, 'UTC')->toIso8601String();
+                }
+            } else {
+                $action = 'delete_active';
+            }
         }
 
         \App\Jobs\SyncWorkdayWithMtx::dispatch($user->email, $action, $source, $timestamp);
+    }
+
+    /**
+     * Comprueba si el usuario tiene eventos abiertos de jornada y el estado de la medida de gracia.
+     */
+    public function checkOpenEventsGraceBeforeClockIn(\App\Models\User $user): array
+    {
+        $openEvents = \App\Models\Event::with('eventType')
+            ->where('user_id', $user->id)
+            ->where('is_open', true)
+            ->whereHas('eventType', function($q) {
+                $q->where('is_workday_type', true);
+            })
+            ->orderBy('start', 'asc')
+            ->get();
+
+        if ($openEvents->count() > 0) {
+            $hasUsedGrace = (bool) $user->meta()->where('meta_key', 'has_used_grace_closing')->value('meta_value');
+            
+            if (!$hasUsedGrace) {
+                return [
+                    'can_clock' => false,
+                    'requires_closing' => true,
+                    'grace_closing_available' => true,
+                    'open_events_count' => $openEvents->count(),
+                    'message' => __('Tienes :count turnos anteriores sin cerrar. Por ser la primera vez, puedes cerrarlos automáticamente basándonos en tu horario habitual.', ['count' => $openEvents->count()]),
+                    'status_code' => 'GRACE_CLOSING_PENDING'
+                ];
+            } else {
+                return [
+                    'can_clock' => false,
+                    'requires_closing' => true,
+                    'grace_closing_available' => false,
+                    'open_events_count' => $openEvents->count(),
+                    'message' => __('No puedes iniciar un nuevo turno porque tienes un turno anterior sin cerrar. Debes cerrar tu jornada anterior manualmente indicando la hora real de salida.', ['count' => $openEvents->count()]),
+                    'status_code' => 'STRICT_CLOSING_REQUIRED'
+                ];
+            }
+        }
+
+        return [
+            'can_clock' => true,
+            'requires_closing' => false,
+            'status_code' => 'OK'
+        ];
+    }
+
+    /**
+     * Aplica el cierre automático inteligente basándose en los tramos horarios del usuario (Medida de Gracia).
+     */
+    public function applyGraceClosing(\App\Models\User $user): array
+    {
+        $hasUsedGrace = (bool) $user->meta()->where('meta_key', 'has_used_grace_closing')->value('meta_value');
+        if ($hasUsedGrace) {
+            return ['success' => false, 'message' => __('Ya has hecho uso de la medida de gracia anteriormente.')];
+        }
+
+        $openEvents = \App\Models\Event::with('eventType')
+            ->where('user_id', $user->id)
+            ->where('is_open', true)
+            ->whereHas('eventType', function($q) {
+                $q->where('is_workday_type', true);
+            })
+            ->orderBy('start', 'asc')
+            ->get();
+
+        if ($openEvents->count() === 0) {
+            return ['success' => true, 'message' => __('No hay eventos abiertos para cerrar.')];
+        }
+
+        // Obtener horario del usuario para calcular el fin del tramo
+        $scheduleMeta = $user->meta->where('meta_key', 'work_schedule')->first();
+        $schedule = $scheduleMeta ? json_decode($scheduleMeta->meta_value, true) : [];
+        $teamTimezone = $this->getUserTimezone($user);
+
+        foreach ($openEvents as $event) {
+            $startCarbon = \Carbon\Carbon::parse($event->start, 'UTC')->setTimezone($teamTimezone);
+            $dayOfWeek = strtolower($startCarbon->format('l'));
+            
+            $calculatedEnd = null;
+
+            if (!empty($schedule)) {
+                // Buscar tramo de ese día
+                foreach ($schedule as $slot) {
+                    if (isset($slot['day']) && strtolower($slot['day']) === $dayOfWeek) {
+                        // Tomar la hora de fin del tramo
+                        if (isset($slot['end'])) {
+                            $endSlotTime = \Carbon\Carbon::parse($startCarbon->format('Y-m-d') . ' ' . $slot['end'], $teamTimezone);
+                            if ($endSlotTime->gt($startCarbon)) {
+                                $calculatedEnd = $endSlotTime->setTimezone('UTC')->format('Y-m-d H:i:s');
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Fallback de seguridad si no se encontró tramo (ej. día libre o sin configurar): sumar 8 horas o fin del día
+            if (!$calculatedEnd) {
+                $calculatedEnd = $startCarbon->copy()->addHours(8)->setTimezone('UTC')->format('Y-m-d H:i:s');
+            }
+
+            $event->update([
+                'end' => $calculatedEnd,
+                'is_open' => false,
+                'is_closed_automatically' => true,
+                'observations' => trim($event->observations . "\n[Cierre automático por medida de gracia (ajuste a tramos horarios)]")
+            ]);
+        }
+
+        // Marcar la medida de gracia como gastada
+        $user->meta()->updateOrCreate(['meta_key' => 'has_used_grace_closing'], ['meta_value' => '1']);
+
+        // Sincronizar estado a MTX
+        $this->syncCurrentStateToMtx($user, 'grace_closing');
+
+        return ['success' => true, 'message' => __('Turnos abiertos cerrados correctamente según tu horario habitual.')];
     }
 }

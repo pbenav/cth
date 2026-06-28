@@ -38,6 +38,7 @@ Route::prefix('v1')->middleware('throttle:60,1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         // Clean API endpoints (Aliases for mobile app without /mobile prefix)
         Route::post('/clock', [MobileClockController::class, 'clock']);
+        Route::post('/clock/grace-closing', [MobileClockController::class, 'applyGraceClosing']);
         Route::post('/status', [MobileClockController::class, 'status']);
         Route::post('/team/switch', [MobileClockController::class, 'confirmTeamSwitch']); // Renamed for clarity
         Route::post('/sync', [MobileClockController::class, 'sync']);
@@ -59,6 +60,7 @@ Route::prefix('v1')->middleware('throttle:60,1')->group(function () {
         Route::prefix('mobile')->group(function () {
             // ... mapped to clean routes eventually
             Route::post('/clock', [MobileClockController::class, 'clock']);
+            Route::post('/clock/grace-closing', [MobileClockController::class, 'applyGraceClosing']);
             Route::post('/status', [MobileClockController::class, 'status']);
             Route::post('/confirm-team-switch', [MobileClockController::class, 'confirmTeamSwitch']);
             Route::post('/sync', [MobileClockController::class, 'sync']);

@@ -47,6 +47,17 @@ class SmartClockButton extends Component
         try {
             $this->clockData = $this->getSmartClockService()->getClockAction($user);
             
+            if (($this->clockData['action'] ?? null) === 'clock_in') {
+                $graceCheck = $this->getSmartClockService()->checkOpenEventsGraceBeforeClockIn($user);
+                if (!$graceCheck['can_clock']) {
+                    $this->clockData['can_clock'] = false;
+                    $this->clockData['action'] = 'grace_or_strict_closing';
+                    $this->clockData['message'] = $graceCheck['message'];
+                    $this->clockData['status_code'] = $graceCheck['status_code'];
+                    $this->clockData['grace_closing_available'] = $graceCheck['grace_closing_available'] ?? false;
+                }
+            }
+            
             $this->canClock = $this->clockData['can_clock'];
             $this->clockAction = $this->clockData['action'] ?? '';
             $this->errorMessage = '';
@@ -56,6 +67,21 @@ class SmartClockButton extends Component
             $this->errorMessage = __('Error loading clock data');
             $this->canClock = false;
             $this->clockData = [];
+        }
+    }
+
+    public function applyGraceClosing()
+    {
+        $user = Auth::user();
+        if (!$user) return;
+
+        $result = $this->getSmartClockService()->applyGraceClosing($user);
+        $this->message = $result['message'];
+        $this->messageType = $result['success'] ? 'success' : 'error';
+
+        if ($result['success']) {
+            $this->refreshClockData();
+            $this->dispatch('eventCreated');
         }
     }
 

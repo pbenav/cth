@@ -72,6 +72,18 @@ class S2SIntegrationController extends Controller
             $cthCanClock = $clockAction['can_clock'] ?? false;
 
             if ($action === 'start') {
+                // Verificamos primero si tiene eventos de jornada laboral abiertos (Medida de Gracia)
+                $graceCheck = $this->smartClockInService->checkOpenEventsGraceBeforeClockIn($user);
+                if (!$graceCheck['can_clock']) {
+                    return response()->json([
+                        'success' => false,
+                        'status' => $graceCheck['status_code'],
+                        'action_taken' => false,
+                        'message' => $graceCheck['message'],
+                        'grace_closing_available' => $graceCheck['grace_closing_available'] ?? false
+                    ], 400);
+                }
+
                 // Si ya está trabajando en CTH (el próximo paso es clock_out o working_options),
                 // no abrimos un nuevo turno ni damos error. Entendemos que es un cambio de puesto de trabajo en MTX.
                 if (in_array($cthNextAction, ['clock_out', 'working_options'])) {
@@ -99,6 +111,15 @@ class S2SIntegrationController extends Controller
                 $this->smartClockInService->clockIn($user, $eventTypeId, $overtime, 's2s_api', 'Sincronizado desde MTX');
 
                 return response()->json(['success' => true, 'status' => 'started', 'action_taken' => true]);
+
+            } elseif ($action === 'grace_closing') {
+                $result = $this->smartClockInService->applyGraceClosing($user);
+                return response()->json([
+                    'success' => $result['success'],
+                    'status' => $result['success'] ? 'grace_closing_applied' : 'grace_closing_failed',
+                    'action_taken' => $result['success'],
+                    'message' => $result['message']
+                ], $result['success'] ? 200 : 400);
 
             } elseif ($action === 'stop') {
                 // El stop solo llega cuando el usuario pulsa explícitamente el botón terminar en MTX

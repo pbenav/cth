@@ -34,10 +34,14 @@ class SyncWorkdayWithMtx implements ShouldQueue
             return;
         }
 
+        $user = \App\Models\User::where('email', $this->email)->first();
+        $userSecret = $user ? $user->meta()->where('meta_key', 'mtx_s2s_secret')->value('meta_value') : null;
+        
         $apiUrl = rtrim(config('services.mtx.url'), '/');
-        $secret = config('services.mtx.secret');
+        $secret = $userSecret ?: config('services.mtx.secret');
 
         if (!$apiUrl || !$secret) {
+            Log::warning('MTX Sync: Missing MTX URL or Secret for user', ['email' => $this->email]);
             return; // Not configured
         }
 
@@ -51,13 +55,14 @@ class SyncWorkdayWithMtx implements ShouldQueue
                 $payload['timestamp'] = $this->timestamp;
             }
 
-            $response = Http::withHeaders(['X-S2S-Secret' => $secret])
+            $response = Http::timeout(5)->withHeaders(['X-S2S-Secret' => $secret])
+                ->withToken($secret)
                 ->acceptJson()
                 ->post($apiUrl . '/api/s2s/sync-workday', $payload);
 
             if (!$response->successful()) {
                 if ($response->status() !== 404) {
-                    Log::error('MTX Sync: Failed to sync with MTX via S2S', ['email' => $this->email, 'response' => $response->body()]);
+                    Log::error('MTX Sync: Failed to sync with MTX via S2S', ['email' => $this->email, 'status' => $response->status(), 'response' => $response->body()]);
                 }
             } else {
                 Log::info('MTX Sync: Successfully synced ' . $this->cthAction . ' to MTX', ['email' => $this->email]);
