@@ -25,7 +25,7 @@ class LoginSecurityService
 
         $lastAttempt = FailedLoginAttempt::where('ip_address', $ip)->latest('timestamp')->first();
 
-        if ($lastAttempt && $lastAttempt->lockout_time && Carbon::now()->lessThan(Carbon::parse($lastAttempt->timestamp)->addSeconds($lastAttempt->lockout_time))) {
+        if ($lastAttempt && $lastAttempt->lockout_time > 0 && Carbon::now()->lessThan(Carbon::parse($lastAttempt->timestamp)->addSeconds($lastAttempt->lockout_time))) {
             $remaining = Carbon::parse($lastAttempt->timestamp)->addSeconds($lastAttempt->lockout_time)->diffInSeconds(Carbon::now());
             throw ValidationException::withMessages([
                 'email' => [trans('auth.throttle', ['seconds' => $remaining])],
@@ -69,8 +69,10 @@ class LoginSecurityService
 
         if ($attempts > config('security.login_delay.max_attempts_before_hard_lock')) {
             $lockoutTime = config('security.login_delay.hard_lock_duration_in_hours') * 3600;
+        } elseif ($attempts <= 3) {
+            $lockoutTime = 0; // Permitir hasta 3 intentos sin bloqueo
         } else {
-            $lockoutTime = config('security.login_delay.base') * (config('security.login_delay.factor') ** ($attempts - 1));
+            $lockoutTime = config('security.login_delay.base') * (config('security.login_delay.factor') ** ($attempts - 4));
         }
 
         FailedLoginAttempt::create([
