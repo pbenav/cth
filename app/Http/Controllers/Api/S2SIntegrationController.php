@@ -19,19 +19,52 @@ class S2SIntegrationController extends Controller
 
     public function syncWorkday(Request $request)
     {
-        // Simple shared secret validation
-        $secret = config('services.mtx.secret');
-        if (!$secret || $request->header('X-S2S-Secret') !== $secret) {
+        $isValid = false;
+        $user = auth('sanctum')->user();
+        $receivedSecret = $request->header('X-S2S-Secret') ?: $request->bearerToken();
+
+        if ($user) {
+            $isValid = true;
+        } elseif ($receivedSecret && str_contains($receivedSecret, '|')) {
+            // Validar token Sanctum explícitamente si viene por X-S2S-Secret
+            $token = \Laravel\Sanctum\PersonalAccessToken::findToken($receivedSecret);
+            if ($token && $token->tokenable) {
+                $user = $token->tokenable;
+                $isValid = true;
+            }
+        }
+
+        if (!$user) {
+            $email = $request->input('email');
+            $user = User::where('email', $email)->first();
+            if (!$user) {
+                return response()->json(['message' => 'User not found'], 404);
+            }
+        }
+
+        if (!$isValid) {
+            // Flexibilidad Total de Clave S2S (Global o Personalizada por Usuario en CTH)
+            $globalSecret = config('services.mtx.secret');
+            
+            // Verificamos si coincide con el global o si el usuario tiene una clave S2S vinculada en su perfil/metas
+            $userSecret = $user->meta()->where('meta_key', 'mtx_s2s_secret')->value('meta_value');
+            
+            if ($globalSecret && $receivedSecret === $globalSecret) {
+                $isValid = true;
+            } elseif ($userSecret && $receivedSecret === $userSecret) {
+                $isValid = true;
+            } elseif (!$globalSecret && !$userSecret && $receivedSecret) {
+                // Auto-asociar la clave global al usuario en su primer emparejamiento S2S para simplificar la vida al administrador
+                $user->meta()->create(['meta_key' => 'mtx_s2s_secret', 'meta_value' => $receivedSecret]);
+                $isValid = true;
+            }
+        }
+
+        if (!$isValid) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        $email = $request->input('email');
         $action = $request->input('action'); // 'start' or 'stop'
-
-        $user = User::where('email', $email)->first();
-        if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
-        }
 
         try {
             $clockAction = $this->smartClockInService->getClockAction($user);

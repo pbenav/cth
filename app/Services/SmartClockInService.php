@@ -439,7 +439,7 @@ class SmartClockInService
         $nowTeamTz = $this->utcToTeamTimezone($nowUTC->toDateTimeString(), $teamTimezone);
 
         try {
-            $event = Event::where('id', $eventId)
+            $event = Event::with(['team', 'eventType'])->where('id', $eventId)
                 ->where('user_id', $user->id)
                 ->where('is_open', true)
                 ->first();
@@ -494,7 +494,7 @@ class SmartClockInService
     public function clockOutWithAdjustment(User $user, int $eventId, string $adjustmentType): array
     {
         try {
-            $event = Event::where('id', $eventId)
+            $event = Event::with(['team', 'eventType'])->where('id', $eventId)
                 ->where('user_id', $user->id)
                 ->where('is_open', true)
                 ->first();
@@ -822,7 +822,7 @@ class SmartClockInService
 
         try {
             // Find and close the pause event
-            $pauseEvent = Event::where('id', $pauseEventId)
+            $pauseEvent = Event::with(['team', 'eventType'])->where('id', $pauseEventId)
                 ->where('user_id', $user->id)
                 ->where('is_open', true)
                 ->first();
@@ -1005,7 +1005,7 @@ class SmartClockInService
      */
     private function getOpenEvent(User $user, EventType $workdayEventType): ?Event
     {
-        return Event::where('user_id', $user->id)
+        return Event::with(['team', 'eventType'])->where('user_id', $user->id)
             ->where('event_type_id', $workdayEventType->id)
             ->where('is_open', true)
             ->whereNull('end')
@@ -1039,7 +1039,7 @@ class SmartClockInService
     public function syncCurrentStateToMtx(\App\Models\User $user, string $source = 'system')
     {
         // Find the most recent workday event to get the exact timestamp
-        $latestEvent = \App\Models\Event::where('user_id', $user->id)
+        $latestEvent = \App\Models\Event::with(['team', 'eventType'])->where('user_id', $user->id)
             ->whereHas('eventType', function($q) {
                 $q->where('is_workday_type', true);
             })

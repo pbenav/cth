@@ -20,6 +20,9 @@ trait HandlesTimezoneConversion
      */
     public function getEventTimezone($event): string
     {
+        if (!$event->relationLoaded('team')) {
+            $event->load('team');
+        }
         return $event->team->timezone ?? config('app.timezone');
     }
     

@@ -176,6 +176,9 @@ class Event extends Model
      */
     public function getPeriod()
     {
+        if (!$this->relationLoaded('eventType')) {
+            $this->load('eventType');
+        }
         if ($this->eventType && $this->eventType->is_all_day) {
             // IMPORTANTE: Convertir de UTC a zona horaria local antes de calcular
             $timezone = $this->getEventTimezone($this);
@@ -196,6 +199,9 @@ class Event extends Model
      */
     public function getPeriodForUser($user = null)
     {
+        if (!$this->relationLoaded('eventType')) {
+            $this->load('eventType');
+        }
         if ($this->eventType && $this->eventType->is_all_day) {
             $timezone = $this->getEventTimezone($this);
             
