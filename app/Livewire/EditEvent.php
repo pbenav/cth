@@ -96,7 +96,7 @@ class EditEvent extends Component
             return [
                 'start_date' => 'required|date',
                 'end_date' => 'required|date|after_or_equal:start_date',
-                'event.observations' => 'nullable|string|max:255',
+                'event.observations' => 'nullable|string|max:3000',
             ];
         }
 
@@ -105,7 +105,7 @@ class EditEvent extends Component
             'start_time' => 'required',
             'end_date' => 'required|date|after_or_equal:start_date',
             'end_time' => 'required',
-            'event.observations' => 'nullable|string|max:255',
+            'event.observations' => 'nullable|string|max:3000',
         ];
     }
 

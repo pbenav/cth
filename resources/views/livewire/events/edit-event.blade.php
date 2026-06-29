@@ -131,7 +131,7 @@
                                   wire:model="event.observations"
                                   rows="4"
                                   placeholder="{{ __('event.observations.placeholder') }}"
-                                  maxlength="255"
+                                  maxlength="3000"
                                   {{ $canBeModified ? '' : 'disabled' }}></textarea>
                         <x-input-error for='event.observations' class="mt-1" />
                     </div>
