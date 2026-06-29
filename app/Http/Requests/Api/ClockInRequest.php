@@ -11,6 +11,15 @@ class ClockInRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'work_center_code' => $this->has('work_center_code') && $this->work_center_code !== null ? (string) $this->work_center_code : null,
+            'user_code' => $this->has('user_code') && $this->user_code !== null ? (string) $this->user_code : null,
+            'manual_work_center_code' => $this->has('manual_work_center_code') && $this->manual_work_center_code !== null ? (string) $this->manual_work_center_code : null,
+        ]);
+    }
+
     public function rules()
     {
         return [
