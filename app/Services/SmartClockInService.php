@@ -1103,32 +1103,19 @@ class SmartClockInService
             ->get();
 
         if ($openEvents->count() > 0) {
-            $hasUsedGrace = (bool) $user->meta()->where('meta_key', 'has_used_grace_closing')->value('meta_value');
-            
             // Construir lista de fechas para máxima transparencia
             $datesList = $openEvents->map(function($ev) {
                 return $ev->start ? \Carbon\Carbon::parse($ev->start)->format('d/m/Y H:i') : 'Fecha desconocida';
             })->implode(', ');
 
-            if (!$hasUsedGrace) {
-                return [
-                    'can_clock' => false,
-                    'requires_closing' => true,
-                    'grace_closing_available' => true,
-                    'open_events_count' => $openEvents->count(),
-                    'message' => __('Tienes :count turno(s) anterior(es) sin cerrar (:dates). Por ser la primera vez, puedes cerrarlos automáticamente basándonos en tu horario habitual.', ['count' => $openEvents->count(), 'dates' => $datesList]),
-                    'status_code' => 'GRACE_CLOSING_PENDING'
-                ];
-            } else {
-                return [
-                    'can_clock' => false,
-                    'requires_closing' => true,
-                    'grace_closing_available' => false,
-                    'open_events_count' => $openEvents->count(),
-                    'message' => __('No puedes iniciar un nuevo turno porque tienes turno(s) anterior(es) sin cerrar (:dates). Debes cerrar tu jornada anterior manualmente indicando la hora real de salida.', ['count' => $openEvents->count(), 'dates' => $datesList]),
-                    'status_code' => 'STRICT_CLOSING_REQUIRED'
-                ];
-            }
+            return [
+                'can_clock' => false,
+                'requires_closing' => true,
+                'grace_closing_available' => true,
+                'open_events_count' => $openEvents->count(),
+                'message' => __('Tienes :count turno(s) anterior(es) sin cerrar (:dates). Puedes cerrarlos automáticamente basándonos en tu horario habitual para continuar.', ['count' => $openEvents->count(), 'dates' => $datesList]),
+                'status_code' => 'GRACE_CLOSING_PENDING'
+            ];
         }
 
         return [
@@ -1143,10 +1130,6 @@ class SmartClockInService
      */
     public function applyGraceClosing(\App\Models\User $user): array
     {
-        $hasUsedGrace = (bool) $user->meta()->where('meta_key', 'has_used_grace_closing')->value('meta_value');
-        if ($hasUsedGrace) {
-            return ['success' => false, 'message' => __('Ya has hecho uso de la medida de gracia anteriormente.')];
-        }
 
         $openEvents = \App\Models\Event::with('eventType')
             ->where('user_id', $user->id)
