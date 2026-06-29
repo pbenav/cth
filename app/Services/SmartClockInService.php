@@ -1103,9 +1103,10 @@ class SmartClockInService
             ->get();
 
         if ($openEvents->count() > 0) {
+            $teamTimezone = $this->getUserTimezone($user);
             // Construir lista de fechas para máxima transparencia
-            $datesList = $openEvents->map(function($ev) {
-                return $ev->start ? \Carbon\Carbon::parse($ev->start)->format('d/m/Y H:i') : 'Fecha desconocida';
+            $datesList = $openEvents->map(function($ev) use ($teamTimezone) {
+                return $ev->start ? \Carbon\Carbon::parse($ev->start, 'UTC')->setTimezone($teamTimezone)->format('d/m/Y H:i') : 'Fecha desconocida';
             })->implode(', ');
 
             return [
