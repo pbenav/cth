@@ -1195,6 +1195,6 @@ class SmartClockInService
         // Sincronizar estado a MTX
         $this->syncCurrentStateToMtx($user, 'grace_closing');
 
-        return ['success' => true, 'message' => __('Turnos abiertos cerrados correctamente según tu horario habitual.')];
+        return ['success' => true, 'message' => __('Tus jornadas pendientes se han ajustado y cerrado correctamente según tu horario habitual.')];
     }
 }
