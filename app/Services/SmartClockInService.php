@@ -628,9 +628,16 @@ class SmartClockInService
             ];
         }
         
-        // Get ALL slots (ignore day-of-week for clock-out adjustment)
+        // Get ALL slots for the event's day of week
+        $dayIso = (int) $eventStartDateLocal->format('N');
+        $allSlots = array_filter($schedule, function($slot) use ($dayIso) {
+            $slotDays = isset($slot['days']) && is_array($slot['days']) ? $slot['days'] : [];
+            if (isset($slot['day'])) $slotDays[] = $slot['day'];
+            if (isset($slot['day_of_week'])) $slotDays[] = $slot['day_of_week'];
+            return in_array($dayIso, $slotDays) || in_array((string)$dayIso, $slotDays);
+        });
+        
         // Sort by start time to distribute chronologically
-        $allSlots = $schedule;
         usort($allSlots, function($a, $b) {
             return strcmp($a['start'], $b['start']);
         });
@@ -1161,14 +1168,18 @@ class SmartClockInService
 
         foreach ($openEvents as $event) {
             $startCarbon = \Carbon\Carbon::parse($event->start, 'UTC')->setTimezone($teamTimezone);
-            $dayOfWeek = strtolower($startCarbon->format('l'));
+            $dayIso = (int) $startCarbon->format('N'); // 1=Lunes, 7=Domingo
             
             $calculatedEnd = null;
 
             if (!empty($schedule)) {
                 // Buscar tramo de ese día
                 foreach ($schedule as $slot) {
-                    if (isset($slot['day']) && strtolower($slot['day']) === $dayOfWeek) {
+                    $slotDays = isset($slot['days']) && is_array($slot['days']) ? $slot['days'] : [];
+                    if (isset($slot['day'])) $slotDays[] = $slot['day'];
+                    if (isset($slot['day_of_week'])) $slotDays[] = $slot['day_of_week'];
+
+                    if (in_array($dayIso, $slotDays) || in_array((string)$dayIso, $slotDays)) {
                         // Tomar la hora de fin del tramo
                         if (isset($slot['end'])) {
                             $endSlotTime = \Carbon\Carbon::parse($startCarbon->format('Y-m-d') . ' ' . $slot['end'], $teamTimezone);
