@@ -39,7 +39,7 @@
             @endif
 
             <!-- Main Form Grid (2 columns) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" wire:key="event-form-{{ $event->id ?? '0' }}">
                 <!-- Left Column: Date & Time -->
                 <div class="space-y-4">
                     <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">

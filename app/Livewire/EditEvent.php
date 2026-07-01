@@ -138,10 +138,13 @@ class EditEvent extends Component
     public function edit($eventId, string $origin = 'events'): void
     {
         \Log::info('EditEvent::edit RECEIVED', ['eventId' => $eventId, 'origin' => $origin]);
+        $this->reset(['start_date', 'end_date', 'start_time', 'end_time', 'start_datetime', 'end_datetime', 'user']);
+        
         $this->origin = $origin;
         $ev = Event::find($eventId);
         if (!$ev) return;
-        $this->event = $ev->load('workCenter');
+        $this->event = clone $ev;
+        $this->event->load('workCenter');
         $this->user = User::find($ev->user_id);
 
         // Obtener zona horaria del equipo del evento
