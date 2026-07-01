@@ -138,7 +138,10 @@ class EditEvent extends Component
     public function edit($eventId, string $origin = 'events'): void
     {
         \Log::info('EditEvent::edit RECEIVED', ['eventId' => $eventId, 'origin' => $origin]);
-        $this->reset(['start_date', 'end_date', 'start_time', 'end_time', 'start_datetime', 'end_datetime', 'user']);
+        $this->resetErrorBag();
+        $this->resetValidation();
+        $this->reset(['start_date', 'end_date', 'start_time', 'end_time', 'start_datetime', 'end_datetime', 'user', 'workScheduleHint', 'showAdjustmentModal', 'maxMinutes', 'currentMinutes']);
+        $this->event = new Event();
         
         $this->origin = $origin;
         $ev = Event::find($eventId);
