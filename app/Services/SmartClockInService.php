@@ -456,7 +456,36 @@ class SmartClockInService
             $validation = $this->validateMaxDuration($user, $event, Carbon::now('UTC'));
             
             if (!$validation['success']) {
-                return $validation;
+                $exceededMinutes = $validation['current_minutes'] - $validation['max_minutes'];
+                $adjustedEndUTC = $nowUTC->copy()->subMinutes($exceededMinutes);
+                
+                $startUTC = Carbon::parse($event->start, 'UTC');
+                if ($adjustedEndUTC->lt($startUTC)) {
+                    $adjustedEndUTC = $startUTC;
+                }
+
+                $event->update([
+                    'end' => $adjustedEndUTC->format('Y-m-d H:i:s'),
+                    'is_open' => false,
+                    'observations' => ($event->observations ? $event->observations . "\n" : "") . __('Jornada ajustada automáticamente al límite máximo diario (:minutes min).', ['minutes' => $validation['max_minutes']])
+                ]);
+
+                $startTime = $this->utcToTeamTimezone($event->start, $teamTimezone)->format('H:i');
+                $adjustedEndTimeTeam = $this->utcToTeamTimezone($adjustedEndUTC->toDateTimeString(), $teamTimezone)->format('H:i');
+
+                // MTX Integration
+                \App\Jobs\SyncWorkdayWithMtx::dispatch($user->email, 'stop', $source);
+
+                return [
+                    'success' => true,
+                    'status_code' => self::STATUS_CLOCK_OUT_SUCCESS,
+                    'message' => __('Clocked out successfully. Worked from :start to :end (Adjusted to maximum limit of :max min).', [
+                        'start' => $startTime,
+                        'end' => $adjustedEndTimeTeam,
+                        'max' => $validation['max_minutes']
+                    ]),
+                    'event_id' => $event->id
+                ];
             }
 
             $event->update([
